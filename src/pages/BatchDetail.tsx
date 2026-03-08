@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JoinBatchDialog from "@/components/JoinBatchDialog";
+import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import ProductImageZoom from "@/components/ProductImageZoom";
 import BatchCountdown from "@/components/BatchCountdown";
 import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
