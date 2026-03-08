@@ -36,6 +36,7 @@ const CreateBatch = () => {
   const wholesale = Number(form.wholesalePrice) || 0;
   const retail = Number(form.retailPrice) || 0;
   const totalQty = Number(form.totalQuantity) || 0;
+  const logisticsCost = Number(form.logisticsCostPerUnit) || 0;
 
   const totalProductionCost = costPerUnit * totalQty;
   const totalWholesaleRevenue = wholesale * totalQty;
