@@ -91,6 +91,23 @@ const modeDescriptions: Record<InventoryMode, string> = {
 
 const PartnerDashboard = () => {
   const [inventory, setInventory] = useState(inventoryData);
+
+  // Derive stats from live inventory data
+  const totalOwned = inventory.reduce((s, i) => s + i.totalOwned, 0);
+  const totalCollected = inventory.reduce((s, i) => s + i.collected, 0);
+  const totalListed = inventory.reduce((s, i) => s + i.listedForSale, 0);
+  const totalSold = inventory.reduce((s, i) => s + i.sold, 0);
+  const totalRemaining = inventory.reduce((s, i) => s + i.remaining, 0);
+  const totalProfit = inventory.reduce((s, i) => s + i.profitEarned, 0);
+
+  const stats = [
+    { label: "Total Units Owned", value: totalOwned.toString(), change: "+24", up: true, icon: Package },
+    { label: "Units Collected", value: totalCollected.toString(), change: "+10", up: true, icon: Truck },
+    { label: "Listed for Platform Sale", value: totalListed.toString(), change: "+14", up: true, icon: ShoppingCart },
+    { label: "Units Sold", value: totalSold.toString(), change: "+18", up: true, icon: BarChart3 },
+    { label: "Remaining Inventory", value: totalRemaining.toString(), change: `-${totalSold}`, up: false, icon: Archive },
+    { label: "Total Profit Earned", value: `৳${totalProfit.toLocaleString()}`, change: "+৳5,200", up: true, icon: Wallet },
+  ];
   const [manageOpen, setManageOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
   const [newMode, setNewMode] = useState<InventoryMode>("hybrid");
