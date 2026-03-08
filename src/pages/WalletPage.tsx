@@ -157,6 +157,7 @@ const WalletPage = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
+          <Button className="gap-2" variant="outline" onClick={() => setDepositOpen(true)}><ArrowUpRight className="w-4 h-4" /> Deposit Funds</Button>
           <Button className="gap-2" onClick={() => setWithdrawOpen(true)}><ArrowUp className="w-4 h-4" /> Withdraw Funds</Button>
           <Button variant="outline" className="gap-2" onClick={() => setReinvestOpen(true)}><RefreshCw className="w-4 h-4" /> Reinvest Profits</Button>
         </div>
