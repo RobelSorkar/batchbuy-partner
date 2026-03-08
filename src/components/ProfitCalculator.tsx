@@ -31,30 +31,42 @@ const scenarios = [
 function calcScenario(
   financingAmount: number,
   costPerUnit: number,
+  wholesalePrice: number,
   retailPrice: number,
   logisticsCost: number,
   sellThroughPct: number
 ) {
-  const unitsFinanced = Math.floor(financingAmount / costPerUnit);
+  const unitsFinanced = Math.ceil(financingAmount / costPerUnit);
   const totalCost = unitsFinanced * costPerUnit;
+  const additionalRequired = totalCost - financingAmount;
   const unitsSold = Math.round(unitsFinanced * (sellThroughPct / 100));
   const unsoldUnits = unitsFinanced - unitsSold;
 
-  const revenueFromSold = unitsSold * retailPrice;
-  const totalLogistics = unitsFinanced * logisticsCost; // logistics on all units (stored, shipped, etc.)
-  const grossProfit = revenueFromSold - totalCost - totalLogistics;
-  const commission = grossProfit > 0 ? Math.round(grossProfit * PLATFORM_COMMISSION_RATE) : 0;
-  const netProfit = grossProfit - commission;
-  const roi = totalCost > 0 ? (netProfit / financingAmount) * 100 : 0;
+  const totalLogistics = unitsFinanced * logisticsCost;
+  const totalCostWithLogistics = totalCost + totalLogistics;
+
+  const wholesaleRevenue = unitsSold * wholesalePrice;
+  const wholesaleGrossProfit = wholesaleRevenue - totalCostWithLogistics;
+
+  const retailRevenue = unitsSold * retailPrice;
+  const retailGrossProfit = retailRevenue - totalCostWithLogistics;
+
+  const commission = retailGrossProfit > 0 ? Math.round(retailGrossProfit * PLATFORM_COMMISSION_RATE) : 0;
+  const netProfit = retailGrossProfit - commission;
+  const roi = totalCost > 0 ? (netProfit / totalCost) * 100 : 0;
 
   return {
     unitsFinanced,
     totalCost,
+    additionalRequired,
     unitsSold,
     unsoldUnits,
-    revenueFromSold,
     totalLogistics,
-    grossProfit,
+    totalCostWithLogistics,
+    wholesaleRevenue,
+    wholesaleGrossProfit,
+    retailRevenue,
+    retailGrossProfit,
     commission,
     netProfit,
     roi,
@@ -67,10 +79,11 @@ const ProfitCalculator = () => {
   const [sellThrough, setSellThrough] = useState(80);
   const [showBreakdown, setShowBreakdown] = useState(false);
 
-  const costPerUnit = 300;
+  const costPerUnit = 380;
+  const wholesalePrice = 520;
   const retailPrice = 650;
 
-  const main = calcScenario(investment, costPerUnit, retailPrice, logisticsCostPerUnit, sellThrough);
+  const main = calcScenario(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
 
   return (
     <section className="py-24 px-6">
@@ -83,7 +96,7 @@ const ProfitCalculator = () => {
             See how your <span className="text-gradient-primary">financing grows</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Based on a Premium Cotton T-Shirt — ৳{costPerUnit} production cost, ৳{retailPrice} retail price.
+            Based on a Premium Cotton T-Shirt — ৳{costPerUnit} production cost, ৳{wholesalePrice} wholesale, ৳{retailPrice} retail.
             Adjust logistics and sell-through to simulate realistic outcomes.
           </p>
         </div>
@@ -165,6 +178,14 @@ const ProfitCalculator = () => {
               unitsFinanced={main.unitsFinanced}
             />
 
+            {/* Additional Amount Required */}
+            {main.additionalRequired > 0 && (
+              <div className="bg-accent/30 rounded-xl p-4 border border-accent-foreground/10 flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Additional amount required</span>
+                <span className="font-mono font-bold text-accent-foreground">৳{main.additionalRequired.toLocaleString()}</span>
+              </div>
+            )}
+
             {/* Main Results */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
@@ -175,7 +196,7 @@ const ProfitCalculator = () => {
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
                 <Banknote className="w-5 h-5 text-muted-foreground mb-2" />
                 <div className="text-2xl font-display font-bold text-foreground">
-                  ৳{main.totalCost.toLocaleString()}
+                  ৳{main.totalCostWithLogistics.toLocaleString()}
                 </div>
                 <div className="text-xs text-muted-foreground">Total Cost</div>
               </div>
@@ -201,6 +222,7 @@ const ProfitCalculator = () => {
               onToggle={() => setShowBreakdown(!showBreakdown)}
               investment={investment}
               costPerUnit={costPerUnit}
+              wholesalePrice={wholesalePrice}
               retailPrice={retailPrice}
               logisticsCostPerUnit={logisticsCostPerUnit}
               sellThrough={sellThrough}
@@ -215,7 +237,7 @@ const ProfitCalculator = () => {
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {scenarios.map((s) => {
-                  const sc = calcScenario(investment, costPerUnit, retailPrice, logisticsCostPerUnit, s.rate);
+                  const sc = calcScenario(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, s.rate);
                   return (
                     <div
                       key={s.label}
