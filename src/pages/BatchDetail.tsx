@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JoinBatchDialog from "@/components/JoinBatchDialog";
 import ProductImageZoom from "@/components/ProductImageZoom";
+import BatchCountdown from "@/components/BatchCountdown";
 import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
 import { MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
 
