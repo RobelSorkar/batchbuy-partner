@@ -14,16 +14,388 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      batch_participations: {
+        Row: {
+          batch_id: string
+          id: string
+          joined_at: string
+          total_invested: number
+          units_owned: number
+          user_id: string
+        }
+        Insert: {
+          batch_id: string
+          id?: string
+          joined_at?: string
+          total_invested: number
+          units_owned: number
+          user_id: string
+        }
+        Update: {
+          batch_id?: string
+          id?: string
+          joined_at?: string
+          total_invested?: number
+          units_owned?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "batch_participations_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "batches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      batches: {
+        Row: {
+          batch_name: string
+          category: string | null
+          created_at: string
+          created_by: string | null
+          deadline: string | null
+          description: string | null
+          funded_units: number
+          id: string
+          image: string | null
+          manufacturer: string | null
+          min_participation: number
+          partners_joined: number
+          product_name: string
+          production_cost_per_unit: number
+          production_time_days: number | null
+          remaining_units: number
+          retail_price: number
+          status: string
+          total_quantity: number
+          updated_at: string
+          warehouse: string | null
+          wholesale_price: number
+        }
+        Insert: {
+          batch_name: string
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          deadline?: string | null
+          description?: string | null
+          funded_units?: number
+          id?: string
+          image?: string | null
+          manufacturer?: string | null
+          min_participation?: number
+          partners_joined?: number
+          product_name: string
+          production_cost_per_unit: number
+          production_time_days?: number | null
+          remaining_units: number
+          retail_price: number
+          status?: string
+          total_quantity: number
+          updated_at?: string
+          warehouse?: string | null
+          wholesale_price: number
+        }
+        Update: {
+          batch_name?: string
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          deadline?: string | null
+          description?: string | null
+          funded_units?: number
+          id?: string
+          image?: string | null
+          manufacturer?: string | null
+          min_participation?: number
+          partners_joined?: number
+          product_name?: string
+          production_cost_per_unit?: number
+          production_time_days?: number | null
+          remaining_units?: number
+          retail_price?: number
+          status?: string
+          total_quantity?: number
+          updated_at?: string
+          warehouse?: string | null
+          wholesale_price?: number
+        }
+        Relationships: []
+      }
+      inventory: {
+        Row: {
+          allocated_stock: number
+          batch_id: string | null
+          created_at: string
+          id: string
+          product_name: string
+          sku: string | null
+          sold_units: number
+          status: string
+          total_stock: number
+          updated_at: string
+          warehouse_location: string | null
+        }
+        Insert: {
+          allocated_stock?: number
+          batch_id?: string | null
+          created_at?: string
+          id?: string
+          product_name: string
+          sku?: string | null
+          sold_units?: number
+          status?: string
+          total_stock?: number
+          updated_at?: string
+          warehouse_location?: string | null
+        }
+        Update: {
+          allocated_stock?: number
+          batch_id?: string | null
+          created_at?: string
+          id?: string
+          product_name?: string
+          sku?: string | null
+          sold_units?: number
+          status?: string
+          total_stock?: number
+          updated_at?: string
+          warehouse_location?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "batches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_items: {
+        Row: {
+          id: string
+          order_id: string
+          product_name: string
+          quantity: number
+          total_price: number
+          unit_price: number
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          product_name: string
+          quantity: number
+          total_price: number
+          unit_price: number
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          product_name?: string
+          quantity?: number
+          total_price?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          batch_id: string | null
+          channel: string
+          commission: number | null
+          created_at: string
+          customer_address: string | null
+          customer_name: string
+          customer_phone: string | null
+          id: string
+          notes: string | null
+          order_number: string
+          seller_id: string | null
+          status: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          batch_id?: string | null
+          channel: string
+          commission?: number | null
+          created_at?: string
+          customer_address?: string | null
+          customer_name: string
+          customer_phone?: string | null
+          id?: string
+          notes?: string | null
+          order_number: string
+          seller_id?: string | null
+          status?: string
+          total_amount: number
+          updated_at?: string
+        }
+        Update: {
+          batch_id?: string | null
+          channel?: string
+          commission?: number | null
+          created_at?: string
+          customer_address?: string | null
+          customer_name?: string
+          customer_phone?: string | null
+          id?: string
+          notes?: string | null
+          order_number?: string
+          seller_id?: string | null
+          status?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "batches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          status: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          status?: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          status?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wallets: {
+        Row: {
+          balance: number
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role:
+        | "admin"
+        | "partner"
+        | "dropshipper"
+        | "distributor"
+        | "warehouse"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +522,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "partner", "dropshipper", "distributor", "warehouse"],
+    },
   },
 } as const
