@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { CheckCircle, AlertCircle, TrendingUp, Loader2 } from "lucide-react";
-import { ProductionBatch, MINIMUM_PARTICIPATION_BDT, calculateUnitsFromInvestment, calculateProfitEstimate } from "@/types/batch";
+import { CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet } from "lucide-react";
+import { ProductionBatch, MINIMUM_PARTICIPATION_BDT, PLATFORM_COMMISSION_RATE, calculateUnitsFromInvestment, calculateProfitEstimate } from "@/types/batch";
 import { useJoinBatch } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
+import { useWallet } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
 
 interface JoinBatchDialogProps {
@@ -20,7 +22,9 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const [submitted, setSubmitted] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const { data: wallet } = useWallet();
   const joinBatch = useJoinBatch();
+  const walletBalance = wallet?.balance || 0;
 
   const investmentAmount = Number(investmentInput) || 0;
   const { units, totalCost, remainder } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
@@ -153,14 +157,15 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
               <div className="border-t border-border/50 pt-3 space-y-2">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <TrendingUp className="w-4 h-4 text-primary" />
-                  <span className="font-medium text-foreground">Profit Estimates</span>
+                  <span className="font-medium text-foreground">Net Profit Estimates</span>
+                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">after 15% commission</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">If sold at wholesale</span>
                   <span className="font-semibold text-primary">
-                    ৳{(units * (batch.wholesalePrice - batch.productionCostPerUnit)).toLocaleString()}
+                    ৳{Math.round(units * (batch.wholesalePrice - batch.productionCostPerUnit) * 0.85).toLocaleString()}
                     <span className="text-xs ml-1">
-                      ({((batch.wholesalePrice - batch.productionCostPerUnit) / batch.productionCostPerUnit * 100).toFixed(0)}%)
+                      ({((batch.wholesalePrice - batch.productionCostPerUnit) * 0.85 / batch.productionCostPerUnit * 100).toFixed(0)}%)
                     </span>
                   </span>
                 </div>
@@ -188,7 +193,26 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
           )}
 
-          <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending} className="w-full" size="lg">
+          {/* Wallet balance display */}
+          <div className="flex items-center justify-between bg-muted/50 rounded-lg p-3 text-sm">
+            <div className="flex items-center gap-2">
+              <Wallet className="w-4 h-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Wallet Balance</span>
+            </div>
+            <span className={`font-semibold ${walletBalance < totalCost ? "text-destructive" : "text-foreground"}`}>
+              ৳{walletBalance.toLocaleString()}
+            </span>
+          </div>
+          {walletBalance < totalCost && totalCost > 0 && (
+            <div className="flex items-center justify-between bg-destructive/5 border border-destructive/20 rounded-lg p-3 text-sm">
+              <span className="text-destructive">Insufficient balance — need ৳{(totalCost - walletBalance).toLocaleString()} more</span>
+              <Link to="/wallet" onClick={() => onOpenChange(false)}>
+                <Button size="sm" variant="outline" className="text-xs h-7">Deposit</Button>
+              </Link>
+            </div>
+          )}
+
+          <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending || walletBalance < totalCost} className="w-full" size="lg">
             {joinBatch.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
             Confirm Investment — ৳{totalCost.toLocaleString()} for {units} units
           </Button>

@@ -84,8 +84,9 @@ const Marketplace = () => {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filtered.map((batch) => {
                   const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
-                  const profitPerUnit = batch.retail_price - batch.production_cost_per_unit;
-                  const returnPct = ((profitPerUnit / batch.production_cost_per_unit) * 100).toFixed(0);
+                  const grossProfitPerUnit = batch.retail_price - batch.production_cost_per_unit;
+                  const netProfitPerUnit = Math.round(grossProfitPerUnit * 0.85);
+                  const returnPct = ((netProfitPerUnit / batch.production_cost_per_unit) * 100).toFixed(0);
 
                   return (
                     <Link key={batch.id} to={`/batch/${batch.id}`} className="group bg-card rounded-xl shadow-card hover:shadow-card-hover border border-border/50 transition-all duration-300 overflow-hidden">

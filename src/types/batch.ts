@@ -45,14 +45,17 @@ export function calculateUnitsFromInvestment(
   return { units, totalCost, remainder };
 }
 
+export const PLATFORM_COMMISSION_RATE = 0.15;
+
 export function calculateProfitEstimate(
   units: number,
   costPerUnit: number,
   retailPrice: number
-): { investment: number; revenue: number; profit: number; returnPct: number } {
+): { investment: number; revenue: number; grossProfit: number; netProfit: number; profit: number; returnPct: number } {
   const investment = units * costPerUnit;
   const revenue = units * retailPrice;
-  const profit = revenue - investment;
-  const returnPct = investment > 0 ? (profit / investment) * 100 : 0;
-  return { investment, revenue, profit, returnPct };
+  const grossProfit = revenue - investment;
+  const netProfit = Math.round(grossProfit * (1 - PLATFORM_COMMISSION_RATE));
+  const returnPct = investment > 0 ? (netProfit / investment) * 100 : 0;
+  return { investment, revenue, grossProfit, netProfit, profit: netProfit, returnPct };
 }

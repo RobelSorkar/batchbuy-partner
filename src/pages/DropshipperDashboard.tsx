@@ -104,7 +104,13 @@ const DropshipperDashboard = () => {
               {topProducts.map((product) => (
                 <div key={product.id} className="p-5 flex items-center justify-between hover:bg-muted/30 transition-colors">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center text-xl">{product.image}</div>
+                    <div className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center overflow-hidden">
+                      {product.image && product.image.startsWith("http") ? (
+                        <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
+                      ) : (
+                        <span className="text-xl">{product.image}</span>
+                      )}
+                    </div>
                     <div>
                       <div className="text-sm font-medium line-clamp-1">{product.name}</div>
                       <div className="text-xs text-muted-foreground">

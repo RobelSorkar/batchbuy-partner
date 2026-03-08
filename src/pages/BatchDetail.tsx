@@ -64,10 +64,14 @@ const BatchDetail = () => {
   }
 
   const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
-  const profitPerUnit = batch.retail_price - batch.production_cost_per_unit;
-  const wholesaleProfitPerUnit = batch.wholesale_price - batch.production_cost_per_unit;
-  const returnPct = ((profitPerUnit / batch.production_cost_per_unit) * 100).toFixed(1);
-  const wholesaleReturnPct = ((wholesaleProfitPerUnit / batch.production_cost_per_unit) * 100).toFixed(1);
+  const grossProfitPerUnit = batch.retail_price - batch.production_cost_per_unit;
+  const netProfitPerUnit = Math.round(grossProfitPerUnit * 0.85);
+  const grossWholesaleProfitPerUnit = batch.wholesale_price - batch.production_cost_per_unit;
+  const netWholesaleProfitPerUnit = Math.round(grossWholesaleProfitPerUnit * 0.85);
+  const profitPerUnit = netProfitPerUnit;
+  const wholesaleProfitPerUnit = netWholesaleProfitPerUnit;
+  const returnPct = ((netProfitPerUnit / batch.production_cost_per_unit) * 100).toFixed(1);
+  const wholesaleReturnPct = ((netWholesaleProfitPerUnit / batch.production_cost_per_unit) * 100).toFixed(1);
   const canJoin = batch.status === "funding" && batch.remaining_units > 0;
 
   // Map DB batch to the shape JoinBatchDialog expects
@@ -133,12 +137,13 @@ const BatchDetail = () => {
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Wholesale Price</div>
                     <div className="text-xl font-display font-bold">৳{batch.wholesale_price}</div>
-                    <div className="text-xs text-primary mt-1">+৳{wholesaleProfitPerUnit} ({wholesaleReturnPct}%)</div>
+                    <div className="text-xs text-primary mt-1">+৳{wholesaleProfitPerUnit} net ({wholesaleReturnPct}%)</div>
                   </div>
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Retail Price</div>
                     <div className="text-xl font-display font-bold">৳{batch.retail_price}</div>
-                    <div className="text-xs text-primary mt-1">+৳{profitPerUnit} ({returnPct}%)</div>
+                    <div className="text-xs text-primary mt-1">+৳{profitPerUnit} net ({returnPct}%)</div>
+                    <div className="text-[10px] text-muted-foreground">after 15% platform fee</div>
                   </div>
                 </div>
               </div>
@@ -234,11 +239,12 @@ const BatchDetail = () => {
                   <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 investment</p>
                   <div className="text-sm">
                     <span className="font-semibold">{Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit)} units</span>
-                    <span className="text-muted-foreground"> → retail profit </span>
+                    <span className="text-muted-foreground"> → net profit </span>
                     <span className="font-semibold text-primary">
                       ৳{(Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit) * profitPerUnit).toLocaleString()}
                     </span>
                   </div>
+                  <p className="text-[10px] text-muted-foreground">After 15% platform commission</p>
                 </div>
 
                 <BatchCountdown deadline={batch.deadline} status={batch.status} />
@@ -258,9 +264,11 @@ const BatchDetail = () => {
                       {batch.status === "completed" ? "Batch Completed" : batch.remaining_units === 0 ? "Fully Funded" : "Not Available"}
                     </Button>
                   )}
-                  <Button variant="outline" className="w-full" size="lg">
-                    Add to Watchlist
-                  </Button>
+                  <Link to="/marketplace">
+                    <Button variant="outline" className="w-full" size="lg">
+                      Browse More Batches
+                    </Button>
+                  </Link>
                 </div>
 
                 <p className="text-xs text-muted-foreground text-center">
