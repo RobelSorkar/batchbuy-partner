@@ -124,6 +124,56 @@ export type Database = {
         }
         Relationships: []
       }
+      distribution_channels: {
+        Row: {
+          allocated_stock: number
+          channel: string
+          created_at: string
+          enabled: boolean
+          id: string
+          inventory_id: string
+          max_price: number
+          min_price: number
+          price: number
+          sold_units: number
+          updated_at: string
+        }
+        Insert: {
+          allocated_stock?: number
+          channel: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          inventory_id: string
+          max_price?: number
+          min_price?: number
+          price?: number
+          sold_units?: number
+          updated_at?: string
+        }
+        Update: {
+          allocated_stock?: number
+          channel?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          inventory_id?: string
+          max_price?: number
+          min_price?: number
+          price?: number
+          sold_units?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "distribution_channels_inventory_id_fkey"
+            columns: ["inventory_id"]
+            isOneToOne: false
+            referencedRelation: "inventory"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inventory: {
         Row: {
           allocated_stock: number
