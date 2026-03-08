@@ -31,7 +31,7 @@ export function allocateUnits(
   investmentAmount: number,
   costPerUnit: number
 ): UnitAllocation {
-  const units = Math.floor(investmentAmount / costPerUnit);
+  const units = Math.ceil(investmentAmount / costPerUnit);
   const inventoryCost = units * costPerUnit;
   const unusedAmount = investmentAmount - inventoryCost;
   return { units, inventoryCost, unusedAmount };
