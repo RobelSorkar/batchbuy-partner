@@ -100,9 +100,6 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
     if (role !== "dropshipper" && userRoles.includes("dropshipper")) {
       switchTargets.push({ role: "dropshipper", label: "Dropshipper", href: "/dropshipper" });
     }
-    if (role !== "distributor" && userRoles.includes("distributor")) {
-      switchTargets.push({ role: "distributor", label: "Distributor", href: "/distributor" });
-    }
   }
 
   return (
