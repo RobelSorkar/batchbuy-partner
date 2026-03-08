@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useBatches } from "@/hooks/useBatches";
+import { getProductImage } from "@/utils/productImages";
 
 const statusColors: Record<string, string> = {
   funding: "bg-accent text-accent-foreground",
@@ -84,8 +85,12 @@ const Marketplace = () => {
 
                   return (
                     <Link key={batch.id} to={`/batch/${batch.id}`} className="group bg-card rounded-xl shadow-card hover:shadow-card-hover border border-border/50 transition-all duration-300 overflow-hidden">
-                      <div className="h-40 bg-muted/50 flex items-center justify-center text-5xl">
-                        {batch.image || "📦"}
+                      <div className="h-40 bg-muted/50 flex items-center justify-center overflow-hidden">
+                        {getProductImage(batch.product_name) ? (
+                          <img src={getProductImage(batch.product_name)!} alt={batch.product_name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-5xl">{batch.image || "📦"}</span>
+                        )}
                       </div>
                       <div className="p-5">
                         <div className="flex items-center gap-2 mb-2">
