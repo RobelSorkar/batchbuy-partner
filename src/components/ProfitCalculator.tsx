@@ -222,6 +222,7 @@ const ProfitCalculator = () => {
               onToggle={() => setShowBreakdown(!showBreakdown)}
               investment={investment}
               costPerUnit={costPerUnit}
+              wholesalePrice={wholesalePrice}
               retailPrice={retailPrice}
               logisticsCostPerUnit={logisticsCostPerUnit}
               sellThrough={sellThrough}
