@@ -55,6 +55,11 @@ const WalletPage = () => {
   const [reinvestAmount, setReinvestAmount] = useState("");
   const [reinvestSuccess, setReinvestSuccess] = useState(false);
 
+  const [depositOpen, setDepositOpen] = useState(false);
+  const [depositAmount, setDepositAmount] = useState("");
+  const [depositMethod, setDepositMethod] = useState("bkash");
+  const [depositAccount, setDepositAccount] = useState("");
+  const [depositSuccess, setDepositSuccess] = useState(false);
   const balance = wallet?.balance || 0;
 
   const totalInvested = transactions.filter((t: any) => t.type === "investment" || t.type === "reinvest").reduce((s: number, t: any) => s + Number(t.amount), 0);
