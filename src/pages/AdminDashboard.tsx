@@ -17,6 +17,7 @@ import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, useUpda
 import { useBatches } from "@/hooks/useBatches";
 import { useOrders } from "@/hooks/useOrders";
 import { useInventory } from "@/hooks/useInventory";
+import { supabase } from "@/integrations/supabase/client";
 
 // ── Helpers ───────────────────────────────────────────
 
