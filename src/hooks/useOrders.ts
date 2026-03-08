@@ -25,7 +25,6 @@ export function useCreateOrder() {
 
   return useMutation({
     mutationFn: async (order: {
-      orderNumber: string;
       customerName: string;
       customerPhone: string;
       customerAddress: string;
@@ -37,20 +36,16 @@ export function useCreateOrder() {
     }) => {
       if (!user) throw new Error("Not authenticated");
 
-      // Check for duplicate order number
-      const { data: existing } = await supabase
-        .from("orders")
-        .select("id")
-        .eq("order_number", order.orderNumber)
-        .maybeSingle();
-      if (existing) {
-        throw new Error("An order with this number already exists. Please use a unique order number.");
-      }
+      // Generate sequential order number server-side
+      const { data: orderNumber, error: seqError } = await supabase.rpc("generate_order_number", {
+        p_channel: order.channel,
+      });
+      if (seqError) throw seqError;
 
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .insert({
-          order_number: order.orderNumber,
+          order_number: orderNumber,
           customer_name: order.customerName,
           customer_phone: order.customerPhone,
           customer_address: order.customerAddress,
@@ -62,12 +57,7 @@ export function useCreateOrder() {
         })
         .select()
         .single();
-      if (orderError) {
-        if (orderError.code === "23505") {
-          throw new Error("An order with this number already exists. Please use a unique order number.");
-        }
-        throw orderError;
-      }
+      if (orderError) throw orderError;
 
       // Insert order items
       const itemsToInsert = order.items.map((item) => ({
