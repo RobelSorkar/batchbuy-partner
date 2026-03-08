@@ -227,7 +227,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
 
           <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending || walletBalance < totalCost} className="w-full" size="lg">
             {joinBatch.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Confirm Investment — ৳{totalCost.toLocaleString()} for {units} units
+            Confirm Financing — ৳{totalCost.toLocaleString()} for {units} units
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">
