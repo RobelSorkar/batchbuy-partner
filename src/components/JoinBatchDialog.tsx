@@ -70,7 +70,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             <div>
               <h2 className="text-xl font-display font-bold">Batch Joined Successfully!</h2>
               <p className="text-muted-foreground text-sm mt-2">
-                You now own <span className="font-semibold text-foreground">{units} units</span> of{" "}
+                You financed <span className="font-semibold text-foreground">{units} units</span> of{" "}
                 <span className="font-semibold text-foreground">{batch.productName}</span>
               </p>
             </div>
