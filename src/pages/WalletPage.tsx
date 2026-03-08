@@ -37,6 +37,7 @@ const categoryFilters = [
 ];
 
 const WalletPage = () => {
+  const { user } = useAuth();
   const { data: wallet, isLoading: walletLoading } = useWallet();
   const { data: transactions = [], isLoading: txnLoading } = useTransactions();
   const { data: batches = [] } = useBatches();
@@ -44,6 +45,15 @@ const WalletPage = () => {
   const reinvest = useReinvest();
   const deposit = useDeposit();
   const { toast } = useToast();
+  const [userRole, setUserRole] = useState<"partner" | "dropshipper" | "admin" | "warehouse">("partner");
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("user_roles").select("role").eq("user_id", user.id).then(({ data }) => {
+      const role = data?.[0]?.role;
+      if (role === "dropshipper" || role === "admin" || role === "warehouse") setUserRole(role);
+    });
+  }, [user]);
 
   const [txnFilter, setTxnFilter] = useState("all");
   const [withdrawOpen, setWithdrawOpen] = useState(false);
