@@ -45,10 +45,7 @@ const Signup = () => {
     } else if (data.user && !data.session) {
       toast({ title: "Check your email", description: "We sent you a confirmation link to verify your account." });
     } else {
-      // Auto-assign role
-      if (data.user) {
-        await supabase.from("user_roles").insert({ user_id: data.user.id, role: selectedRole as any });
-      }
+      // Role is auto-assigned by database trigger from signup metadata
       if (selectedRole === "dropshipper") navigate("/dropshipper");
       else if (selectedRole === "distributor") navigate("/distribution");
       else if (selectedRole === "warehouse") navigate("/warehouse");
