@@ -27,10 +27,13 @@ const PartnerDashboard = () => {
   const { data: participations, isLoading: loadingParts } = useMyParticipations();
   const { data: wallet } = useWallet();
   const { data: transactions } = useTransactions();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const [manageOpen, setManageOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [newMode, setNewMode] = useState<InventoryMode>("hybrid");
+  const [saving, setSaving] = useState(false);
   const [collectQty, setCollectQty] = useState("");
   const [platformQty, setPlatformQty] = useState("");
 
