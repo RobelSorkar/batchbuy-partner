@@ -62,7 +62,7 @@ const AnalyticsPage = () => {
   const { data: participations = [] } = useQuery({
     queryKey: ["analytics-participations"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("batch_participations").select("*");
+      const { data, error } = await supabase.from("batch_participations").select("*, profiles:user_id(full_name)");
       if (error) throw error;
       return data;
     },
