@@ -188,7 +188,25 @@ const PartnerDashboard = () => {
                   ))}
                 </div>
               </div>
-              <Button className="w-full" onClick={() => setManageOpen(false)}>Save Changes</Button>
+              <Button className="w-full" disabled={saving} onClick={async () => {
+                if (!selectedItemId) return;
+                setSaving(true);
+                const { error } = await supabase
+                  .from("batch_participations")
+                  .update({ inventory_mode: newMode } as any)
+                  .eq("id", selectedItemId);
+                setSaving(false);
+                if (error) {
+                  toast({ title: "Failed to save", description: error.message, variant: "destructive" });
+                } else {
+                  toast({ title: "Inventory mode updated" });
+                  queryClient.invalidateQueries({ queryKey: ["my-participations"] });
+                  setManageOpen(false);
+                }
+              }}>
+                {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                Save Changes
+              </Button>
             </div>
           )}
         </DialogContent>
