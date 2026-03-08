@@ -153,6 +153,10 @@ const BatchDetail = () => {
                     <div className="text-[10px] text-muted-foreground">after logistics + 15% fee</div>
                   </div>
                 </div>
+                <div className="flex items-center gap-3 mt-3 text-[10px] text-muted-foreground">
+                  <span>✔ Profit estimate only</span>
+                  <span>✔ Not guaranteed return</span>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
