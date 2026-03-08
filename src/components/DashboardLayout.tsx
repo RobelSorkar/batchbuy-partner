@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, Settings, LogOut, Menu, Bell, Store, ShieldCheck } from "lucide-react";
+import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, Settings, LogOut, Menu, Bell, Store, ShieldCheck, Warehouse } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  role?: "partner" | "dropshipper" | "admin";
+  role?: "partner" | "dropshipper" | "admin" | "warehouse";
 }
 
 const partnerNav = [
@@ -28,22 +28,33 @@ const adminNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
   { icon: Layers, label: "All Batches", href: "/admin/batches" },
   { icon: Users, label: "Users", href: "/admin/users" },
+  { icon: Warehouse, label: "Warehouse", href: "/warehouse" },
   { icon: Truck, label: "Fulfillment", href: "/admin/fulfillment" },
   { icon: Wallet, label: "Wallets", href: "/admin/wallets" },
   { icon: ShieldCheck, label: "Moderation", href: "/admin/moderation" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
+const warehouseNav = [
+  { icon: LayoutDashboard, label: "Overview", href: "/warehouse" },
+  { icon: Package, label: "Inventory", href: "/warehouse/inventory" },
+  { icon: ShoppingCart, label: "Orders", href: "/warehouse/orders" },
+  { icon: Truck, label: "Fulfillment", href: "/warehouse/fulfillment" },
+  { icon: Settings, label: "Settings", href: "/warehouse/settings" },
+];
+
 const navMap = {
   partner: partnerNav,
   dropshipper: dropshipperNav,
   admin: adminNav,
+  warehouse: warehouseNav,
 };
 
 const roleLabels = {
   partner: "Production Partner",
   dropshipper: "Dropshipper",
   admin: "Admin",
+  warehouse: "Warehouse Manager",
 };
 
 const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) => {
@@ -93,7 +104,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
         </nav>
 
         <div className="absolute bottom-4 left-4 right-4 space-y-1">
-          {role !== "admin" && (
+          {role !== "admin" && role !== "warehouse" && (
             <Link
               to={role === "partner" ? "/dropshipper" : "/partner"}
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
@@ -132,7 +143,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full" />
             </button>
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
-              {role === "admin" ? "A" : role === "partner" ? "P" : "D"}
+              {role === "admin" ? "A" : role === "partner" ? "P" : role === "warehouse" ? "W" : "D"}
             </div>
           </div>
         </header>
