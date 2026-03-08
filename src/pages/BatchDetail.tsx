@@ -257,9 +257,15 @@ const BatchDetail = () => {
                       <>
                         <div className="text-sm space-y-1">
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Units Financed (FLOOR)</span>
+                            <span className="text-muted-foreground">Units Financed (CEIL)</span>
                             <span className="font-semibold">{ex.unitsFinanced}</span>
                           </div>
+                          {ex.inventoryCost > MINIMUM_PARTICIPATION_BDT && (
+                            <div className="flex justify-between text-xs bg-accent/30 rounded px-2 py-1 border border-accent-foreground/10">
+                              <span className="text-accent-foreground">Additional amount required</span>
+                              <span className="font-mono font-bold text-accent-foreground">৳{(ex.inventoryCost - MINIMUM_PARTICIPATION_BDT).toLocaleString()}</span>
+                            </div>
+                          )}
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Inventory Cost</span>
                             <span className="font-semibold">৳{ex.inventoryCost.toLocaleString()}</span>

@@ -159,13 +159,19 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
           {units > 0 && est && investmentAmount >= MINIMUM_PARTICIPATION_BDT && (
             <div className="bg-card rounded-lg p-4 border border-border/50 space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Units Financed (FLOOR)</span>
+                <span className="text-muted-foreground">Units Financed (CEIL)</span>
                 <span className="font-bold text-lg">{est.unitsFinanced}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Inventory Purchase Cost</span>
                 <span className="font-semibold">৳{est.inventoryCost.toLocaleString()}</span>
               </div>
+              {est.inventoryCost > investmentAmount && (
+                <div className="flex justify-between text-xs bg-accent/30 rounded px-2 py-1.5 border border-accent-foreground/10">
+                  <span className="text-accent-foreground font-medium">Additional amount required</span>
+                  <span className="font-mono font-bold text-accent-foreground">৳{(est.inventoryCost - investmentAmount).toLocaleString()}</span>
+                </div>
+              )}
               <div className="flex justify-between text-xs">
                 <span className="text-muted-foreground">Logistics Cost ({est.unitsFinanced} × ৳{logisticsCost})</span>
                 <span>৳{est.logisticsCost.toLocaleString()}</span>
