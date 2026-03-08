@@ -18,6 +18,7 @@
  */
 
 export const PLATFORM_COMMISSION_RATE = 0.15;
+export const MARKETING_COST_RATE = 0.10;
 export const MINIMUM_PARTICIPATION_BDT = 10_000;
 
 // ─── Unit allocation ────────────────────────────────────────────────
