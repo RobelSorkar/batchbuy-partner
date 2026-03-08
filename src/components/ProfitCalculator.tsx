@@ -106,9 +106,13 @@ const ProfitCalculator = () => {
             </div>
           </div>
 
-          <div className="bg-muted/30 border-t border-border px-8 py-4">
+          <div className="bg-muted/30 border-t border-border px-8 py-4 space-y-1">
+            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1">✔ Profit estimate only</span>
+              <span className="flex items-center gap-1">✔ Not guaranteed return</span>
+            </div>
             <p className="text-xs text-muted-foreground text-center">
-              * Logistics includes delivery, packaging, warehouse, return loss & damage (~৳{logisticsCostPerUnit}/unit). Actual costs vary by product and location.
+              Logistics includes delivery, packaging, warehouse, return loss & damage (~৳{logisticsCostPerUnit}/unit). Actual costs vary by product and location.
             </p>
           </div>
         </div>

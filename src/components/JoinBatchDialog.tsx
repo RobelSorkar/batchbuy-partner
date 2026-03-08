@@ -186,6 +186,10 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                   </span>
                 </div>
               </div>
+              <div className="flex items-center gap-3 pt-1 text-[10px] text-muted-foreground border-t border-border/30 mt-2">
+                <span>✔ Profit estimate only</span>
+                <span>✔ Not guaranteed return</span>
+              </div>
             </div>
           )}
 
