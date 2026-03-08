@@ -125,6 +125,8 @@ const FinancialBreakdown = ({
               bold
               negative={main.wholesaleGrossProfit < 0}
             />
+              negative={main.wholesaleGrossProfit < 0}
+            />
 
             {/* Retail */}
             <div className="border-t border-border/30 pt-2" />
