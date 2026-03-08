@@ -21,6 +21,7 @@ export type Database = {
           joined_at: string
           total_invested: number
           units_owned: number
+          units_sold: number
           user_id: string
         }
         Insert: {
@@ -29,6 +30,7 @@ export type Database = {
           joined_at?: string
           total_invested: number
           units_owned: number
+          units_sold?: number
           user_id: string
         }
         Update: {
@@ -37,6 +39,7 @@ export type Database = {
           joined_at?: string
           total_invested?: number
           units_owned?: number
+          units_sold?: number
           user_id?: string
         }
         Relationships: [
@@ -441,6 +444,10 @@ export type Database = {
       }
       join_batch: {
         Args: { p_batch_id: string; p_total_invested: number; p_units: number }
+        Returns: Json
+      }
+      process_deposit: {
+        Args: { p_account: string; p_amount: number; p_method: string }
         Returns: Json
       }
       process_withdrawal: {

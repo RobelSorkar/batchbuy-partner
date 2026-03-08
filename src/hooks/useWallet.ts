@@ -62,6 +62,29 @@ export function useWithdraw() {
   });
 }
 
+export function useDeposit() {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ amount, method, account }: { amount: number; method: string; account: string }) => {
+      if (!user) throw new Error("Not authenticated");
+
+      const { data, error } = await supabase.rpc("process_deposit", {
+        p_amount: amount,
+        p_method: method,
+        p_account: account,
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["wallet"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+  });
+}
+
 export function useReinvest() {
   const { user } = useAuth();
   const queryClient = useQueryClient();

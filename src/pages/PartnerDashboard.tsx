@@ -37,16 +37,16 @@ const PartnerDashboard = () => {
     if (!batch) return null;
     const costPerUnit = Number(batch.production_cost_per_unit);
     const retailPrice = Number(batch.retail_price);
+    const unitsSold = p.units_sold || 0;
+    const profitPerUnit = retailPrice - costPerUnit;
     return {
       id: p.id,
       batchName: batch.batch_name,
       productName: batch.product_name,
       totalOwned: p.units_owned,
-      collected: 0,
-      listedForSale: p.units_owned,
-      sold: 0,
-      remaining: p.units_owned,
-      profitEarned: 0,
+      unitsSold,
+      remaining: p.units_owned - unitsSold,
+      profitEarned: unitsSold * profitPerUnit * 0.85,
       costPerUnit,
       retailPrice,
       mode: "platform" as InventoryMode,
@@ -122,11 +122,12 @@ const PartnerDashboard = () => {
                 <thead>
                   <tr className="border-b border-border/50">
                     <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Product / Batch</th>
-                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Units Owned</th>
-                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Cost/Unit</th>
-                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Retail Price</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Owned</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Sold</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Remaining</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Profit Earned</th>
                     <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Status</th>
-                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Mode</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3"></th>
                     <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3"></th>
                   </tr>
                 </thead>
@@ -138,14 +139,10 @@ const PartnerDashboard = () => {
                         <div className="text-xs text-muted-foreground">{item.batchName}</div>
                       </td>
                       <td className="px-5 py-4 text-sm font-semibold">{item.totalOwned}</td>
-                      <td className="px-5 py-4 text-sm">৳{item.costPerUnit}</td>
-                      <td className="px-5 py-4 text-sm">৳{item.retailPrice}</td>
+                      <td className="px-5 py-4 text-sm">{item.unitsSold}</td>
+                      <td className="px-5 py-4 text-sm">{item.remaining}</td>
+                      <td className="px-5 py-4 text-sm font-semibold text-primary">৳{Math.round(item.profitEarned).toLocaleString()}</td>
                       <td className="px-5 py-4 text-sm">{item.status}</td>
-                      <td className="px-5 py-4">
-                        <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-medium ${modeColors[item.mode]}`}>
-                          {modeLabels[item.mode]}
-                        </span>
-                      </td>
                       <td className="px-5 py-4">
                         <Button variant="ghost" size="sm" onClick={() => openManage(item)} className="gap-1">
                           <Settings2 className="w-3.5 h-3.5" /> Manage

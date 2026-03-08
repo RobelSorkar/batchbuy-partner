@@ -1,1 +1,4 @@
 project_id = "bjywdpiercsbufpddmiq"
+
+[functions.close-expired-batches]
+verify_jwt = false

@@ -10,7 +10,7 @@ import {
   Wallet as WalletIcon, ArrowUpRight, ArrowUp,
   Clock, CheckCircle, RefreshCw, TrendingUp, Layers, Banknote, Repeat, Loader2
 } from "lucide-react";
-import { useWallet, useTransactions, useWithdraw, useReinvest } from "@/hooks/useWallet";
+import { useWallet, useTransactions, useWithdraw, useReinvest, useDeposit } from "@/hooks/useWallet";
 import { useBatches } from "@/hooks/useBatches";
 import { useToast } from "@/hooks/use-toast";
 
@@ -40,6 +40,7 @@ const WalletPage = () => {
   const { data: batches = [] } = useBatches();
   const withdraw = useWithdraw();
   const reinvest = useReinvest();
+  const deposit = useDeposit();
   const { toast } = useToast();
 
   const [txnFilter, setTxnFilter] = useState("all");
@@ -54,6 +55,11 @@ const WalletPage = () => {
   const [reinvestAmount, setReinvestAmount] = useState("");
   const [reinvestSuccess, setReinvestSuccess] = useState(false);
 
+  const [depositOpen, setDepositOpen] = useState(false);
+  const [depositAmount, setDepositAmount] = useState("");
+  const [depositMethod, setDepositMethod] = useState("bkash");
+  const [depositAccount, setDepositAccount] = useState("");
+  const [depositSuccess, setDepositSuccess] = useState(false);
   const balance = wallet?.balance || 0;
 
   const totalInvested = transactions.filter((t: any) => t.type === "investment" || t.type === "reinvest").reduce((s: number, t: any) => s + Number(t.amount), 0);
@@ -99,6 +105,22 @@ const WalletPage = () => {
     setTimeout(() => { setReinvestSuccess(false); setReinvestAmount(""); setReinvestBatchId(""); }, 300);
   };
 
+  const handleDeposit = async () => {
+    const amt = Number(depositAmount);
+    if (amt < 500 || !depositAccount) return;
+    try {
+      await deposit.mutateAsync({ amount: amt, method: depositMethod, account: depositAccount });
+      setDepositSuccess(true);
+    } catch (e: any) {
+      toast({ title: "Deposit failed", description: e.message, variant: "destructive" });
+    }
+  };
+
+  const closeDeposit = () => {
+    setDepositOpen(false);
+    setTimeout(() => { setDepositSuccess(false); setDepositAmount(""); setDepositAccount(""); }, 300);
+  };
+
   if (walletLoading || txnLoading) {
     return <DashboardLayout role="partner"><div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div></DashboardLayout>;
   }
@@ -135,6 +157,7 @@ const WalletPage = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
+          <Button className="gap-2" variant="outline" onClick={() => setDepositOpen(true)}><ArrowUpRight className="w-4 h-4" /> Deposit Funds</Button>
           <Button className="gap-2" onClick={() => setWithdrawOpen(true)}><ArrowUp className="w-4 h-4" /> Withdraw Funds</Button>
           <Button variant="outline" className="gap-2" onClick={() => setReinvestOpen(true)}><RefreshCw className="w-4 h-4" /> Reinvest Profits</Button>
         </div>
@@ -270,6 +293,48 @@ const WalletPage = () => {
                 )}
                 <Button className="w-full" disabled={!selectedBatch || reinvestUnits <= 0 || reinvestAmt > balance || reinvest.isPending} onClick={handleReinvest}>
                   {reinvest.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Confirm Reinvestment
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Deposit Dialog */}
+      <Dialog open={depositOpen} onOpenChange={closeDeposit}>
+        <DialogContent className="sm:max-w-md">
+          {depositSuccess ? (
+            <div className="text-center py-6 space-y-4">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto"><CheckCircle className="w-8 h-8 text-primary" /></div>
+              <h2 className="text-xl font-display font-bold">Deposit Successful</h2>
+              <p className="text-muted-foreground text-sm">৳{Number(depositAmount).toLocaleString()} has been added to your wallet.</p>
+              <Button onClick={closeDeposit} className="w-full">Done</Button>
+            </div>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle className="font-display text-xl">Deposit Funds</DialogTitle>
+                <DialogDescription>Add funds to your wallet via mobile banking</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-5 pt-2">
+                <div className="space-y-2">
+                  <Label>Payment Method</Label>
+                  <Select value={depositMethod} onValueChange={setDepositMethod}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>{withdrawMethods.map((m) => <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>)}</SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="d-account">Account / Phone Number</Label>
+                  <Input id="d-account" placeholder={depositMethod === "bank" ? "Account number" : "01XXXXXXXXX"} value={depositAccount} onChange={(e) => setDepositAccount(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="d-amount">Amount (BDT)</Label>
+                  <Input id="d-amount" type="number" min="500" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} />
+                  <p className="text-xs text-muted-foreground">Minimum deposit: ৳500</p>
+                </div>
+                <Button className="w-full" disabled={!depositAccount || Number(depositAmount) < 500 || deposit.isPending} onClick={handleDeposit}>
+                  {deposit.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Confirm Deposit
                 </Button>
               </div>
             </>
