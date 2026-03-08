@@ -15,6 +15,7 @@ import { useBatches } from "@/hooks/useBatches";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { allocateUnits } from "@/lib/calculations";
 
 const withdrawMethods = [
   { value: "bkash", label: "bKash" },
