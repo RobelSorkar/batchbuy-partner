@@ -218,7 +218,7 @@ const WalletPage = () => {
             </div>
             <div className="text-sm text-muted-foreground mb-1">Total Withdrawn</div>
             <div className="text-2xl font-display font-bold">৳{totalWithdrawn.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground mt-2">3 withdrawals</div>
+            <div className="text-xs text-muted-foreground mt-2">{transactions.filter(t => t.category === "withdrawal").length} withdrawal{transactions.filter(t => t.category === "withdrawal").length !== 1 ? "s" : ""}</div>
           </div>
         </div>
 
