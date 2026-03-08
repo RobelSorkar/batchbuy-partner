@@ -9,7 +9,11 @@ import JoinBatchDialog from "@/components/JoinBatchDialog";
 import ProductImageZoom from "@/components/ProductImageZoom";
 import BatchCountdown from "@/components/BatchCountdown";
 import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
-import { MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
+import {
+  MINIMUM_PARTICIPATION_BDT,
+  calcPerUnitProfit,
+  calcInvestmentEstimate,
+} from "@/lib/calculations";
 
 const statusColors: Record<string, string> = {
   funding: "bg-accent text-accent-foreground",
