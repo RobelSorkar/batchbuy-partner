@@ -192,7 +192,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                     return (
                       <div key={s.label} className={`rounded-lg p-3 border ${s.bg} space-y-1`}>
                         <div className="flex items-center justify-between">
-                          <span className={`text-[10px] font-bold uppercase tracking-wide ${s.color}`}>{s.label}</span>
+                          <span className={`text-[10px] font-bold uppercase tracking-wide ${s.color}`}>{s.label} ({s.rate}%)</span>
                         </div>
                         <div className="text-[10px] text-muted-foreground">{unitsSold}/{sc.unitsFinanced} sold</div>
                         <div className={`text-sm font-display font-bold ${s.color}`}>
