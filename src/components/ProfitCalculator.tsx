@@ -10,8 +10,9 @@ import {
   Banknote,
   Truck,
   BarChart3,
+  AlertCircle,
 } from "lucide-react";
-import { PLATFORM_COMMISSION_RATE } from "@/types/batch";
+import { PLATFORM_COMMISSION_RATE, MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import FinancialBreakdown from "@/components/calculator/FinancialBreakdown";
 
@@ -36,9 +37,9 @@ function calcScenario(
   logisticsCost: number,
   sellThroughPct: number
 ) {
-  const unitsFinanced = Math.ceil(financingAmount / costPerUnit);
+  const unitsFinanced = Math.floor(financingAmount / costPerUnit);
   const totalCost = unitsFinanced * costPerUnit;
-  const additionalRequired = totalCost - financingAmount;
+  const unusedAmount = financingAmount - totalCost;
   const unitsSold = Math.round(unitsFinanced * (sellThroughPct / 100));
   const unsoldUnits = unitsFinanced - unitsSold;
 
@@ -58,7 +59,7 @@ function calcScenario(
   return {
     unitsFinanced,
     totalCost,
-    additionalRequired,
+    unusedAmount,
     unitsSold,
     unsoldUnits,
     totalLogistics,
@@ -82,6 +83,7 @@ const ProfitCalculator = () => {
   const costPerUnit = 380;
   const wholesalePrice = 520;
   const retailPrice = 650;
+  const isValidInvestment = investment >= MINIMUM_PARTICIPATION_BDT;
 
   const main = calcScenario(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
 
@@ -179,10 +181,17 @@ const ProfitCalculator = () => {
             />
 
             {/* Additional Amount Required */}
-            {main.additionalRequired > 0 && (
+            {!isValidInvestment && investment > 0 && (
+              <div className="bg-destructive/10 rounded-xl p-4 border border-destructive/20 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-destructive shrink-0" />
+                <span className="text-sm font-medium text-destructive">Minimum investment is ৳{MINIMUM_PARTICIPATION_BDT.toLocaleString()} BDT.</span>
+              </div>
+            )}
+
+            {isValidInvestment && main.unusedAmount > 0 && (
               <div className="bg-accent/30 rounded-xl p-4 border border-accent-foreground/10 flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Additional amount required</span>
-                <span className="font-mono font-bold text-accent-foreground">৳{main.additionalRequired.toLocaleString()}</span>
+                <span className="text-sm text-muted-foreground">Unused amount returned</span>
+                <span className="font-mono font-bold text-accent-foreground">৳{main.unusedAmount.toLocaleString()}</span>
               </div>
             )}
 

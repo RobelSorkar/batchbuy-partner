@@ -19,7 +19,7 @@ interface FinancialBreakdownProps {
     wholesaleGrossProfit: number;
     retailRevenue: number;
     retailGrossProfit: number;
-    additionalRequired: number;
+    unusedAmount: number;
     commission: number;
     netProfit: number;
     roi: number;
@@ -84,13 +84,13 @@ const FinancialBreakdown = ({
             {/* Units */}
             <Step label="Financing Amount" value={`৳${investment.toLocaleString()}`} />
             <Step
-              label={`Units Financed — CEIL(৳${investment.toLocaleString()} ÷ ৳${costPerUnit})`}
+              label={`Units Financed — FLOOR(৳${investment.toLocaleString()} ÷ ৳${costPerUnit})`}
               value={main.unitsFinanced.toString()}
             />
-            {main.additionalRequired > 0 && (
+            {main.unusedAmount > 0 && (
               <Step
-                label={`Additional Amount Required (৳${main.totalCost.toLocaleString()} − ৳${investment.toLocaleString()})`}
-                value={`৳${main.additionalRequired.toLocaleString()}`}
+                label={`Unused Amount Returned (৳${investment.toLocaleString()} − ৳${main.totalCost.toLocaleString()})`}
+                value={`৳${main.unusedAmount.toLocaleString()}`}
                 bold
               />
             )}
