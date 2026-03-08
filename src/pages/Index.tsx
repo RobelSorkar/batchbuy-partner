@@ -9,6 +9,7 @@ import ProfitCalculator from "@/components/ProfitCalculator";
 import TransparencySection from "@/components/TransparencySection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import CookieConsent from "@/components/CookieConsent";
 
 const Index = () => {
   return (
