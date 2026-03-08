@@ -17,14 +17,14 @@ const HeroSection = () => {
       {/* Background */}
       <div className="absolute inset-0">
         <img src={heroBg} alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(215,30%,8%)]/85 via-[hsl(215,35%,12%)]/70 to-[hsl(220,30%,18%)]/75" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(222,35%,8%)]/85 via-[hsl(222,38%,12%)]/70 to-[hsl(225,32%,18%)]/75" />
       </div>
 
       <div className="relative z-10 container max-w-6xl mx-auto px-6 py-20">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left — Copy */}
           <div>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6 text-sm font-medium animate-fade-in backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/15 border border-primary/25 text-primary mb-6 text-sm font-medium animate-fade-in backdrop-blur-sm">
               <Factory className="w-4 h-4" />
               <span>Real products. Real ownership.</span>
             </div>
@@ -73,7 +73,7 @@ const HeroSection = () => {
                 { value: "50+", label: "Batches" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <div className="text-2xl font-display font-bold text-primary-foreground">
+                  <div className="text-2xl font-display font-bold text-primary">
                     {stat.value}
                   </div>
                   <div className="text-sm text-primary-foreground/45">{stat.label}</div>
@@ -87,7 +87,7 @@ const HeroSection = () => {
             className="hidden lg:block animate-fade-in"
             style={{ animationDelay: "350ms" }}
           >
-            <div className="relative bg-[hsl(215,25%,12%)]/60 backdrop-blur-xl border border-[hsl(215,20%,25%)]/40 rounded-2xl p-8">
+            <div className="relative bg-[hsl(222,30%,12%)]/60 backdrop-blur-xl border border-[hsl(222,25%,25%)]/40 rounded-2xl p-8">
               <p className="text-xs font-medium uppercase tracking-widest text-primary/80 mb-6">
                 The Journey
               </p>
@@ -96,18 +96,16 @@ const HeroSection = () => {
                 {flowSteps.map((step, i) => (
                   <div key={step.label}>
                     <div className="flex items-center gap-4">
-                      {/* Icon */}
                       <div
                         className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
                           i === flowSteps.length - 1
                             ? "bg-primary text-primary-foreground"
-                            : "bg-[hsl(215,20%,18%)] text-primary/70 border border-[hsl(215,20%,25%)]"
+                            : "bg-[hsl(222,25%,18%)] text-primary/70 border border-[hsl(222,25%,25%)]"
                         }`}
                       >
                         <step.icon className="w-5 h-5" />
                       </div>
 
-                      {/* Text */}
                       <div className="flex-1">
                         <div className="text-sm font-display font-semibold text-primary-foreground">
                           {step.label}
@@ -117,27 +115,24 @@ const HeroSection = () => {
                         </div>
                       </div>
 
-                      {/* Step number */}
                       <span className="text-xs font-mono text-primary-foreground/20">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
 
-                    {/* Connector arrow */}
                     {i < flowSteps.length - 1 && (
                       <div className="flex items-center gap-4 py-1.5">
                         <div className="w-11 flex justify-center">
                           <ChevronDown className="w-4 h-4 text-primary/30" />
                         </div>
-                        <div className="flex-1 h-px bg-gradient-to-r from-[hsl(215,20%,25%)]/40 to-transparent" />
+                        <div className="flex-1 h-px bg-gradient-to-r from-[hsl(222,25%,25%)]/40 to-transparent" />
                       </div>
                     )}
                   </div>
                 ))}
               </div>
 
-              {/* Bottom highlight */}
-              <div className="mt-6 pt-5 border-t border-[hsl(215,20%,25%)]/50">
+              <div className="mt-6 pt-5 border-t border-[hsl(222,25%,25%)]/50">
                 <div className="grid grid-cols-3 gap-4 text-center">
                   {[
                     { value: "4", label: "Channels" },
