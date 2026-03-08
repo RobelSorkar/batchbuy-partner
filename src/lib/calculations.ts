@@ -92,10 +92,12 @@ export interface InvestmentEstimate {
 
   // Costs
   logisticsCost: number;
+  marketingCost: number;
   totalCost: number;
 
   // Wholesale channel
   wholesaleRevenue: number;
+  wholesaleMarketingCost: number;
   wholesaleGrossProfit: number;
   wholesaleCommission: number;
   wholesaleNetProfit: number;
@@ -103,6 +105,7 @@ export interface InvestmentEstimate {
 
   // Retail channel
   retailRevenue: number;
+  retailMarketingCost: number;
   retailGrossProfit: number;
   retailCommission: number;
   retailNetProfit: number;
