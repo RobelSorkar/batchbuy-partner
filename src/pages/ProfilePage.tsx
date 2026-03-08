@@ -27,6 +27,9 @@ const ProfilePage = () => {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<ProfileFormData>({ full_name: "", phone: "", address: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ["profile", user?.id],
