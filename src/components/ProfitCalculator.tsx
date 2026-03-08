@@ -31,30 +31,42 @@ const scenarios = [
 function calcScenario(
   financingAmount: number,
   costPerUnit: number,
+  wholesalePrice: number,
   retailPrice: number,
   logisticsCost: number,
   sellThroughPct: number
 ) {
-  const unitsFinanced = Math.floor(financingAmount / costPerUnit);
+  const unitsFinanced = Math.ceil(financingAmount / costPerUnit);
   const totalCost = unitsFinanced * costPerUnit;
+  const additionalRequired = totalCost - financingAmount;
   const unitsSold = Math.round(unitsFinanced * (sellThroughPct / 100));
   const unsoldUnits = unitsFinanced - unitsSold;
 
-  const revenueFromSold = unitsSold * retailPrice;
-  const totalLogistics = unitsFinanced * logisticsCost; // logistics on all units (stored, shipped, etc.)
-  const grossProfit = revenueFromSold - totalCost - totalLogistics;
-  const commission = grossProfit > 0 ? Math.round(grossProfit * PLATFORM_COMMISSION_RATE) : 0;
-  const netProfit = grossProfit - commission;
-  const roi = totalCost > 0 ? (netProfit / financingAmount) * 100 : 0;
+  const totalLogistics = unitsFinanced * logisticsCost;
+  const totalCostWithLogistics = totalCost + totalLogistics;
+
+  const wholesaleRevenue = unitsSold * wholesalePrice;
+  const wholesaleGrossProfit = wholesaleRevenue - totalCostWithLogistics;
+
+  const retailRevenue = unitsSold * retailPrice;
+  const retailGrossProfit = retailRevenue - totalCostWithLogistics;
+
+  const commission = retailGrossProfit > 0 ? Math.round(retailGrossProfit * PLATFORM_COMMISSION_RATE) : 0;
+  const netProfit = retailGrossProfit - commission;
+  const roi = totalCost > 0 ? (netProfit / totalCost) * 100 : 0;
 
   return {
     unitsFinanced,
     totalCost,
+    additionalRequired,
     unitsSold,
     unsoldUnits,
-    revenueFromSold,
     totalLogistics,
-    grossProfit,
+    totalCostWithLogistics,
+    wholesaleRevenue,
+    wholesaleGrossProfit,
+    retailRevenue,
+    retailGrossProfit,
     commission,
     netProfit,
     roi,
