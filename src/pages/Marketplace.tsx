@@ -143,6 +143,18 @@ const Marketplace = () => {
                           <span className="text-muted-foreground flex items-center gap-1">
                             {batch.status === "completed" ? (
                               <><CheckCircle className="w-3 h-3" /> Completed</>
+                            ) : batch.deadline ? (
+                              (() => {
+                                const diff = new Date(batch.deadline).getTime() - Date.now();
+                                const daysLeft = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+                                return daysLeft > 0 ? (
+                                  <span className={daysLeft < 3 ? "text-destructive font-medium" : ""}>
+                                    <Clock className="w-3 h-3 inline mr-1" />{daysLeft}d left
+                                  </span>
+                                ) : (
+                                  <><Clock className="w-3 h-3" /> Deadline passed</>
+                                );
+                              })()
                             ) : (
                               <><Clock className="w-3 h-3" /> Min ৳{batch.min_participation.toLocaleString()}</>
                             )}
