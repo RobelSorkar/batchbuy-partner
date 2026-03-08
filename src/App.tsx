@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import CreateBatch from "./pages/CreateBatch";
 import WarehousePage from "./pages/WarehousePage";
 import OrderManagement from "./pages/OrderManagement";
+import DistributionPage from "./pages/DistributionPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/orders" element={<OrderManagement role="admin" />} />
           <Route path="/admin/orders" element={<OrderManagement role="admin" />} />
           <Route path="/warehouse/orders" element={<OrderManagement role="warehouse" />} />
+          <Route path="/admin/distribution" element={<DistributionPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
