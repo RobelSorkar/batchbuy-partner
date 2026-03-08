@@ -95,7 +95,7 @@ const FinancialBreakdown = ({
             {/* Costs */}
             <div className="border-t border-border/30 pt-2" />
             <Step
-              label={`Inventory Purchase Cost (${main.unitsFinanced} × ৳${costPerUnit})`}
+              label={`Final Investment Required (${main.unitsFinanced} × ৳${costPerUnit})`}
               value={`৳${main.totalCost.toLocaleString()}`}
             />
             <Step
