@@ -9,9 +9,9 @@
  *   Inventory Cost        = Units × CostPerUnit
  *   Unused Amount         = Investment − Inventory Cost
  *   Logistics Cost        = Units × LogisticsPerUnit
- *   Total Cost            = Inventory Cost + Logistics Cost
- *   Wholesale Gross Profit= Units × (WholesalePrice − CostPerUnit − LogisticsPerUnit)
- *   Retail Gross Profit   = Units × (RetailPrice − CostPerUnit − LogisticsPerUnit)
+ *   Marketing Cost        = 10% of Revenue (channel-specific)
+ *   Total Cost            = Inventory Cost + Logistics Cost + Marketing Cost
+ *   Gross Profit          = Revenue − Total Cost
  *   Commission            = 15% of gross profit (only if positive)
  *   Net Profit            = Gross Profit − Commission
  *   ROI                   = Net Profit / Inventory Cost × 100
