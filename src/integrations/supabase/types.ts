@@ -522,6 +522,19 @@ export type Database = {
     }
     Functions: {
       admin_sync_batch_stats: { Args: never; Returns: undefined }
+      create_order_with_stock_check: {
+        Args: {
+          p_batch_id?: string
+          p_channel: string
+          p_commission: number
+          p_customer_address: string
+          p_customer_name: string
+          p_customer_phone: string
+          p_items?: Json
+          p_total_amount: number
+        }
+        Returns: Json
+      }
       generate_order_number: { Args: { p_channel: string }; Returns: string }
       has_role: {
         Args: {

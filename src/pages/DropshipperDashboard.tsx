@@ -39,7 +39,7 @@ const DropshipperDashboard = () => {
   ];
 
   const handleCopyLink = (productId: string) => {
-    navigator.clipboard.writeText(`https://shop.prodpartner.com/p/${productId}?ref=dropshipper`);
+    navigator.clipboard.writeText(`${window.location.origin}/batch/${productId}?ref=dropshipper`);
     setLinkCopied(productId);
     toast({ title: "Link Copied!", description: "Share this referral link to earn commission." });
     setTimeout(() => setLinkCopied(null), 2000);
