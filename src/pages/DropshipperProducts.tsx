@@ -46,15 +46,25 @@ const DropshipperProducts = () => {
   };
 
   const handleCreateOrder = async () => {
-    if (!selectedProduct || !customerName || !customerPhone || !customerAddress) return;
+    if (!selectedProduct) return;
+
+    const result = orderFormSchema.safeParse({ customerName, customerPhone, customerAddress });
+    if (!result.success) {
+      const errors: Record<string, string> = {};
+      result.error.errors.forEach((e) => { errors[e.path[0] as string] = e.message; });
+      setFieldErrors(errors);
+      return;
+    }
+    setFieldErrors({});
+
     const commission = selectedProduct.sellerProfit * orderQty;
     const totalAmount = selectedProduct.retailPrice * orderQty;
 
     try {
       await createOrder.mutateAsync({
-        customerName,
-        customerPhone,
-        customerAddress,
+        customerName: result.data.customerName,
+        customerPhone: result.data.customerPhone,
+        customerAddress: result.data.customerAddress,
         channel: "dropship",
         totalAmount,
         commission,
