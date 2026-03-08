@@ -104,8 +104,12 @@ const FinancialBreakdown = ({
               value={`৳${main.totalLogistics.toLocaleString()}`}
             />
             <Step
-              label="Total Cost (Inventory + Logistics)"
-              value={`৳${main.totalCostWithLogistics.toLocaleString()}`}
+              label={`Marketing Cost (10% of selling price)`}
+              value={`৳${main.totalMarketing.toLocaleString()}`}
+            />
+            <Step
+              label="Total Cost (Inventory + Logistics + Marketing)"
+              value={`৳${main.totalCostWithLogisticsAndMarketing.toLocaleString()}`}
               bold
             />
 
