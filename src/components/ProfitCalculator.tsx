@@ -35,7 +35,7 @@ const ProfitCalculator = () => {
             See how your <span className="text-gradient-primary">investment grows</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Example based on a Premium Cotton T-Shirt batch — ৳300 production cost, ৳650 retail price.
+            Example based on a Premium Cotton T-Shirt batch — ৳300 production cost, ৳650 retail price, ৳40/unit logistics.
           </p>
         </div>
 
