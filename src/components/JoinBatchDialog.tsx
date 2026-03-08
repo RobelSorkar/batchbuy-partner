@@ -22,7 +22,9 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const [submitted, setSubmitted] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const { data: wallet } = useWallet();
   const joinBatch = useJoinBatch();
+  const walletBalance = wallet?.balance || 0;
 
   const investmentAmount = Number(investmentInput) || 0;
   const { units, totalCost, remainder } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
