@@ -224,7 +224,7 @@ const BatchDetail = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-xs text-muted-foreground">Min Investment</div>
+                    <div className="text-xs text-muted-foreground">Min Financing</div>
                     <div className="text-sm font-semibold">৳{batch.min_participation.toLocaleString()}</div>
                   </div>
                   <div>
