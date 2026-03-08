@@ -250,7 +250,7 @@ const ProfitCalculator = () => {
               <span>✔ Commission on gross profit</span>
             </div>
             <p className="text-xs text-muted-foreground text-center">
-              Net Profit = (Revenue − Total Cost − Logistics) × (1 − 15% commission). ROI = Net Profit ÷ Financing Amount × 100.
+              Net Profit = (Revenue − Inventory − Logistics − 10% Marketing) × (1 − 15% commission). ROI = Net Profit ÷ Financing Amount × 100.
             </p>
           </div>
         </div>

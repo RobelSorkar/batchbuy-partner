@@ -274,7 +274,7 @@ const BatchDetail = () => {
                       </>
                     );
                   })()}
-                  <p className="text-[10px] text-muted-foreground">After logistics + 15% platform commission</p>
+                  <p className="text-[10px] text-muted-foreground">After logistics + 10% marketing + 15% platform commission</p>
                   <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-1">
                     <span>✔ Estimate only</span>
                     <span>✔ Not guaranteed</span>
