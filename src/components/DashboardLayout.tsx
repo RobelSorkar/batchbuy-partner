@@ -4,8 +4,6 @@ import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, L
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 import NotificationDropdown from "@/components/NotificationDropdown";
-import { NavLink } from "@/components/NavLink";
-import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
