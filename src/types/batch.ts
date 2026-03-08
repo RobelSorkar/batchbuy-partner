@@ -21,6 +21,7 @@ export interface ProductionBatch {
   createdAt: string;
   image: string;
   partnersJoined: number;
+  logisticsCostPerUnit: number; // BDT (delivery, packaging, warehouse, returns, damage)
 }
 
 export interface BatchParticipation {
@@ -46,16 +47,19 @@ export function calculateUnitsFromInvestment(
 }
 
 export const PLATFORM_COMMISSION_RATE = 0.15;
+export const DEFAULT_LOGISTICS_COST_PER_UNIT = 40;
 
 export function calculateProfitEstimate(
   units: number,
   costPerUnit: number,
-  retailPrice: number
-): { investment: number; revenue: number; grossProfit: number; netProfit: number; profit: number; returnPct: number } {
+  retailPrice: number,
+  logisticsCostPerUnit: number = 0
+): { investment: number; revenue: number; grossProfit: number; logisticsCost: number; netProfit: number; profit: number; returnPct: number } {
   const investment = units * costPerUnit;
   const revenue = units * retailPrice;
-  const grossProfit = revenue - investment;
+  const logisticsCost = units * logisticsCostPerUnit;
+  const grossProfit = revenue - investment - logisticsCost;
   const netProfit = Math.round(grossProfit * (1 - PLATFORM_COMMISSION_RATE));
   const returnPct = investment > 0 ? (netProfit / investment) * 100 : 0;
-  return { investment, revenue, grossProfit, netProfit, profit: netProfit, returnPct };
+  return { investment, revenue, grossProfit, logisticsCost, netProfit, profit: netProfit, returnPct };
 }

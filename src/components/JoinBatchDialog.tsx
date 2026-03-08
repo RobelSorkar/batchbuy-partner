@@ -28,7 +28,8 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
 
   const investmentAmount = Number(investmentInput) || 0;
   const { units, totalCost, remainder } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
-  const { investment, revenue, profit, returnPct } = calculateProfitEstimate(units, batch.productionCostPerUnit, batch.retailPrice);
+  const { investment, revenue, profit, returnPct } = calculateProfitEstimate(units, batch.productionCostPerUnit, batch.retailPrice, batch.logisticsCostPerUnit || 0);
+  const logisticsCost = batch.logisticsCostPerUnit || 0;
   const isValid = investmentAmount >= MINIMUM_PARTICIPATION_BDT && units > 0 && units <= batch.remainingUnits;
 
   const handleSubmit = async () => {
@@ -103,10 +104,14 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
         </DialogHeader>
 
         <div className="space-y-5 pt-2">
-          <div className="bg-muted/50 rounded-lg p-4 grid grid-cols-3 gap-4 text-center">
+          <div className="bg-muted/50 rounded-lg p-4 grid grid-cols-4 gap-3 text-center">
             <div>
               <div className="text-xs text-muted-foreground">Cost/Unit</div>
               <div className="text-sm font-semibold">৳{batch.productionCostPerUnit}</div>
+            </div>
+            <div>
+              <div className="text-xs text-muted-foreground">Logistics</div>
+              <div className="text-sm font-semibold">৳{logisticsCost}</div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground">Wholesale</div>
@@ -158,14 +163,14 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <TrendingUp className="w-4 h-4 text-primary" />
                   <span className="font-medium text-foreground">Net Profit Estimates</span>
-                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">after 15% commission</span>
+                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">after logistics + 15% commission</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">If sold at wholesale</span>
                   <span className="font-semibold text-primary">
-                    ৳{Math.round(units * (batch.wholesalePrice - batch.productionCostPerUnit) * 0.85).toLocaleString()}
+                    ৳{Math.round(units * (batch.wholesalePrice - batch.productionCostPerUnit - logisticsCost) * 0.85).toLocaleString()}
                     <span className="text-xs ml-1">
-                      ({((batch.wholesalePrice - batch.productionCostPerUnit) * 0.85 / batch.productionCostPerUnit * 100).toFixed(0)}%)
+                      ({(((batch.wholesalePrice - batch.productionCostPerUnit - logisticsCost) * 0.85) / batch.productionCostPerUnit * 100).toFixed(0)}%)
                     </span>
                   </span>
                 </div>

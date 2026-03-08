@@ -105,6 +105,7 @@ export type Database = {
           funded_units: number
           id: string
           image: string | null
+          logistics_cost_per_unit: number
           manufacturer: string | null
           min_participation: number
           partners_joined: number
@@ -129,6 +130,7 @@ export type Database = {
           funded_units?: number
           id?: string
           image?: string | null
+          logistics_cost_per_unit?: number
           manufacturer?: string | null
           min_participation?: number
           partners_joined?: number
@@ -153,6 +155,7 @@ export type Database = {
           funded_units?: number
           id?: string
           image?: string | null
+          logistics_cost_per_unit?: number
           manufacturer?: string | null
           min_participation?: number
           partners_joined?: number

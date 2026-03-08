@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Calculator, TrendingUp, Package, Banknote } from "lucide-react";
+import { Calculator, TrendingUp, Package, Banknote, Truck } from "lucide-react";
 
 const presets = [
   { label: "৳10,000", value: 10000 },
@@ -12,13 +12,16 @@ const presets = [
 const ProfitCalculator = () => {
   const [investment, setInvestment] = useState(25000);
 
-  // Example product: cost 300, retail 650
+  // Example product: cost 300, retail 650, logistics 40/unit
   const costPerUnit = 300;
   const retailPrice = 650;
+  const logisticsCostPerUnit = 40;
   const units = Math.floor(investment / costPerUnit);
   const totalCost = units * costPerUnit;
   const revenue = units * retailPrice;
-  const profit = revenue - totalCost;
+  const logisticsCost = units * logisticsCostPerUnit;
+  const grossProfit = revenue - totalCost - logisticsCost;
+  const profit = Math.round(grossProfit * 0.85); // after 15% platform commission
   const returnPct = totalCost > 0 ? ((profit / totalCost) * 100).toFixed(0) : "0";
 
   return (
@@ -32,7 +35,7 @@ const ProfitCalculator = () => {
             See how your <span className="text-gradient-primary">investment grows</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Example based on a Premium Cotton T-Shirt batch — ৳300 production cost, ৳650 retail price.
+            Example based on a Premium Cotton T-Shirt batch — ৳300 production cost, ৳650 retail price, ৳40/unit logistics.
           </p>
         </div>
 
@@ -89,10 +92,15 @@ const ProfitCalculator = () => {
                   <div className="text-2xl font-display font-bold text-accent-foreground">৳{revenue.toLocaleString()}</div>
                   <div className="text-xs text-muted-foreground">Revenue (at retail)</div>
                 </div>
-                <div className="bg-primary/10 rounded-xl p-4 flex flex-col items-center text-center border border-primary/20">
+                <div className="bg-destructive/5 rounded-xl p-4 flex flex-col items-center text-center border border-destructive/10">
+                  <Truck className="w-5 h-5 text-muted-foreground mb-2" />
+                  <div className="text-2xl font-display font-bold text-foreground">৳{logisticsCost.toLocaleString()}</div>
+                  <div className="text-xs text-muted-foreground">Logistics Cost</div>
+                </div>
+                <div className="col-span-2 bg-primary/10 rounded-xl p-4 flex flex-col items-center text-center border border-primary/20">
                   <Calculator className="w-5 h-5 text-primary mb-2" />
                   <div className="text-2xl font-display font-bold text-primary">৳{profit.toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground">Est. Profit (~{returnPct}%)</div>
+                  <div className="text-xs text-muted-foreground">Net Profit (~{returnPct}% ROI, after logistics + 15% fee)</div>
                 </div>
               </div>
             </div>
@@ -100,7 +108,7 @@ const ProfitCalculator = () => {
 
           <div className="bg-muted/30 border-t border-border px-8 py-4">
             <p className="text-xs text-muted-foreground text-center">
-              * This is a simplified example. Actual profits depend on the sales channel, product category, and market conditions. Platform fees and shipping costs may apply.
+              * Logistics includes delivery, packaging, warehouse, return loss & damage (~৳{logisticsCostPerUnit}/unit). Actual costs vary by product and location.
             </p>
           </div>
         </div>

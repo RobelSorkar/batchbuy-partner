@@ -64,9 +64,10 @@ const BatchDetail = () => {
   }
 
   const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
-  const grossProfitPerUnit = batch.retail_price - batch.production_cost_per_unit;
+  const logisticsCost = Number((batch as any).logistics_cost_per_unit) || 0;
+  const grossProfitPerUnit = batch.retail_price - batch.production_cost_per_unit - logisticsCost;
   const netProfitPerUnit = Math.round(grossProfitPerUnit * 0.85);
-  const grossWholesaleProfitPerUnit = batch.wholesale_price - batch.production_cost_per_unit;
+  const grossWholesaleProfitPerUnit = batch.wholesale_price - batch.production_cost_per_unit - logisticsCost;
   const netWholesaleProfitPerUnit = Math.round(grossWholesaleProfitPerUnit * 0.85);
   const profitPerUnit = netProfitPerUnit;
   const wholesaleProfitPerUnit = netWholesaleProfitPerUnit;
@@ -96,6 +97,7 @@ const BatchDetail = () => {
     createdAt: batch.created_at,
     image: batch.image || "📦",
     partnersJoined: batch.partners_joined,
+    logisticsCostPerUnit: logisticsCost,
   };
 
   return (
@@ -128,11 +130,16 @@ const BatchDetail = () => {
                 <h3 className="font-display font-semibold mb-4 flex items-center gap-2">
                   <Calculator className="w-5 h-5 text-primary" /> Pricing Breakdown (per unit)
                 </h3>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Production Cost</div>
                     <div className="text-xl font-display font-bold">৳{batch.production_cost_per_unit}</div>
                     <div className="text-xs text-muted-foreground mt-1">Your investment</div>
+                  </div>
+                  <div className="text-center p-4 bg-muted/50 rounded-lg">
+                    <div className="text-xs text-muted-foreground mb-1">Logistics</div>
+                    <div className="text-xl font-display font-bold">৳{logisticsCost}</div>
+                    <div className="text-xs text-muted-foreground mt-1">Per unit</div>
                   </div>
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Wholesale Price</div>
@@ -143,7 +150,7 @@ const BatchDetail = () => {
                     <div className="text-xs text-muted-foreground mb-1">Retail Price</div>
                     <div className="text-xl font-display font-bold">৳{batch.retail_price}</div>
                     <div className="text-xs text-primary mt-1">+৳{profitPerUnit} net ({returnPct}%)</div>
-                    <div className="text-[10px] text-muted-foreground">after 15% platform fee</div>
+                    <div className="text-[10px] text-muted-foreground">after logistics + 15% fee</div>
                   </div>
                 </div>
               </div>
@@ -244,7 +251,7 @@ const BatchDetail = () => {
                       ৳{(Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit) * profitPerUnit).toLocaleString()}
                     </span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">After 15% platform commission</p>
+                  <p className="text-[10px] text-muted-foreground">After logistics + 15% platform commission</p>
                 </div>
 
                 <BatchCountdown deadline={batch.deadline} status={batch.status} />
