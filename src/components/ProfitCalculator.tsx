@@ -257,31 +257,4 @@ const ProfitCalculator = () => {
   );
 };
 
-function Step({
-  label,
-  value,
-  bold,
-  muted,
-  primary,
-}: {
-  label: string;
-  value: string;
-  bold?: boolean;
-  muted?: boolean;
-  primary?: boolean;
-}) {
-  return (
-    <div className="flex justify-between items-center">
-      <span className={muted ? "text-muted-foreground" : "text-foreground"}>{label}</span>
-      <span
-        className={`font-mono ${bold ? "font-bold" : "font-medium"} ${
-          primary ? "text-primary" : muted ? "text-muted-foreground" : "text-foreground"
-        }`}
-      >
-        {value}
-      </span>
-    </div>
-  );
-}
-
 export default ProfitCalculator;
