@@ -54,14 +54,16 @@ export function calcPerUnitProfit(
   retailPrice: number,
   logisticsPerUnit: number
 ): PerUnitProfit {
-  const wholesaleGrossPerUnit = wholesalePrice - costPerUnit - logisticsPerUnit;
+  const wholesaleMarketingPerUnit = Math.round(wholesalePrice * MARKETING_COST_RATE);
+  const wholesaleGrossPerUnit = wholesalePrice - costPerUnit - logisticsPerUnit - wholesaleMarketingPerUnit;
   const wholesaleNetPerUnit = Math.round(
     wholesaleGrossPerUnit > 0
       ? wholesaleGrossPerUnit * (1 - PLATFORM_COMMISSION_RATE)
       : wholesaleGrossPerUnit
   );
 
-  const retailGrossPerUnit = retailPrice - costPerUnit - logisticsPerUnit;
+  const retailMarketingPerUnit = Math.round(retailPrice * MARKETING_COST_RATE);
+  const retailGrossPerUnit = retailPrice - costPerUnit - logisticsPerUnit - retailMarketingPerUnit;
   const retailNetPerUnit = Math.round(
     retailGrossPerUnit > 0
       ? retailGrossPerUnit * (1 - PLATFORM_COMMISSION_RATE)
