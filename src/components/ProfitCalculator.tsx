@@ -180,10 +180,17 @@ const ProfitCalculator = () => {
             />
 
             {/* Additional Amount Required */}
-            {main.additionalRequired > 0 && (
+            {!isValidInvestment && investment > 0 && (
+              <div className="bg-destructive/10 rounded-xl p-4 border border-destructive/20 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-destructive shrink-0" />
+                <span className="text-sm font-medium text-destructive">Minimum investment is ৳{MINIMUM_PARTICIPATION_BDT.toLocaleString()} BDT.</span>
+              </div>
+            )}
+
+            {isValidInvestment && main.unusedAmount > 0 && (
               <div className="bg-accent/30 rounded-xl p-4 border border-accent-foreground/10 flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Additional amount required</span>
-                <span className="font-mono font-bold text-accent-foreground">৳{main.additionalRequired.toLocaleString()}</span>
+                <span className="text-sm text-muted-foreground">Unused amount returned</span>
+                <span className="font-mono font-bold text-accent-foreground">৳{main.unusedAmount.toLocaleString()}</span>
               </div>
             )}
 
