@@ -21,7 +21,7 @@ const CreateBatch = () => {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     productName: "", batchName: "", productionCostPerUnit: "", wholesalePrice: "", retailPrice: "",
-    totalQuantity: "", category: "", description: "", manufacturer: "", warehouse: "", productionTimeDays: "",
+    totalQuantity: "", category: "", description: "", manufacturer: "", warehouse: "", productionTimeDays: "", deadline: "",
   });
 
   const update = (key: string, value: string) => setForm((prev) => ({ ...prev, [key]: value }));
