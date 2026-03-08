@@ -96,7 +96,7 @@ const ProfitCalculator = () => {
             See how your <span className="text-gradient-primary">financing grows</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Based on a Premium Cotton T-Shirt — ৳{costPerUnit} production cost, ৳{retailPrice} retail price.
+            Based on a Premium Cotton T-Shirt — ৳{costPerUnit} production cost, ৳{wholesalePrice} wholesale, ৳{retailPrice} retail.
             Adjust logistics and sell-through to simulate realistic outcomes.
           </p>
         </div>
