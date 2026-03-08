@@ -43,7 +43,7 @@ const Signup = () => {
     if (error) {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
     } else if (data.user && !data.session) {
-      toast({ title: "Check your email", description: "We sent you a confirmation link to verify your account." });
+      navigate("/verify-email", { state: { email } });
     } else {
       // Role is auto-assigned by database trigger from signup metadata
       if (selectedRole === "dropshipper") navigate("/dropshipper");
