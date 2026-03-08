@@ -39,10 +39,11 @@ const CreateBatch = () => {
   const logisticsCost = Number(form.logisticsCostPerUnit) || 0;
 
   const totalProductionCost = costPerUnit * totalQty;
+  const totalLogisticsCost = logisticsCost * totalQty;
   const totalWholesaleRevenue = wholesale * totalQty;
   const totalRetailRevenue = retail * totalQty;
-  const wholesaleMargin = costPerUnit > 0 ? ((wholesale - costPerUnit) / costPerUnit * 100).toFixed(1) : "0";
-  const retailMargin = costPerUnit > 0 ? ((retail - costPerUnit) / costPerUnit * 100).toFixed(1) : "0";
+  const wholesaleMargin = costPerUnit > 0 ? (((wholesale - costPerUnit - logisticsCost) * 0.85) / costPerUnit * 100).toFixed(1) : "0";
+  const retailMargin = costPerUnit > 0 ? (((retail - costPerUnit - logisticsCost) * 0.85) / costPerUnit * 100).toFixed(1) : "0";
   const minUnitsForEntry = costPerUnit > 0 ? Math.ceil(MINIMUM_PARTICIPATION_BDT / costPerUnit) : 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
