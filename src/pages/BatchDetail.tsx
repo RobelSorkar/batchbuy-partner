@@ -251,7 +251,7 @@ const BatchDetail = () => {
                       ৳{(Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit) * profitPerUnit).toLocaleString()}
                     </span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">After 15% platform commission</p>
+                  <p className="text-[10px] text-muted-foreground">After logistics + 15% platform commission</p>
                 </div>
 
                 <BatchCountdown deadline={batch.deadline} status={batch.status} />
