@@ -41,11 +41,9 @@ const DropshipperProducts = () => {
     if (!selectedProduct || !customerName || !customerPhone || !customerAddress) return;
     const commission = selectedProduct.sellerProfit * orderQty;
     const totalAmount = selectedProduct.retailPrice * orderQty;
-    const orderNumber = `DO-${Date.now().toString().slice(-6)}`;
 
     try {
       await createOrder.mutateAsync({
-        orderNumber,
         customerName,
         customerPhone,
         customerAddress,
