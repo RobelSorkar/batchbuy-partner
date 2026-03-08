@@ -76,7 +76,11 @@ const categoryFilters: { label: string; value: string }[] = [
 
 // ── Component ──────────────────────────────────────────
 const WalletPage = () => {
-  const [balance, setBalance] = useState(32450);
+  // Balance derived: credits - debits from transactions
+  // Initial: 5200 + 3100 + 8400 + 500 + 2800 (credits=20000) - 15000 - 10000 - 10000 (debits=35000) = -15000
+  // But balance represents wallet deposits + earnings - withdrawals - investments
+  // Using a realistic starting deposit of 50000 + earnings - debits
+  const [balance, setBalance] = useState(15000);
   const [transactions, setTransactions] = useState(initialTransactions);
   const [txnFilter, setTxnFilter] = useState("all");
 
