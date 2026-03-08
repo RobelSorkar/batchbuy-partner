@@ -142,7 +142,8 @@ const BatchDetail = () => {
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Retail Price</div>
                     <div className="text-xl font-display font-bold">৳{batch.retail_price}</div>
-                    <div className="text-xs text-primary mt-1">+৳{profitPerUnit} ({returnPct}%)</div>
+                    <div className="text-xs text-primary mt-1">+৳{profitPerUnit} net ({returnPct}%)</div>
+                    <div className="text-[10px] text-muted-foreground">after 15% platform fee</div>
                   </div>
                 </div>
               </div>
