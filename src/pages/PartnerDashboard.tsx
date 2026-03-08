@@ -28,10 +28,13 @@ interface InventoryItem {
   status: string;
 }
 
+// Invariant: remaining = totalOwned - sold
+// Invariant: profitEarned = sold * (retailPrice - costPerUnit)
+// Invariant: collected + listedForSale ≤ remaining
 const inventoryData: InventoryItem[] = [
   {
     id: "1", batchName: "Batch #47", productName: "Premium Cotton T-Shirt",
-    totalOwned: 50, collected: 10, listedForSale: 22, sold: 18, remaining: 32,
+    totalOwned: 50, collected: 8, listedForSale: 14, sold: 18, remaining: 32,
     profitEarned: 6300, costPerUnit: 300, retailPrice: 650, mode: "hybrid", status: "Active",
   },
   {
@@ -41,12 +44,12 @@ const inventoryData: InventoryItem[] = [
   },
   {
     id: "3", batchName: "Batch #15", productName: "Handcrafted Leather Wallet",
-    totalOwned: 100, collected: 20, listedForSale: 28, sold: 52, remaining: 48,
-    profitEarned: 26000, costPerUnit: 800, retailPrice: 1800, mode: "hybrid", status: "Active",
+    totalOwned: 100, collected: 12, listedForSale: 16, sold: 52, remaining: 48,
+    profitEarned: 52000, costPerUnit: 800, retailPrice: 1800, mode: "hybrid", status: "Active",
   },
   {
     id: "4", batchName: "Batch #31", productName: "Bamboo Kitchen Utensils",
-    totalOwned: 40, collected: 10, listedForSale: 20, sold: 10, remaining: 30,
+    totalOwned: 40, collected: 10, listedForSale: 10, sold: 10, remaining: 30,
     profitEarned: 3200, costPerUnit: 200, retailPrice: 520, mode: "collect", status: "Active",
   },
   {

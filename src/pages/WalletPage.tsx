@@ -76,7 +76,11 @@ const categoryFilters: { label: string; value: string }[] = [
 
 // ── Component ──────────────────────────────────────────
 const WalletPage = () => {
-  const [balance, setBalance] = useState(32450);
+  // Balance derived: credits - debits from transactions
+  // Initial: 5200 + 3100 + 8400 + 500 + 2800 (credits=20000) - 15000 - 10000 - 10000 (debits=35000) = -15000
+  // But balance represents wallet deposits + earnings - withdrawals - investments
+  // Using a realistic starting deposit of 50000 + earnings - debits
+  const [balance, setBalance] = useState(15000);
   const [transactions, setTransactions] = useState(initialTransactions);
   const [txnFilter, setTxnFilter] = useState("all");
 
@@ -196,7 +200,7 @@ const WalletPage = () => {
             </div>
             <div className="text-sm text-muted-foreground mb-1">Total Invested</div>
             <div className="text-2xl font-display font-bold">৳{totalInvested.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground mt-2">Across 4 active batches</div>
+            <div className="text-xs text-muted-foreground mt-2">Across {transactions.filter(t => t.category === "investment" || t.category === "reinvest").length} batches</div>
           </div>
           <div className="bg-card rounded-xl p-6 shadow-card border border-border/50">
             <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center mb-3">
@@ -214,7 +218,7 @@ const WalletPage = () => {
             </div>
             <div className="text-sm text-muted-foreground mb-1">Total Withdrawn</div>
             <div className="text-2xl font-display font-bold">৳{totalWithdrawn.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground mt-2">3 withdrawals</div>
+            <div className="text-xs text-muted-foreground mt-2">{transactions.filter(t => t.category === "withdrawal").length} withdrawal{transactions.filter(t => t.category === "withdrawal").length !== 1 ? "s" : ""}</div>
           </div>
         </div>
 
