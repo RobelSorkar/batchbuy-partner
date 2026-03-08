@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const roles = [
-  { value: "partner", label: "Production Partner", desc: "Invest in batches & own units" },
+  { value: "partner", label: "Production Partner", desc: "Finance batches & own units" },
   { value: "dropshipper", label: "Dropshipper / Seller", desc: "Sell products without inventory" },
   { value: "distributor", label: "Distributor", desc: "Handle distribution & bulk orders" },
   { value: "warehouse", label: "Warehouse Manager", desc: "Manage inventory & fulfill orders" },
