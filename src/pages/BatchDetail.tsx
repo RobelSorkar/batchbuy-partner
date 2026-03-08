@@ -69,14 +69,13 @@ const BatchDetail = () => {
 
   const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
   const logisticsCost = Number((batch as any).logistics_cost_per_unit) || 0;
-  const grossProfitPerUnit = batch.retail_price - batch.production_cost_per_unit - logisticsCost;
-  const netProfitPerUnit = Math.round(grossProfitPerUnit * 0.85);
-  const grossWholesaleProfitPerUnit = batch.wholesale_price - batch.production_cost_per_unit - logisticsCost;
-  const netWholesaleProfitPerUnit = Math.round(grossWholesaleProfitPerUnit * 0.85);
-  const profitPerUnit = netProfitPerUnit;
-  const wholesaleProfitPerUnit = netWholesaleProfitPerUnit;
-  const returnPct = ((netProfitPerUnit / batch.production_cost_per_unit) * 100).toFixed(1);
-  const wholesaleReturnPct = ((netWholesaleProfitPerUnit / batch.production_cost_per_unit) * 100).toFixed(1);
+
+  // Use global calculation engine
+  const perUnit = calcPerUnitProfit(batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price, logisticsCost);
+  const profitPerUnit = perUnit.retailNetPerUnit;
+  const wholesaleProfitPerUnit = perUnit.wholesaleNetPerUnit;
+  const returnPct = perUnit.retailReturnPct.toFixed(1);
+  const wholesaleReturnPct = perUnit.wholesaleReturnPct.toFixed(1);
   const canJoin = batch.status === "funding" && batch.remaining_units > 0;
 
   // Map DB batch to the shape JoinBatchDialog expects
