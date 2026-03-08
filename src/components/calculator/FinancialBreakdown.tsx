@@ -19,7 +19,7 @@ interface FinancialBreakdownProps {
     wholesaleGrossProfit: number;
     retailRevenue: number;
     retailGrossProfit: number;
-    additionalRequired: number;
+    unusedAmount: number;
     commission: number;
     netProfit: number;
     roi: number;
