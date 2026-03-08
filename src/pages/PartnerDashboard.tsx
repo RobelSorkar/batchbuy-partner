@@ -119,8 +119,13 @@ const PartnerDashboard = () => {
             <h2 className="font-display font-semibold text-lg">Inventory Management</h2>
           </div>
           {inventory.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground">
-              <p>No inventory yet. <Link to="/marketplace" className="text-primary hover:underline">Join a batch</Link> to get started.</p>
+            <div className="p-8 text-center space-y-3">
+              <p className="text-muted-foreground">No inventory yet. Here's how to get started:</p>
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p>1. <Link to="/wallet" className="text-primary hover:underline">Deposit funds</Link> into your wallet</p>
+                <p>2. <Link to="/marketplace" className="text-primary hover:underline">Browse batches</Link> and invest to own product units</p>
+                <p>3. Earn profit when your units are sold</p>
+              </div>
             </div>
           ) : (
             <div className="overflow-x-auto">
