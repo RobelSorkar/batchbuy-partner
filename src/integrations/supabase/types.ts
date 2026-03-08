@@ -230,6 +230,39 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read: boolean
+          reference_id: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read?: boolean
+          reference_id?: string | null
+          title: string
+          type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read?: boolean
+          reference_id?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           id: string
@@ -280,6 +313,7 @@ export type Database = {
           seller_id: string | null
           status: string
           total_amount: number
+          tracking_number: string | null
           updated_at: string
         }
         Insert: {
@@ -296,6 +330,7 @@ export type Database = {
           seller_id?: string | null
           status?: string
           total_amount: number
+          tracking_number?: string | null
           updated_at?: string
         }
         Update: {
@@ -312,6 +347,7 @@ export type Database = {
           seller_id?: string | null
           status?: string
           total_amount?: number
+          tracking_number?: string | null
           updated_at?: string
         }
         Relationships: [
