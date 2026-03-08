@@ -5,7 +5,7 @@ const steps = [
     icon: Factory,
     step: "1",
     title: "Join Production Batch",
-    description: "Invest in a product batch with other partners.",
+    description: "Finance a product batch with other partners.",
   },
   {
     icon: Package,

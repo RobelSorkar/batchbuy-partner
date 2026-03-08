@@ -76,7 +76,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
             <div className="bg-accent/50 rounded-lg p-4 text-sm space-y-2 text-left border border-primary/10">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Investment</span>
+                <span className="text-muted-foreground">Financing</span>
                 <span className="font-semibold">৳{totalCost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
@@ -128,7 +128,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="investment">Investment Amount (BDT)</Label>
+            <Label htmlFor="investment">Financing Amount (BDT)</Label>
             <Input
               id="investment" type="number" min={MINIMUM_PARTICIPATION_BDT} step={batch.productionCostPerUnit}
               value={investmentInput} onChange={(e) => setInvestmentInput(e.target.value)} className="text-lg font-semibold"
@@ -227,11 +227,11 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
 
           <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending || walletBalance < totalCost} className="w-full" size="lg">
             {joinBatch.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Confirm Investment — ৳{totalCost.toLocaleString()} for {units} units
+            Confirm Financing — ৳{totalCost.toLocaleString()} for {units} units
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">
-            By investing, you agree to the production partnership terms.
+            By proceeding, you agree to the inventory financing partnership terms.
           </p>
         </div>
       </DialogContent>

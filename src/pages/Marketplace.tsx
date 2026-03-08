@@ -55,7 +55,7 @@ const Marketplace = () => {
           <div className="mb-10">
             <h1 className="text-3xl md:text-4xl font-display font-bold mb-2">Production Batch Marketplace</h1>
             <p className="text-muted-foreground text-lg">
-              Browse batches, invest from ৳10,000 BDT, and own product units
+              Browse batches, finance from ৳10,000 BDT, and own product units
             </p>
           </div>
 

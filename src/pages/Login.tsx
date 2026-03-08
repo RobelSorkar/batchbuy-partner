@@ -86,10 +86,10 @@ const Login = () => {
           <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-6">
             <Package className="w-8 h-8 text-primary" />
           </div>
-          <h2 className="text-2xl font-display font-bold text-primary-foreground mb-3">Production Partnership Platform</h2>
-          <p className="text-primary-foreground/60 leading-relaxed">Join production batches, own product units, and sell through a powerful distribution network. Start with just ৳10,000 BDT.</p>
+          <h2 className="text-2xl font-display font-bold text-primary-foreground mb-3">Inventory Financing Platform</h2>
+          <p className="text-primary-foreground/60 leading-relaxed">Finance production batches, own product units, and sell through a powerful distribution network. Start with just ৳10,000 BDT.</p>
           <div className="flex justify-center gap-6 mt-8">
-            {[{ value: "500+", label: "Partners" }, { value: "৳2.5Cr", label: "Invested" }, { value: "98%", label: "Satisfaction" }].map((stat) => (
+            {[{ value: "500+", label: "Partners" }, { value: "৳2.5Cr", label: "Financed" }, { value: "98%", label: "Satisfaction" }].map((stat) => (
               <div key={stat.label}>
                 <div className="text-xl font-display font-bold text-primary">{stat.value}</div>
                 <div className="text-xs text-primary-foreground/40">{stat.label}</div>

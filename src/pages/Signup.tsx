@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const roles = [
-  { value: "partner", label: "Production Partner", desc: "Invest in batches & own units" },
+  { value: "partner", label: "Production Partner", desc: "Finance batches & own units" },
   { value: "dropshipper", label: "Dropshipper / Seller", desc: "Sell products without inventory" },
   { value: "distributor", label: "Distributor", desc: "Handle distribution & bulk orders" },
   { value: "warehouse", label: "Warehouse Manager", desc: "Manage inventory & fulfill orders" },
@@ -65,7 +65,7 @@ const Signup = () => {
               <span className="font-display font-bold text-xl">ProdPartner</span>
             </Link>
             <h1 className="text-2xl font-display font-bold">Create your account</h1>
-            <p className="text-muted-foreground text-sm mt-1">Start your production partnership journey</p>
+            <p className="text-muted-foreground text-sm mt-1">Start your inventory financing journey</p>
           </div>
 
           <form className="space-y-4" onSubmit={handleSignup}>
@@ -123,7 +123,7 @@ const Signup = () => {
             <Package className="w-8 h-8 text-primary" />
           </div>
           <h2 className="text-2xl font-display font-bold text-primary-foreground mb-3">Join the Network</h2>
-          <p className="text-primary-foreground/60 leading-relaxed">Whether you invest, sell, or distribute — start earning from real product sales today with a minimum of ৳10,000 BDT.</p>
+          <p className="text-primary-foreground/60 leading-relaxed">Whether you finance, sell, or distribute — start earning from real product sales today with a minimum of ৳10,000 BDT.</p>
         </div>
       </div>
     </div>

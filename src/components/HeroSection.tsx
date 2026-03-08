@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-supply-chain.jpg";
 
 const flowSteps = [
-  { icon: Users, label: "People Pool", desc: "Partners co-invest together" },
+  { icon: Users, label: "Partners Pool", desc: "Co-finance production together" },
   { icon: Factory, label: "Factory Production", desc: "Manufacturing begins" },
   { icon: Package, label: "Product Units", desc: "You own real units" },
   { icon: Store, label: "Sellers / Shops / Dropship", desc: "Multi-channel sales" },
@@ -44,7 +44,7 @@ const HeroSection = () => {
               className="text-lg text-primary-foreground/60 mb-8 max-w-lg leading-relaxed animate-fade-in"
               style={{ animationDelay: "200ms" }}
             >
-              Join production batches with other partners, own real product units, and sell through dropshippers, shops, or distributors.
+              Join production batches with other partners, own real product units, and sell through dropshippers, shops, or distributors. This is inventory financing — not investment.
             </p>
 
             <div
@@ -69,7 +69,7 @@ const HeroSection = () => {
             >
               {[
                 { value: "500+", label: "Partners" },
-                { value: "৳2.5Cr", label: "Invested" },
+                { value: "৳2.5Cr", label: "Financed" },
                 { value: "50+", label: "Batches" },
               ].map((stat) => (
                 <div key={stat.label}>

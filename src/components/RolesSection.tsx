@@ -6,9 +6,9 @@ const roles = [
   {
     icon: Factory,
     title: "Production Partner",
-    description: "Invest in real product batches. Own manufactured units and earn profit when they sell through the network.",
-    badge: "Investor",
-    earnings: "18-45% returns",
+    description: "Finance real product batches. Own manufactured units and earn profit when they sell through the network.",
+    badge: "Financing Partner",
+    earnings: "18-45% margins",
     link: "/signup",
   },
   {
@@ -49,7 +49,7 @@ const RolesSection = () => {
             Choose your <span className="text-gradient-primary">role</span> in the supply chain
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Whether you want to invest in production, sell products, distribute wholesale, or provide warehousing — there's a place for you.
+            Whether you want to finance production, sell products, distribute wholesale, or provide warehousing — there's a place for you.
           </p>
         </div>
 

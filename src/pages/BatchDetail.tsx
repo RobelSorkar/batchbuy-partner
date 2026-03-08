@@ -134,7 +134,7 @@ const BatchDetail = () => {
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Production Cost</div>
                     <div className="text-xl font-display font-bold">৳{batch.production_cost_per_unit}</div>
-                    <div className="text-xs text-muted-foreground mt-1">Your investment</div>
+                    <div className="text-xs text-muted-foreground mt-1">Your financing</div>
                   </div>
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Logistics</div>
@@ -224,7 +224,7 @@ const BatchDetail = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-xs text-muted-foreground">Min Investment</div>
+                    <div className="text-xs text-muted-foreground">Min Financing</div>
                     <div className="text-sm font-semibold">৳{batch.min_participation.toLocaleString()}</div>
                   </div>
                   <div>
@@ -247,7 +247,7 @@ const BatchDetail = () => {
                 </div>
 
                 <div className="bg-accent/50 rounded-lg p-4 border border-primary/10 space-y-2">
-                  <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 investment</p>
+                  <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 financing</p>
                   <div className="text-sm">
                     <span className="font-semibold">{Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit)} units</span>
                     <span className="text-muted-foreground"> → net profit </span>
