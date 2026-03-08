@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Link } from "react-router-dom";
 import {
@@ -17,6 +17,7 @@ import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, useUpda
 import { useBatches } from "@/hooks/useBatches";
 import { useOrders } from "@/hooks/useOrders";
 import { useInventory } from "@/hooks/useInventory";
+import { supabase } from "@/integrations/supabase/client";
 
 // ── Helpers ───────────────────────────────────────────
 
@@ -54,6 +55,20 @@ const orderStatusColors: Record<string, string> = {
 const AdminDashboard = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
+  const [syncing, setSyncing] = useState(false);
+
+  const syncBatchStats = useCallback(async () => {
+    setSyncing(true);
+    try {
+      const { error } = await supabase.rpc("admin_sync_batch_stats");
+      if (error) throw error;
+      toast({ title: "Batch stats synced", description: "funded_units and partners_joined recalculated from source records." });
+    } catch (e: any) {
+      toast({ title: "Sync failed", description: e.message, variant: "destructive" });
+    } finally {
+      setSyncing(false);
+    }
+  }, [toast]);
   const [userSearch, setUserSearch] = useState("");
   const [userRoleFilter, setUserRoleFilter] = useState("all");
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
@@ -141,6 +156,9 @@ const AdminDashboard = () => {
             <p className="text-muted-foreground text-sm mt-1">Platform overview and management</p>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" className="gap-2" onClick={syncBatchStats} disabled={syncing}>
+              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Syncing…" : "Sync Batch Stats"}
+            </Button>
             <Link to="/create-batch"><Button variant="outline" className="gap-2"><Layers className="w-4 h-4" /> Create Batch</Button></Link>
             <Link to="/admin/orders"><Button className="gap-2"><ShoppingCart className="w-4 h-4" /> Manage Orders</Button></Link>
           </div>
