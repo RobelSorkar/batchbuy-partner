@@ -45,13 +45,13 @@ const WalletPage = () => {
   const reinvest = useReinvest();
   const deposit = useDeposit();
   const { toast } = useToast();
-  const [userRole, setUserRole] = useState<"partner" | "dropshipper" | "admin" | "warehouse">("partner");
+  const [userRole, setUserRole] = useState<"partner" | "dropshipper" | "admin" | "warehouse" | "distributor">("partner");
 
   useEffect(() => {
     if (!user) return;
     supabase.from("user_roles").select("role").eq("user_id", user.id).then(({ data }) => {
       const role = data?.[0]?.role;
-      if (role === "dropshipper" || role === "admin" || role === "warehouse") setUserRole(role);
+      if (role === "dropshipper" || role === "admin" || role === "warehouse" || role === "distributor") setUserRole(role);
     });
   }, [user]);
 
