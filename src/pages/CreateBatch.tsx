@@ -71,6 +71,7 @@ const CreateBatch = () => {
       deadline: form.deadline || null,
       created_by: user.id,
       status: "funding",
+      image: imageUrl,
     });
 
     setLoading(false);
