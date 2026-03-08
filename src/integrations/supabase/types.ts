@@ -448,21 +448,30 @@ export type Database = {
         Row: {
           balance: number
           created_at: string
+          daily_withdrawal_limit: number | null
+          daily_withdrawn: number | null
           id: string
+          last_withdrawal_date: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           balance?: number
           created_at?: string
+          daily_withdrawal_limit?: number | null
+          daily_withdrawn?: number | null
           id?: string
+          last_withdrawal_date?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           balance?: number
           created_at?: string
+          daily_withdrawal_limit?: number | null
+          daily_withdrawn?: number | null
           id?: string
+          last_withdrawal_date?: string | null
           updated_at?: string
           user_id?: string
         }
