@@ -5,8 +5,8 @@ const links = [
   { label: "About", href: "#" },
   { label: "How it works", href: "#how-it-works" },
   { label: "Contact", href: "#" },
-  { label: "Terms", href: "#" },
-  { label: "Privacy", href: "#" },
+  { label: "Terms", href: "/terms", isRoute: true },
+  { label: "Privacy", href: "/privacy", isRoute: true },
 ];
 
 const Footer = () => {
@@ -21,15 +21,25 @@ const Footer = () => {
         </div>
 
         <nav className="flex flex-wrap justify-center gap-6">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link) =>
+            link.isRoute ? (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </nav>
 
         <p className="text-xs text-muted-foreground">
