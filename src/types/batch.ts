@@ -39,11 +39,11 @@ export const MINIMUM_PARTICIPATION_BDT = 10000;
 export function calculateUnitsFromInvestment(
   investmentAmount: number,
   costPerUnit: number
-): { units: number; totalCost: number; remainder: number } {
-  const units = Math.floor(investmentAmount / costPerUnit);
+): { units: number; totalCost: number; additionalRequired: number } {
+  const units = Math.ceil(investmentAmount / costPerUnit);
   const totalCost = units * costPerUnit;
-  const remainder = investmentAmount - totalCost;
-  return { units, totalCost, remainder };
+  const additionalRequired = totalCost - investmentAmount;
+  return { units, totalCost, additionalRequired };
 }
 
 export const PLATFORM_COMMISSION_RATE = 0.15;

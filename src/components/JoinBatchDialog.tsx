@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet } from "lucide-react";
-import { ProductionBatch, MINIMUM_PARTICIPATION_BDT, PLATFORM_COMMISSION_RATE, calculateUnitsFromInvestment, calculateProfitEstimate } from "@/types/batch";
+import { ProductionBatch, MINIMUM_PARTICIPATION_BDT, PLATFORM_COMMISSION_RATE, calculateUnitsFromInvestment } from "@/types/batch";
 import { useJoinBatch } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
 import { useWallet } from "@/hooks/useWallet";
@@ -15,6 +15,44 @@ interface JoinBatchDialogProps {
   batch: ProductionBatch;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+}
+
+function calcJoinEstimate(
+  units: number,
+  costPerUnit: number,
+  wholesalePrice: number,
+  retailPrice: number,
+  logisticsCostPerUnit: number
+) {
+  const totalCost = units * costPerUnit;
+  const totalLogistics = units * logisticsCostPerUnit;
+  const totalCostWithLogistics = totalCost + totalLogistics;
+
+  const wholesaleRevenue = units * wholesalePrice;
+  const wholesaleGrossProfit = wholesaleRevenue - totalCostWithLogistics;
+  const wholesaleCommission = wholesaleGrossProfit > 0 ? Math.round(wholesaleGrossProfit * PLATFORM_COMMISSION_RATE) : 0;
+  const wholesaleNetProfit = wholesaleGrossProfit - wholesaleCommission;
+  const wholesaleROI = totalCost > 0 ? (wholesaleNetProfit / totalCost) * 100 : 0;
+
+  const retailRevenue = units * retailPrice;
+  const retailGrossProfit = retailRevenue - totalCostWithLogistics;
+  const retailCommission = retailGrossProfit > 0 ? Math.round(retailGrossProfit * PLATFORM_COMMISSION_RATE) : 0;
+  const retailNetProfit = retailGrossProfit - retailCommission;
+  const retailROI = totalCost > 0 ? (retailNetProfit / totalCost) * 100 : 0;
+
+  return {
+    totalCost,
+    totalLogistics,
+    totalCostWithLogistics,
+    wholesaleRevenue,
+    wholesaleGrossProfit,
+    wholesaleNetProfit,
+    wholesaleROI,
+    retailRevenue,
+    retailGrossProfit,
+    retailNetProfit,
+    retailROI,
+  };
 }
 
 const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) => {
@@ -27,9 +65,9 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const walletBalance = wallet?.balance || 0;
 
   const investmentAmount = Number(investmentInput) || 0;
-  const { units, totalCost, remainder } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
-  const { investment, revenue, profit, returnPct } = calculateProfitEstimate(units, batch.productionCostPerUnit, batch.retailPrice, batch.logisticsCostPerUnit || 0);
+  const { units, totalCost, additionalRequired } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
   const logisticsCost = batch.logisticsCostPerUnit || 0;
+  const est = units > 0 ? calcJoinEstimate(units, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost) : null;
   const isValid = investmentAmount >= MINIMUM_PARTICIPATION_BDT && units > 0 && units <= batch.remainingUnits;
 
   const handleSubmit = async () => {
@@ -76,16 +114,16 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
             <div className="bg-accent/50 rounded-lg p-4 text-sm space-y-2 text-left border border-primary/10">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Financing</span>
+                <span className="text-muted-foreground">Inventory Cost</span>
                 <span className="font-semibold">৳{totalCost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Units Financed</span>
                 <span className="font-semibold">{units}</span>
               </div>
-               <div className="flex justify-between">
-                <span className="text-muted-foreground">Est. Retail Profit</span>
-                <span className="font-semibold text-primary">৳{profit.toLocaleString()}</span>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Est. Retail Net Profit</span>
+                <span className="font-semibold text-primary">৳{est?.retailNetProfit.toLocaleString()}</span>
               </div>
               <div className="flex items-center gap-3 pt-1 text-[10px] text-muted-foreground">
                 <span>✔ Profit estimate only</span>
@@ -146,43 +184,49 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             ))}
           </div>
 
-          {units > 0 && (
+          {units > 0 && est && (
             <div className="bg-card rounded-lg p-4 border border-border/50 space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Units Financed</span>
+                <span className="text-muted-foreground">Units Financed (CEIL)</span>
                 <span className="font-bold text-lg">{units}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Actual Cost</span>
+                <span className="text-muted-foreground">Inventory Purchase Cost</span>
                 <span className="font-semibold">৳{totalCost.toLocaleString()}</span>
               </div>
-              {remainder > 0 && (
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Unused amount (returned)</span>
-                  <span>৳{remainder.toLocaleString()}</span>
+              {additionalRequired > 0 && (
+                <div className="flex justify-between text-xs bg-accent/30 rounded px-2 py-1.5 border border-accent-foreground/10">
+                  <span className="text-accent-foreground font-medium">Additional amount required</span>
+                  <span className="font-mono font-bold text-accent-foreground">৳{additionalRequired.toLocaleString()}</span>
                 </div>
               )}
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Logistics Cost ({units} × ৳{logisticsCost})</span>
+                <span>৳{est.totalLogistics.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Total Cost (Inventory + Logistics)</span>
+                <span className="font-semibold">৳{est.totalCostWithLogistics.toLocaleString()}</span>
+              </div>
 
               <div className="border-t border-border/50 pt-3 space-y-2">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <TrendingUp className="w-4 h-4 text-primary" />
                   <span className="font-medium text-foreground">Net Profit Estimates</span>
-                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">15% commission on gross profit</span>
+                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">15% commission</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">If sold at wholesale</span>
-                  <span className="font-semibold text-primary">
-                    ৳{Math.round(units * (batch.wholesalePrice - batch.productionCostPerUnit - logisticsCost) * 0.85).toLocaleString()}
-                    <span className="text-xs ml-1">
-                      ({(((batch.wholesalePrice - batch.productionCostPerUnit - logisticsCost) * 0.85) / batch.productionCostPerUnit * 100).toFixed(0)}%)
-                    </span>
+                  <span className="text-muted-foreground">Wholesale (৳{batch.wholesalePrice}/unit)</span>
+                  <span className={`font-semibold ${est.wholesaleNetProfit >= 0 ? "text-primary" : "text-destructive"}`}>
+                    ৳{est.wholesaleNetProfit.toLocaleString()}
+                    <span className="text-xs ml-1">({est.wholesaleROI.toFixed(0)}%)</span>
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">If sold at retail</span>
-                  <span className="font-semibold text-primary">
-                    ৳{profit.toLocaleString()}
-                    <span className="text-xs ml-1">({returnPct.toFixed(0)}%)</span>
+                  <span className="text-muted-foreground">Retail (৳{batch.retailPrice}/unit)</span>
+                  <span className={`font-semibold ${est.retailNetProfit >= 0 ? "text-primary" : "text-destructive"}`}>
+                    ৳{est.retailNetProfit.toLocaleString()}
+                    <span className="text-xs ml-1">({est.retailROI.toFixed(0)}%)</span>
                   </span>
                 </div>
               </div>
@@ -206,7 +250,6 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
           )}
 
-          {/* Wallet balance display */}
           <div className="flex items-center justify-between bg-muted/50 rounded-lg p-3 text-sm">
             <div className="flex items-center gap-2">
               <Wallet className="w-4 h-4 text-muted-foreground" />
