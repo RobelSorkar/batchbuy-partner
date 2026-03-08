@@ -149,7 +149,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
           {units > 0 && (
             <div className="bg-card rounded-lg p-4 border border-border/50 space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Units You'll Own</span>
+                <span className="text-muted-foreground">Units Financed</span>
                 <span className="font-bold text-lg">{units}</span>
               </div>
               <div className="flex justify-between">
