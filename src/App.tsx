@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import Marketplace from "./pages/Marketplace";
 import BatchDetail from "./pages/BatchDetail";
 import PartnerDashboard from "./pages/PartnerDashboard";
+import DistributorDashboard from "./pages/DistributorDashboard";
 import DropshipperDashboard from "./pages/DropshipperDashboard";
 import DropshipperProducts from "./pages/DropshipperProducts";
 import DropshipperOrders from "./pages/DropshipperOrders";
@@ -53,6 +54,9 @@ const App = () => (
             <Route path="/dropshipper" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperDashboard /></ProtectedRoute>} />
             <Route path="/dropshipper/products" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperProducts /></ProtectedRoute>} />
             <Route path="/dropshipper/orders" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperOrders /></ProtectedRoute>} />
+
+            {/* Distributor routes */}
+            <Route path="/distributor" element={<ProtectedRoute requiredRole="distributor"><DistributorDashboard /></ProtectedRoute>} />
 
             {/* Admin routes */}
             <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />

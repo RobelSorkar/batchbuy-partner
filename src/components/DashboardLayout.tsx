@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  role?: "partner" | "dropshipper" | "admin" | "warehouse";
+  role?: "partner" | "dropshipper" | "admin" | "warehouse" | "distributor";
 }
 
 const partnerNav = [
@@ -35,11 +35,17 @@ const warehouseNav = [
   { icon: ClipboardList, label: "Orders", href: "/warehouse/orders" },
 ];
 
+const distributorNav = [
+  { icon: LayoutDashboard, label: "Overview", href: "/distributor" },
+  { icon: Wallet, label: "Wallet", href: "/wallet" },
+];
+
 const navMap = {
   partner: partnerNav,
   dropshipper: dropshipperNav,
   admin: adminNav,
   warehouse: warehouseNav,
+  distributor: distributorNav,
 };
 
 const roleLabels = {
@@ -47,6 +53,7 @@ const roleLabels = {
   dropshipper: "Dropshipper",
   admin: "Admin",
   warehouse: "Warehouse Manager",
+  distributor: "Distributor",
 };
 
 const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) => {

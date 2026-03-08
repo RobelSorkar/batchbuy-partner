@@ -47,7 +47,7 @@ const Signup = () => {
     } else {
       // Role is auto-assigned by database trigger from signup metadata
       if (selectedRole === "dropshipper") navigate("/dropshipper");
-      else if (selectedRole === "distributor") navigate("/distribution");
+      else if (selectedRole === "distributor") navigate("/distributor");
       else if (selectedRole === "warehouse") navigate("/warehouse");
       else navigate("/partner");
     }

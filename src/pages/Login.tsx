@@ -29,6 +29,7 @@ const Login = () => {
       if (role === "admin") navigate("/admin");
       else if (role === "dropshipper") navigate("/dropshipper");
       else if (role === "warehouse") navigate("/warehouse");
+      else if (role === "distributor") navigate("/distributor");
       else navigate("/partner");
     }
   };
