@@ -28,7 +28,8 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
 
   const investmentAmount = Number(investmentInput) || 0;
   const { units, totalCost, remainder } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
-  const { investment, revenue, profit, returnPct } = calculateProfitEstimate(units, batch.productionCostPerUnit, batch.retailPrice);
+  const { investment, revenue, profit, returnPct } = calculateProfitEstimate(units, batch.productionCostPerUnit, batch.retailPrice, batch.logisticsCostPerUnit || 0);
+  const logisticsCost = batch.logisticsCostPerUnit || 0;
   const isValid = investmentAmount >= MINIMUM_PARTICIPATION_BDT && units > 0 && units <= batch.remainingUnits;
 
   const handleSubmit = async () => {
