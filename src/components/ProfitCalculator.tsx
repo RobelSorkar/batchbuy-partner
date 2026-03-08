@@ -10,8 +10,9 @@ import {
   Banknote,
   Truck,
   BarChart3,
+  AlertCircle,
 } from "lucide-react";
-import { PLATFORM_COMMISSION_RATE } from "@/types/batch";
+import { PLATFORM_COMMISSION_RATE, MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import FinancialBreakdown from "@/components/calculator/FinancialBreakdown";
 
