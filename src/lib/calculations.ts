@@ -5,7 +5,7 @@
  * MUST use these functions. No batch-specific calculation logic elsewhere.
  *
  * Rules:
- *   Units Financed        = FLOOR(Investment / CostPerUnit)
+ *   Units Financed        = CEIL(Investment / CostPerUnit)
  *   Inventory Cost        = Units × CostPerUnit
  *   Unused Amount         = Investment − Inventory Cost
  *   Logistics Cost        = Units × LogisticsPerUnit
