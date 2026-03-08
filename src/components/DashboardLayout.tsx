@@ -18,7 +18,7 @@ const partnerNav = [
 
 const dropshipperNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/dropshipper" },
-  { icon: Store, label: "Marketplace", href: "/marketplace" },
+  { icon: Store, label: "Products", href: "/dropshipper/products" },
   { icon: ShoppingCart, label: "My Orders", href: "/dropshipper/orders" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
   { icon: Settings, label: "Settings", href: "/dropshipper/settings" },

@@ -1,45 +1,59 @@
+import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { ShoppingCart, TrendingUp, Package, Wallet, ArrowUpRight, ArrowDownRight, ExternalLink } from "lucide-react";
+import { ShoppingCart, TrendingUp, Package, Wallet, ArrowUpRight, ArrowDownRight, ExternalLink, Copy, Check, Share2, DollarSign, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-
-const stats = [
-  { label: "Total Sales", value: "৳87,600", change: "+18%", up: true, icon: TrendingUp },
-  { label: "Orders This Month", value: "34", change: "+8", up: true, icon: ShoppingCart },
-  { label: "Products Listed", value: "12", change: "+2", up: true, icon: Package },
-  { label: "Commission Earned", value: "৳12,340", change: "+৳3,100", up: true, icon: Wallet },
-];
-
-const activeProducts = [
-  { name: "Premium Cotton T-Shirt (White)", price: 650, sold: 28, stock: 50, margin: "৳200/unit" },
-  { name: "Organic Skincare Set", price: 1200, sold: 15, stock: 30, margin: "৳350/unit" },
-  { name: "Bamboo Kitchen Utensils", price: 520, sold: 42, stock: 80, margin: "৳170/unit" },
-  { name: "Leather Wallet (Brown)", price: 1800, sold: 8, stock: 20, margin: "৳600/unit" },
-];
-
-const recentOrders = [
-  { id: "#ORD-2847", customer: "Rahim Ahmed", product: "Cotton T-Shirt", amount: "৳1,300", status: "Shipped" },
-  { id: "#ORD-2846", customer: "Fatima Khatun", product: "Skincare Set", amount: "৳1,200", status: "Processing" },
-  { id: "#ORD-2845", customer: "Kamal Hossain", product: "Bamboo Utensils", amount: "৳1,040", status: "Delivered" },
-  { id: "#ORD-2844", customer: "Nasrin Begum", product: "Leather Wallet", amount: "৳1,800", status: "Shipped" },
-];
-
-const statusColors: Record<string, string> = {
-  Shipped: "bg-accent text-accent-foreground",
-  Processing: "bg-secondary text-secondary-foreground",
-  Delivered: "bg-primary/10 text-primary",
-};
+import { dropshipProducts } from "@/data/dropshipProducts";
+import { mockDropshipOrders } from "@/data/dropshipProducts";
+import { useToast } from "@/hooks/use-toast";
 
 const DropshipperDashboard = () => {
+  const { toast } = useToast();
+  const [linkCopied, setLinkCopied] = useState<string | null>(null);
+
+  // Compute stats from mock data
+  const totalOrders = mockDropshipOrders.length;
+  const totalSales = mockDropshipOrders.reduce((s, o) => s + o.retailPrice * o.quantity, 0);
+  const totalCommission = mockDropshipOrders.filter((o) => o.status === "delivered").reduce((s, o) => s + o.commission, 0);
+  const pendingCommission = mockDropshipOrders.filter((o) => o.status !== "delivered" && o.status !== "cancelled").reduce((s, o) => s + o.commission, 0);
+  const productsPromoted = dropshipProducts.length;
+  const conversionRate = totalOrders > 0 ? ((mockDropshipOrders.filter((o) => o.status === "delivered").length / totalOrders) * 100).toFixed(0) : "0";
+
+  const stats = [
+    { label: "Total Sales", value: `৳${totalSales.toLocaleString()}`, change: "+18%", up: true, icon: TrendingUp },
+    { label: "Total Orders", value: totalOrders.toString(), change: "+4", up: true, icon: ShoppingCart },
+    { label: "Commission Earned", value: `৳${totalCommission.toLocaleString()}`, change: "+৳460", up: true, icon: Wallet },
+    { label: "Pending Commission", value: `৳${pendingCommission.toLocaleString()}`, change: `${conversionRate}% conv.`, up: true, icon: DollarSign },
+  ];
+
+  const statusColors: Record<string, string> = {
+    pending: "bg-secondary text-secondary-foreground",
+    confirmed: "bg-accent text-accent-foreground",
+    processing: "bg-accent text-accent-foreground",
+    shipped: "bg-primary/10 text-primary",
+    delivered: "bg-primary/10 text-primary",
+    cancelled: "bg-destructive/10 text-destructive",
+  };
+
+  const handleCopyLink = (productId: string) => {
+    navigator.clipboard.writeText(`https://shop.prodpartner.com/p/${productId}?ref=dropshipper123`);
+    setLinkCopied(productId);
+    toast({ title: "Link Copied!", description: "Share this referral link to earn commission." });
+    setTimeout(() => setLinkCopied(null), 2000);
+  };
+
+  // Top performing products (sorted by totalSold)
+  const topProducts = [...dropshipProducts].sort((a, b) => b.totalSold - a.totalSold).slice(0, 4);
+
   return (
     <DashboardLayout role="dropshipper">
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-display font-bold">Dropshipper Dashboard</h1>
-            <p className="text-muted-foreground text-sm mt-1">Manage your sales and orders</p>
+            <p className="text-muted-foreground text-sm mt-1">Promote products, generate orders, earn commission</p>
           </div>
-          <Link to="/marketplace">
+          <Link to="/dropshipper/products">
             <Button className="gap-2">
               <ExternalLink className="w-4 h-4" /> Browse Products
             </Button>
@@ -65,23 +79,60 @@ const DropshipperDashboard = () => {
           ))}
         </div>
 
+        {/* Commission Breakdown */}
+        <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
+          <h2 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-primary" /> How You Earn
+          </h2>
+          <div className="bg-muted/30 rounded-lg p-4 space-y-3">
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">Customer Pays</div>
+                <div className="text-lg font-bold">৳600</div>
+                <div className="text-[10px] text-muted-foreground">Retail Price</div>
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">Platform Charges</div>
+                <div className="text-lg font-bold">৳420</div>
+                <div className="text-[10px] text-muted-foreground">Dropship Price</div>
+              </div>
+              <div className="bg-primary/10 rounded-lg p-2">
+                <div className="text-xs text-primary mb-1">You Keep</div>
+                <div className="text-lg font-bold text-primary">৳180</div>
+                <div className="text-[10px] text-primary">Your Profit</div>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground text-center">
+              No upfront cost. No inventory risk. Promote → Customer orders → Platform ships → You earn.
+            </p>
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-2 gap-6">
-          {/* Active Products */}
+          {/* Top Products to Promote */}
           <div className="bg-card rounded-xl shadow-card border border-border/50">
             <div className="flex items-center justify-between p-5 border-b border-border/50">
-              <h2 className="font-display font-semibold text-lg">Active Products</h2>
-              <Button variant="ghost" size="sm">View All</Button>
+              <h2 className="font-display font-semibold text-lg">Top Products</h2>
+              <Link to="/dropshipper/products">
+                <Button variant="ghost" size="sm">View All</Button>
+              </Link>
             </div>
             <div className="divide-y divide-border/30">
-              {activeProducts.map((product) => (
-                <div key={product.name} className="p-5 flex items-center justify-between hover:bg-muted/30 transition-colors">
-                  <div>
-                    <div className="text-sm font-medium">{product.name}</div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      ৳{product.price} · {product.sold} sold · {product.stock} in stock
+              {topProducts.map((product) => (
+                <div key={product.id} className="p-5 flex items-center justify-between hover:bg-muted/30 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center text-xl">{product.image}</div>
+                    <div>
+                      <div className="text-sm font-medium line-clamp-1">{product.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        ৳{product.retailPrice} retail · <span className="text-primary font-medium">৳{product.sellerProfit} profit</span>
+                      </div>
                     </div>
                   </div>
-                  <span className="text-sm font-semibold text-primary">{product.margin}</span>
+                  <Button size="sm" variant="outline" className="gap-1" onClick={() => handleCopyLink(product.id)}>
+                    {linkCopied === product.id ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {linkCopied === product.id ? "Copied" : "Link"}
+                  </Button>
                 </div>
               ))}
             </div>
@@ -91,10 +142,12 @@ const DropshipperDashboard = () => {
           <div className="bg-card rounded-xl shadow-card border border-border/50">
             <div className="flex items-center justify-between p-5 border-b border-border/50">
               <h2 className="font-display font-semibold text-lg">Recent Orders</h2>
-              <Button variant="ghost" size="sm">View All</Button>
+              <Link to="/dropshipper/orders">
+                <Button variant="ghost" size="sm">View All</Button>
+              </Link>
             </div>
             <div className="divide-y divide-border/30">
-              {recentOrders.map((order) => (
+              {mockDropshipOrders.slice(0, 4).map((order) => (
                 <div key={order.id} className="p-5 flex items-center justify-between hover:bg-muted/30 transition-colors">
                   <div>
                     <div className="text-sm font-medium flex items-center gap-2">
@@ -104,10 +157,13 @@ const DropshipperDashboard = () => {
                       </span>
                     </div>
                     <div className="text-xs text-muted-foreground mt-1">
-                      {order.customer} · {order.product}
+                      {order.customerName} · {order.productName}
                     </div>
                   </div>
-                  <span className="text-sm font-semibold">{order.amount}</span>
+                  <div className="text-right">
+                    <div className="text-sm font-semibold">৳{(order.retailPrice * order.quantity).toLocaleString()}</div>
+                    <div className="text-xs text-primary font-medium">+৳{order.commission.toLocaleString()}</div>
+                  </div>
                 </div>
               ))}
             </div>
