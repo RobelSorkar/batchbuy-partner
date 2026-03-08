@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           batch_id: string
           id: string
+          inventory_mode: string
           joined_at: string
           total_invested: number
           units_owned: number
@@ -27,6 +28,7 @@ export type Database = {
         Insert: {
           batch_id: string
           id?: string
+          inventory_mode?: string
           joined_at?: string
           total_invested: number
           units_owned: number
@@ -36,6 +38,7 @@ export type Database = {
         Update: {
           batch_id?: string
           id?: string
+          inventory_mode?: string
           joined_at?: string
           total_invested?: number
           units_owned?: number
