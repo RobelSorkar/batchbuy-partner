@@ -366,6 +366,17 @@ const OrderManagement = ({ role = "admin" }: OrderManagementProps) => {
                       )}
                     </div>
 
+                    {/* Tracking Number */}
+                    {selectedOrder.tracking_number && (
+                      <div className="bg-accent/50 border border-primary/10 rounded-lg p-3 flex items-center gap-3">
+                        <Truck className="w-5 h-5 text-primary flex-shrink-0" />
+                        <div>
+                          <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Tracking Number</div>
+                          <div className="text-sm font-mono font-bold text-primary mt-0.5">{selectedOrder.tracking_number}</div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Pipeline visual */}
                     <div>
                       <h3 className="text-sm font-semibold mb-3">Fulfillment Pipeline</h3>
