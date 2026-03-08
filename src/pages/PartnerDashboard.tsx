@@ -139,14 +139,10 @@ const PartnerDashboard = () => {
                         <div className="text-xs text-muted-foreground">{item.batchName}</div>
                       </td>
                       <td className="px-5 py-4 text-sm font-semibold">{item.totalOwned}</td>
-                      <td className="px-5 py-4 text-sm">৳{item.costPerUnit}</td>
-                      <td className="px-5 py-4 text-sm">৳{item.retailPrice}</td>
+                      <td className="px-5 py-4 text-sm">{item.unitsSold}</td>
+                      <td className="px-5 py-4 text-sm">{item.remaining}</td>
+                      <td className="px-5 py-4 text-sm font-semibold text-primary">৳{Math.round(item.profitEarned).toLocaleString()}</td>
                       <td className="px-5 py-4 text-sm">{item.status}</td>
-                      <td className="px-5 py-4">
-                        <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-medium ${modeColors[item.mode]}`}>
-                          {modeLabels[item.mode]}
-                        </span>
-                      </td>
                       <td className="px-5 py-4">
                         <Button variant="ghost" size="sm" onClick={() => openManage(item)} className="gap-1">
                           <Settings2 className="w-3.5 h-3.5" /> Manage
