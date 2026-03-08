@@ -6,9 +6,9 @@ const roles = [
   {
     icon: Factory,
     title: "Production Partner",
-    description: "Invest in real product batches. Own manufactured units and earn profit when they sell through the network.",
-    badge: "Investor",
-    earnings: "18-45% returns",
+    description: "Finance real product batches. Own manufactured units and earn profit when they sell through the network.",
+    badge: "Financing Partner",
+    earnings: "18-45% margins",
     link: "/signup",
   },
   {
