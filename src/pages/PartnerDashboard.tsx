@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMyParticipations } from "@/hooks/useBatches";
 import { useWallet, useTransactions } from "@/hooks/useWallet";
+import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 type InventoryMode = "collect" | "platform" | "hybrid";
 
