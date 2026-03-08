@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useBatches } from "@/hooks/useBatches";
 import { Progress } from "@/components/ui/progress";
+import { getProductImage } from "@/utils/productImages";
 
 const statusColors: Record<string, string> = {
   funding: "bg-primary/15 text-primary border-primary/20",
