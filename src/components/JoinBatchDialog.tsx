@@ -175,25 +175,33 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <span className="font-semibold">৳{est.totalCost.toLocaleString()}</span>
               </div>
 
-              <div className="border-t border-border/50 pt-3 space-y-2">
+              <div className="border-t border-border/50 pt-3 space-y-3">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <TrendingUp className="w-4 h-4 text-primary" />
-                  <span className="font-medium text-foreground">Net Profit Estimates</span>
+                  <span className="font-medium text-foreground">Profit Scenarios</span>
                   <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">15% commission</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Wholesale (৳{batch.wholesalePrice}/unit)</span>
-                  <span className={`font-semibold ${est.wholesaleNetProfit >= 0 ? "text-primary" : "text-destructive"}`}>
-                    ৳{est.wholesaleNetProfit.toLocaleString()}
-                    <span className="text-xs ml-1">({est.wholesaleROI.toFixed(0)}%)</span>
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Retail (৳{batch.retailPrice}/unit)</span>
-                  <span className={`font-semibold ${est.retailNetProfit >= 0 ? "text-primary" : "text-destructive"}`}>
-                    ৳{est.retailNetProfit.toLocaleString()}
-                    <span className="text-xs ml-1">({est.retailROI.toFixed(0)}%)</span>
-                  </span>
+                <div className="grid grid-cols-3 gap-2">
+                  {([
+                    { label: "Best Case", rate: 100, color: "text-primary", bg: "bg-primary/10 border-primary/20" },
+                    { label: "Expected", rate: 80, color: "text-accent-foreground", bg: "bg-accent/50 border-accent-foreground/20" },
+                    { label: "Worst Case", rate: 60, color: "text-destructive", bg: "bg-destructive/5 border-destructive/10" },
+                  ] as const).map((s) => {
+                    const sc = calcInvestmentEstimate(investmentAmount, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost, s.rate);
+                    const unitsSold = Math.round(sc.unitsFinanced * (s.rate / 100));
+                    return (
+                      <div key={s.label} className={`rounded-lg p-3 border ${s.bg} space-y-1`}>
+                        <div className="flex items-center justify-between">
+                          <span className={`text-[10px] font-bold uppercase tracking-wide ${s.color}`}>{s.label}</span>
+                        </div>
+                        <div className="text-[10px] text-muted-foreground">{unitsSold}/{sc.unitsFinanced} sold</div>
+                        <div className={`text-sm font-display font-bold ${s.color}`}>
+                          ৳{sc.retailNetProfit.toLocaleString()}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground">{sc.retailROI.toFixed(0)}% ROI</div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div className="flex items-center gap-3 pt-1 text-[10px] text-muted-foreground border-t border-border/30 mt-2">
