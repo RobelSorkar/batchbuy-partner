@@ -76,7 +76,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
             <div className="bg-accent/50 rounded-lg p-4 text-sm space-y-2 text-left border border-primary/10">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Investment</span>
+                <span className="text-muted-foreground">Financing</span>
                 <span className="font-semibold">৳{totalCost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
