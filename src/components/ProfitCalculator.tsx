@@ -45,7 +45,7 @@ const ProfitCalculator = () => {
               {/* Input */}
               <div className="flex-1">
                 <label className="text-sm font-medium text-foreground mb-3 block">
-                  Choose investment amount
+                  Choose financing amount
                 </label>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {presets.map((p) => (
