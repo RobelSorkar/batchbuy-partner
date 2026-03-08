@@ -10,7 +10,7 @@ import {
   Wallet as WalletIcon, ArrowUpRight, ArrowUp,
   Clock, CheckCircle, RefreshCw, TrendingUp, Layers, Banknote, Repeat, Loader2
 } from "lucide-react";
-import { useWallet, useTransactions, useWithdraw, useReinvest } from "@/hooks/useWallet";
+import { useWallet, useTransactions, useWithdraw, useReinvest, useDeposit } from "@/hooks/useWallet";
 import { useBatches } from "@/hooks/useBatches";
 import { useToast } from "@/hooks/use-toast";
 
