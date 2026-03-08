@@ -83,8 +83,9 @@ const WalletPage = () => {
   const fundingBatches = batches.filter((b: any) => b.status === "funding" && b.remaining_units > 0);
   const selectedBatch = fundingBatches.find((b: any) => b.id === reinvestBatchId);
   const reinvestAmt = Number(reinvestAmount) || 0;
-  const reinvestUnits = selectedBatch ? Math.floor(reinvestAmt / selectedBatch.production_cost_per_unit) : 0;
-  const reinvestCost = selectedBatch ? reinvestUnits * selectedBatch.production_cost_per_unit : 0;
+  const { units: reinvestUnits, inventoryCost: reinvestCost } = selectedBatch
+    ? allocateUnits(reinvestAmt, selectedBatch.production_cost_per_unit)
+    : { units: 0, inventoryCost: 0 };
 
   const handleWithdraw = async () => {
     const amt = Number(withdrawAmount);
