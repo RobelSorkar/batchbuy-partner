@@ -94,13 +94,7 @@ const BatchDetail = () => {
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
-              <div className="h-64 bg-muted/50 rounded-xl flex items-center justify-center overflow-hidden">
-                {getProductImage(batch.product_name) ? (
-                  <img src={getProductImage(batch.product_name)!} alt={batch.product_name} className="w-full h-full object-cover rounded-xl" />
-                ) : (
-                  <span className="text-7xl">{batch.image || "📦"}</span>
-                )}
-              </div>
+              <ProductImageZoom productName={batch.product_name} fallbackEmoji={batch.image || "📦"} />
 
               <div>
                 <div className="flex items-center gap-2 mb-2">
