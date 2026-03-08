@@ -149,6 +149,11 @@ const CreateBatch = () => {
                 <Label htmlFor="productionTime">Estimated Production Time (days)</Label>
                 <Input id="productionTime" type="number" min="1" placeholder="e.g. 21" value={form.productionTimeDays} onChange={(e) => update("productionTimeDays", e.target.value)} />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="deadline">Funding Deadline *</Label>
+                <Input id="deadline" type="date" min={new Date().toISOString().split("T")[0]} value={form.deadline} onChange={(e) => update("deadline", e.target.value)} required />
+                <p className="text-xs text-muted-foreground">Batch will auto-close after this date if not fully funded</p>
+              </div>
             </div>
 
             <div className="flex gap-3">
