@@ -21,15 +21,29 @@ const statusLabels: Record<string, string> = {
 
 const BatchDetail = () => {
   const { id } = useParams();
-  const batch = mockBatches.find((b) => b.id === id) || mockBatches[0];
+  const batch = mockBatches.find((b) => b.id === id);
+  const [joinOpen, setJoinOpen] = useState(false);
+
+  if (!batch) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="pt-24 pb-16 px-6 text-center">
+          <h1 className="text-2xl font-display font-bold mb-2">Batch Not Found</h1>
+          <p className="text-muted-foreground mb-4">The batch you're looking for doesn't exist.</p>
+          <Link to="/marketplace"><Button>Back to Marketplace</Button></Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   const participants = mockParticipations.filter((p) => p.batchId === batch.id);
   const progress = Math.round((batch.fundedUnits / batch.totalQuantity) * 100);
   const profitPerUnit = batch.retailPrice - batch.productionCostPerUnit;
   const wholesaleProfitPerUnit = batch.wholesalePrice - batch.productionCostPerUnit;
   const returnPct = ((profitPerUnit / batch.productionCostPerUnit) * 100).toFixed(1);
   const wholesaleReturnPct = ((wholesaleProfitPerUnit / batch.productionCostPerUnit) * 100).toFixed(1);
-
-  const [joinOpen, setJoinOpen] = useState(false);
 
   const canJoin = batch.status === "funding" && batch.remainingUnits > 0;
 

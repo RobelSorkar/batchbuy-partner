@@ -6,7 +6,7 @@ import {
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, Legend, RadialBarChart, RadialBar
+  ResponsiveContainer, Legend
 } from "recharts";
 
 // ── Mock Analytics Data ───────────────────────────────

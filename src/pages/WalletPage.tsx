@@ -98,9 +98,9 @@ const WalletPage = () => {
   const [autoReinvestPct, setAutoReinvestPct] = useState("50");
   const [autoReinvestSettingsOpen, setAutoReinvestSettingsOpen] = useState(false);
 
-  const totalInvested = 125000;
-  const totalEarnings = 47200;
-  const totalWithdrawn = 20000;
+  const totalInvested = transactions.filter((t) => t.category === "investment" || t.category === "reinvest").reduce((s, t) => s + t.amount, 0);
+  const totalEarnings = transactions.filter((t) => t.type === "credit").reduce((s, t) => s + t.amount, 0);
+  const totalWithdrawn = transactions.filter((t) => t.category === "withdrawal").reduce((s, t) => s + t.amount, 0);
 
   const filteredTxns = txnFilter === "all"
     ? transactions

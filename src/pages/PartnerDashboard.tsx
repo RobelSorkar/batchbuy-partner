@@ -10,14 +10,7 @@ import { Label } from "@/components/ui/label";
 
 type InventoryMode = "collect" | "platform" | "hybrid";
 
-const stats = [
-  { label: "Total Units Owned", value: "248", change: "+24", up: true, icon: Package },
-  { label: "Units Collected", value: "60", change: "+10", up: true, icon: Truck },
-  { label: "Listed for Platform Sale", value: "138", change: "+14", up: true, icon: ShoppingCart },
-  { label: "Units Sold", value: "92", change: "+18", up: true, icon: BarChart3 },
-  { label: "Remaining Inventory", value: "156", change: "-18", up: false, icon: Archive },
-  { label: "Total Profit Earned", value: "৳47,200", change: "+৳5,200", up: true, icon: Wallet },
-];
+// Stats are now derived from live inventory state (see component body)
 
 interface InventoryItem {
   id: string;
@@ -38,17 +31,17 @@ interface InventoryItem {
 const inventoryData: InventoryItem[] = [
   {
     id: "1", batchName: "Batch #47", productName: "Premium Cotton T-Shirt",
-    totalOwned: 50, collected: 10, listedForSale: 25, sold: 18, remaining: 32,
+    totalOwned: 50, collected: 10, listedForSale: 22, sold: 18, remaining: 32,
     profitEarned: 6300, costPerUnit: 300, retailPrice: 650, mode: "hybrid", status: "Active",
   },
   {
     id: "2", batchName: "Batch #23", productName: "Organic Skincare Set",
-    totalOwned: 30, collected: 0, listedForSale: 30, sold: 12, remaining: 18,
+    totalOwned: 30, collected: 0, listedForSale: 18, sold: 12, remaining: 18,
     profitEarned: 8400, costPerUnit: 500, retailPrice: 1200, mode: "platform", status: "Active",
   },
   {
     id: "3", batchName: "Batch #15", productName: "Handcrafted Leather Wallet",
-    totalOwned: 100, collected: 40, listedForSale: 60, sold: 52, remaining: 48,
+    totalOwned: 100, collected: 20, listedForSale: 28, sold: 52, remaining: 48,
     profitEarned: 26000, costPerUnit: 800, retailPrice: 1800, mode: "hybrid", status: "Active",
   },
   {
@@ -91,6 +84,23 @@ const modeDescriptions: Record<InventoryMode, string> = {
 
 const PartnerDashboard = () => {
   const [inventory, setInventory] = useState(inventoryData);
+
+  // Derive stats from live inventory data
+  const totalOwned = inventory.reduce((s, i) => s + i.totalOwned, 0);
+  const totalCollected = inventory.reduce((s, i) => s + i.collected, 0);
+  const totalListed = inventory.reduce((s, i) => s + i.listedForSale, 0);
+  const totalSold = inventory.reduce((s, i) => s + i.sold, 0);
+  const totalRemaining = inventory.reduce((s, i) => s + i.remaining, 0);
+  const totalProfit = inventory.reduce((s, i) => s + i.profitEarned, 0);
+
+  const stats = [
+    { label: "Total Units Owned", value: totalOwned.toString(), change: "+24", up: true, icon: Package },
+    { label: "Units Collected", value: totalCollected.toString(), change: "+10", up: true, icon: Truck },
+    { label: "Listed for Platform Sale", value: totalListed.toString(), change: "+14", up: true, icon: ShoppingCart },
+    { label: "Units Sold", value: totalSold.toString(), change: "+18", up: true, icon: BarChart3 },
+    { label: "Remaining Inventory", value: totalRemaining.toString(), change: `-${totalSold}`, up: false, icon: Archive },
+    { label: "Total Profit Earned", value: `৳${totalProfit.toLocaleString()}`, change: "+৳5,200", up: true, icon: Wallet },
+  ];
   const [manageOpen, setManageOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
   const [newMode, setNewMode] = useState<InventoryMode>("hybrid");
