@@ -68,6 +68,7 @@ const AdminDashboard = () => {
   const { data: inventory = [], isLoading: loadingInventory } = useInventory();
   const { data: withdrawals = [], isLoading: loadingWithdrawals } = useAdminWithdrawals();
   const updateTxnStatus = useUpdateTransactionStatus();
+  const updateUserRole = useUpdateUserRole();
 
   const isLoading = loadingUsers || loadingBatches || loadingOrders || loadingInventory || loadingWithdrawals;
 
