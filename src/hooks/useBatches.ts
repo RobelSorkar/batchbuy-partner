@@ -27,6 +27,25 @@ export interface BatchRow {
 }
 
 export function useBatches() {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("batches-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "batches" },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["batches"] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   return useQuery({
     queryKey: ["batches"],
     queryFn: async () => {
