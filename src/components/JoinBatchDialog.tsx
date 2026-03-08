@@ -231,7 +231,8 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">
-            By investing, you agree to the production partnership terms.
+            By proceeding, you agree to the inventory financing partnership terms.
+          </p>
           </p>
         </div>
       </DialogContent>

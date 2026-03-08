@@ -247,7 +247,7 @@ const BatchDetail = () => {
                 </div>
 
                 <div className="bg-accent/50 rounded-lg p-4 border border-primary/10 space-y-2">
-                  <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 investment</p>
+                  <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 financing</p>
                   <div className="text-sm">
                     <span className="font-semibold">{Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit)} units</span>
                     <span className="text-muted-foreground"> → net profit </span>

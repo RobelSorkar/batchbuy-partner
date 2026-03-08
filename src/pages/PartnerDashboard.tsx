@@ -123,7 +123,7 @@ const PartnerDashboard = () => {
               <p className="text-muted-foreground">No inventory yet. Here's how to get started:</p>
               <div className="text-sm text-muted-foreground space-y-1">
                 <p>1. <Link to="/wallet" className="text-primary hover:underline">Deposit funds</Link> into your wallet</p>
-                <p>2. <Link to="/marketplace" className="text-primary hover:underline">Browse batches</Link> and invest to own product units</p>
+                <p>2. <Link to="/marketplace" className="text-primary hover:underline">Browse batches</Link> and finance production to own product units</p>
                 <p>3. Earn profit when your units are sold</p>
               </div>
             </div>
