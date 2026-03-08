@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { CheckCircle, AlertCircle, TrendingUp, Loader2 } from "lucide-react";
-import { ProductionBatch, MINIMUM_PARTICIPATION_BDT, calculateUnitsFromInvestment, calculateProfitEstimate } from "@/types/batch";
+import { CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet } from "lucide-react";
+import { ProductionBatch, MINIMUM_PARTICIPATION_BDT, PLATFORM_COMMISSION_RATE, calculateUnitsFromInvestment, calculateProfitEstimate } from "@/types/batch";
 import { useJoinBatch } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
+import { useWallet } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
 
 interface JoinBatchDialogProps {
