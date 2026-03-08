@@ -156,6 +156,9 @@ const AdminDashboard = () => {
             <p className="text-muted-foreground text-sm mt-1">Platform overview and management</p>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" className="gap-2" onClick={syncBatchStats} disabled={syncing}>
+              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Syncing…" : "Sync Batch Stats"}
+            </Button>
             <Link to="/create-batch"><Button variant="outline" className="gap-2"><Layers className="w-4 h-4" /> Create Batch</Button></Link>
             <Link to="/admin/orders"><Button className="gap-2"><ShoppingCart className="w-4 h-4" /> Manage Orders</Button></Link>
           </div>
