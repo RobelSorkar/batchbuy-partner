@@ -64,9 +64,10 @@ const BatchDetail = () => {
   }
 
   const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
-  const grossProfitPerUnit = batch.retail_price - batch.production_cost_per_unit;
+  const logisticsCost = Number((batch as any).logistics_cost_per_unit) || 0;
+  const grossProfitPerUnit = batch.retail_price - batch.production_cost_per_unit - logisticsCost;
   const netProfitPerUnit = Math.round(grossProfitPerUnit * 0.85);
-  const grossWholesaleProfitPerUnit = batch.wholesale_price - batch.production_cost_per_unit;
+  const grossWholesaleProfitPerUnit = batch.wholesale_price - batch.production_cost_per_unit - logisticsCost;
   const netWholesaleProfitPerUnit = Math.round(grossWholesaleProfitPerUnit * 0.85);
   const profitPerUnit = netProfitPerUnit;
   const wholesaleProfitPerUnit = netWholesaleProfitPerUnit;
