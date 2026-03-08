@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { z } from "zod";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Search, Star, TrendingUp, ShoppingCart, Share2, Copy, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { useDropshipProducts, DropshipProduct } from "@/hooks/useDropshipProducts";
 import { useCreateOrder } from "@/hooks/useOrders";
 import { useToast } from "@/hooks/use-toast";
+
+const orderFormSchema = z.object({
+  customerName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
+  customerPhone: z.string().trim().regex(/^01[3-9]\d{8}$/, "Enter a valid Bangladeshi phone number (e.g. 01XXXXXXXXX)"),
+  customerAddress: z.string().trim().min(5, "Address must be at least 5 characters").max(300, "Address is too long"),
+});
 
 const categories = ["All", "Apparel", "Beauty", "Home & Kitchen", "Accessories", "Food & Beverage", "Electronics", "General"];
 
@@ -20,6 +27,7 @@ const DropshipperProducts = () => {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [orderQty, setOrderQty] = useState(1);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const { toast } = useToast();
   const { data: products, isLoading } = useDropshipProducts();
   const createOrder = useCreateOrder();
@@ -38,15 +46,25 @@ const DropshipperProducts = () => {
   };
 
   const handleCreateOrder = async () => {
-    if (!selectedProduct || !customerName || !customerPhone || !customerAddress) return;
+    if (!selectedProduct) return;
+
+    const result = orderFormSchema.safeParse({ customerName, customerPhone, customerAddress });
+    if (!result.success) {
+      const errors: Record<string, string> = {};
+      result.error.errors.forEach((e) => { errors[e.path[0] as string] = e.message; });
+      setFieldErrors(errors);
+      return;
+    }
+    setFieldErrors({});
+
     const commission = selectedProduct.sellerProfit * orderQty;
     const totalAmount = selectedProduct.retailPrice * orderQty;
 
     try {
       await createOrder.mutateAsync({
-        customerName,
-        customerPhone,
-        customerAddress,
+        customerName: result.data.customerName,
+        customerPhone: result.data.customerPhone,
+        customerAddress: result.data.customerAddress,
         channel: "dropship",
         totalAmount,
         commission,
@@ -186,15 +204,18 @@ const DropshipperProducts = () => {
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1.5 block">Customer Name</label>
-                  <Input value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="Full name" />
+                  <Input value={customerName} onChange={(e) => { setCustomerName(e.target.value); setFieldErrors((p) => ({ ...p, customerName: "" })); }} placeholder="Full name" className={fieldErrors.customerName ? "border-destructive" : ""} />
+                  {fieldErrors.customerName && <p className="text-xs text-destructive mt-1">{fieldErrors.customerName}</p>}
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1.5 block">Customer Phone</label>
-                  <Input value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} placeholder="01XXXXXXXXX" />
+                  <Input value={customerPhone} onChange={(e) => { setCustomerPhone(e.target.value); setFieldErrors((p) => ({ ...p, customerPhone: "" })); }} placeholder="01XXXXXXXXX" className={fieldErrors.customerPhone ? "border-destructive" : ""} />
+                  {fieldErrors.customerPhone && <p className="text-xs text-destructive mt-1">{fieldErrors.customerPhone}</p>}
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1.5 block">Delivery Address</label>
-                  <Input value={customerAddress} onChange={(e) => setCustomerAddress(e.target.value)} placeholder="Full address" />
+                  <Input value={customerAddress} onChange={(e) => { setCustomerAddress(e.target.value); setFieldErrors((p) => ({ ...p, customerAddress: "" })); }} placeholder="Full address" className={fieldErrors.customerAddress ? "border-destructive" : ""} />
+                  {fieldErrors.customerAddress && <p className="text-xs text-destructive mt-1">{fieldErrors.customerAddress}</p>}
                 </div>
                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
                   <div className="flex justify-between text-sm">
