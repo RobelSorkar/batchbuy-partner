@@ -140,6 +140,8 @@ const FinancialBreakdown = ({
               bold
               negative={main.retailGrossProfit < 0}
             />
+              negative={main.retailGrossProfit < 0}
+            />
 
             {/* Commission & Net */}
             <div className="border-t border-border/30 pt-2" />
