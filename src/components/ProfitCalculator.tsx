@@ -138,9 +138,13 @@ const ProfitCalculator = () => {
                   onChange={(e) => setLogisticsCostPerUnit(Number(e.target.value) || 0)}
                   className="font-semibold"
                 />
-                <p className="text-xs text-muted-foreground">
-                  Covers delivery, packaging, warehouse, returns & damage
-                </p>
+              </div>
+
+              {/* Logistics Breakdown */}
+              <LogisticsBreakdown
+                logisticsCostPerUnit={logisticsCostPerUnit}
+                unitsFinanced={main.unitsFinanced}
+              />
               </div>
 
               <div className="space-y-2">
