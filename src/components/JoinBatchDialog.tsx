@@ -104,10 +104,14 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
         </DialogHeader>
 
         <div className="space-y-5 pt-2">
-          <div className="bg-muted/50 rounded-lg p-4 grid grid-cols-3 gap-4 text-center">
+          <div className="bg-muted/50 rounded-lg p-4 grid grid-cols-4 gap-3 text-center">
             <div>
               <div className="text-xs text-muted-foreground">Cost/Unit</div>
               <div className="text-sm font-semibold">৳{batch.productionCostPerUnit}</div>
+            </div>
+            <div>
+              <div className="text-xs text-muted-foreground">Logistics</div>
+              <div className="text-sm font-semibold">৳{logisticsCost}</div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground">Wholesale</div>
