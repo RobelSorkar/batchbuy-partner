@@ -168,9 +168,9 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">If sold at wholesale</span>
                   <span className="font-semibold text-primary">
-                    ৳{Math.round(units * (batch.wholesalePrice - batch.productionCostPerUnit) * 0.85).toLocaleString()}
+                    ৳{Math.round(units * (batch.wholesalePrice - batch.productionCostPerUnit - logisticsCost) * 0.85).toLocaleString()}
                     <span className="text-xs ml-1">
-                      ({((batch.wholesalePrice - batch.productionCostPerUnit) * 0.85 / batch.productionCostPerUnit * 100).toFixed(0)}%)
+                      ({(((batch.wholesalePrice - batch.productionCostPerUnit - logisticsCost) * 0.85) / batch.productionCostPerUnit * 100).toFixed(0)}%)
                     </span>
                   </span>
                 </div>

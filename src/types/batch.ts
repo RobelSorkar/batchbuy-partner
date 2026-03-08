@@ -21,6 +21,7 @@ export interface ProductionBatch {
   createdAt: string;
   image: string;
   partnersJoined: number;
+  logisticsCostPerUnit: number; // BDT (delivery, packaging, warehouse, returns, damage)
 }
 
 export interface BatchParticipation {
