@@ -392,6 +392,10 @@ export type Database = {
         Args: { p_batch_id: string; p_total_invested: number; p_units: number }
         Returns: Json
       }
+      process_withdrawal: {
+        Args: { p_account: string; p_amount: number; p_method: string }
+        Returns: Json
+      }
     }
     Enums: {
       app_role:

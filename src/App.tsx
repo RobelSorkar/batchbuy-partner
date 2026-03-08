@@ -21,6 +21,8 @@ import WarehousePage from "./pages/WarehousePage";
 import OrderManagement from "./pages/OrderManagement";
 import DistributionPage from "./pages/DistributionPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +39,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/batch/:id" element={<BatchDetail />} />
 
