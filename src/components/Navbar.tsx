@@ -41,7 +41,7 @@ const Navbar = () => {
           <a href="#features" className="block text-sm text-muted-foreground">Features</a>
           <a href="#how-it-works" className="block text-sm text-muted-foreground">How It Works</a>
           <a href="#roles" className="block text-sm text-muted-foreground">Roles</a>
-          <Link to="/dashboard"><Button className="w-full mt-2" size="sm">Get Started</Button></Link>
+          <Link to="/signup"><Button className="w-full mt-2" size="sm">Get Started</Button></Link>
         </div>
       )}
     </nav>
