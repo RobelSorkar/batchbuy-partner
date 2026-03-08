@@ -521,6 +521,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_sync_batch_stats: { Args: never; Returns: undefined }
       generate_order_number: { Args: { p_channel: string }; Returns: string }
       has_role: {
         Args: {
