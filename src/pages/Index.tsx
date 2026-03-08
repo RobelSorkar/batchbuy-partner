@@ -25,6 +25,7 @@ const Index = () => {
       <TransparencySection />
       <CTASection />
       <Footer />
+      <CookieConsent />
     </div>
   );
 };
