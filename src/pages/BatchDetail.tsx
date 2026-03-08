@@ -24,9 +24,19 @@ const statusLabels: Record<string, string> = {
 
 const BatchDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { data: batch, isLoading } = useBatchDetail(id);
   const { data: participations } = useBatchParticipations(id);
   const [joinOpen, setJoinOpen] = useState(false);
+
+  const handleJoinClick = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setJoinOpen(true);
+  };
 
   if (isLoading) {
     return (
