@@ -188,6 +188,11 @@ const CreateBatch = () => {
                   <Input id="retailPrice" type="number" min="1" placeholder="e.g. 650" value={form.retailPrice} onChange={(e) => update("retailPrice", e.target.value)} required />
                 </div>
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="logisticsCost">Logistics Cost / Unit (Delivery + Packaging + Warehouse + Returns + Damage)</Label>
+                <Input id="logisticsCost" type="number" min="0" placeholder="e.g. 40" value={form.logisticsCostPerUnit} onChange={(e) => update("logisticsCostPerUnit", e.target.value)} />
+                <p className="text-xs text-muted-foreground">Estimated per-unit cost for delivery, packaging, warehouse handling, return loss & damage</p>
+              </div>
             </div>
 
             <div className="bg-card rounded-xl p-6 shadow-card border border-border/50 space-y-4">
