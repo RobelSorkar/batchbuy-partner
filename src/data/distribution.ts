@@ -133,7 +133,7 @@ export const mockDistributions: ProductDistribution[] = [
       { channel: "platform", enabled: true, price: 650, minPrice: 360, maxPrice: 650, allocatedStock: 80, soldUnits: 22 },
       { channel: "retail", enabled: true, price: 553, minPrice: 360, maxPrice: 650, allocatedStock: 120, soldUnits: 35 },
       { channel: "dropshipper", enabled: true, price: 420, minPrice: 360, maxPrice: 553, allocatedStock: 150, soldUnits: 28 },
-      { channel: "distributor", enabled: true, price: 358, minPrice: 360, maxPrice: 420, allocatedStock: 58, soldUnits: 7 },
+      { channel: "distributor", enabled: true, price: 365, minPrice: 360, maxPrice: 420, allocatedStock: 58, soldUnits: 7 },
     ],
   },
   {
@@ -178,7 +178,7 @@ export const mockDistributions: ProductDistribution[] = [
       { channel: "platform", enabled: true, price: 3200, minPrice: 1800, maxPrice: 3200, allocatedStock: 40, soldUnits: 10 },
       { channel: "retail", enabled: false, price: 2720, minPrice: 1800, maxPrice: 3200, allocatedStock: 0, soldUnits: 0 },
       { channel: "dropshipper", enabled: true, price: 2100, minPrice: 1800, maxPrice: 2720, allocatedStock: 80, soldUnits: 18 },
-      { channel: "distributor", enabled: true, price: 1760, minPrice: 1800, maxPrice: 2100, allocatedStock: 30, soldUnits: 4 },
+      { channel: "distributor", enabled: true, price: 1850, minPrice: 1800, maxPrice: 2100, allocatedStock: 30, soldUnits: 4 },
     ],
   },
 ];
