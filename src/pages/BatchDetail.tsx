@@ -248,13 +248,37 @@ const BatchDetail = () => {
 
                 <div className="bg-accent/50 rounded-lg p-4 border border-primary/10 space-y-2">
                   <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 financing</p>
-                  <div className="text-sm">
-                    <span className="font-semibold">{Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit)} units</span>
-                    <span className="text-muted-foreground"> → net profit </span>
-                    <span className="font-semibold text-primary">
-                      ৳{(Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit) * profitPerUnit).toLocaleString()}
-                    </span>
-                  </div>
+                  {(() => {
+                    const exUnits = Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit);
+                    const exCost = exUnits * batch.production_cost_per_unit;
+                    const exUnused = MINIMUM_PARTICIPATION_BDT - exCost;
+                    return (
+                      <>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Units Financed (FLOOR)</span>
+                            <span className="font-semibold">{exUnits}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Inventory Cost</span>
+                            <span className="font-semibold">৳{exCost.toLocaleString()}</span>
+                          </div>
+                          {exUnused > 0 && (
+                            <div className="flex justify-between text-xs bg-accent/30 rounded px-2 py-1 border border-accent-foreground/10">
+                              <span className="text-accent-foreground">Unused amount returned</span>
+                              <span className="font-mono font-bold text-accent-foreground">৳{exUnused.toLocaleString()}</span>
+                            </div>
+                          )}
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Est. Net Profit</span>
+                            <span className="font-semibold text-primary">
+                              ৳{(exUnits * profitPerUnit).toLocaleString()}
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()}
                   <p className="text-[10px] text-muted-foreground">After logistics + 15% platform commission</p>
                   <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-1">
                     <span>✔ Estimate only</span>
