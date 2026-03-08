@@ -4,7 +4,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Marketplace from "./pages/Marketplace";
+import BatchDetail from "./pages/BatchDetail";
+import PartnerDashboard from "./pages/PartnerDashboard";
+import DropshipperDashboard from "./pages/DropshipperDashboard";
+import WalletPage from "./pages/WalletPage";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -17,7 +24,14 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/batch/:id" element={<BatchDetail />} />
+          <Route path="/partner" element={<PartnerDashboard />} />
+          <Route path="/dropshipper" element={<DropshipperDashboard />} />
+          <Route path="/wallet" element={<WalletPage />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
