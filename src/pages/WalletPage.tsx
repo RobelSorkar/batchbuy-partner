@@ -40,6 +40,7 @@ const WalletPage = () => {
   const { data: batches = [] } = useBatches();
   const withdraw = useWithdraw();
   const reinvest = useReinvest();
+  const deposit = useDeposit();
   const { toast } = useToast();
 
   const [txnFilter, setTxnFilter] = useState("all");
