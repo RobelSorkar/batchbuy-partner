@@ -67,7 +67,7 @@ const PartnerDashboard = () => {
     .reduce((s: number, t: any) => s + Number(t.amount), 0);
 
   const stats = [
-    { label: "Total Units Owned", value: totalOwned.toString(), icon: Package },
+    { label: "Total Units Financed", value: totalOwned.toString(), icon: Package },
     { label: "Active Batches", value: inventory.length.toString(), icon: Layers },
     { label: "Wallet Balance", value: `৳${(wallet?.balance || 0).toLocaleString()}`, icon: Wallet },
     { label: "Total Profit", value: `৳${totalProfit.toLocaleString()}`, icon: TrendingUp },
