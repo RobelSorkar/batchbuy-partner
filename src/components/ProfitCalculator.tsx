@@ -108,7 +108,7 @@ const ProfitCalculator = () => {
 
           <div className="bg-muted/30 border-t border-border px-8 py-4">
             <p className="text-xs text-muted-foreground text-center">
-              * This is a simplified example. Actual profits depend on the sales channel, product category, and market conditions. Platform fees and shipping costs may apply.
+              * Logistics includes delivery, packaging, warehouse, return loss & damage (~৳{logisticsCostPerUnit}/unit). Actual costs vary by product and location.
             </p>
           </div>
         </div>
