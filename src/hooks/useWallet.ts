@@ -46,25 +46,14 @@ export function useWithdraw() {
     mutationFn: async ({ amount, method, account }: { amount: number; method: string; account: string }) => {
       if (!user) throw new Error("Not authenticated");
 
-      // Create transaction
-      const { error: txnError } = await supabase.from("transactions").insert({
-        user_id: user.id,
-        type: "withdrawal",
-        amount,
-        description: `Withdrawal to ${method} — ${account}`,
-        status: "pending",
+      // Use atomic SECURITY DEFINER function
+      const { data, error } = await supabase.rpc("process_withdrawal", {
+        p_amount: amount,
+        p_method: method,
+        p_account: account,
       });
-      if (txnError) throw txnError;
-
-      // Deduct from wallet
-      const { data: wallet } = await supabase.from("wallets").select("balance").eq("user_id", user.id).single();
-      if (!wallet) throw new Error("Wallet not found");
-
-      const { error: walletError } = await supabase
-        .from("wallets")
-        .update({ balance: wallet.balance - amount })
-        .eq("user_id", user.id);
-      if (walletError) throw walletError;
+      if (error) throw error;
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallet"] });
