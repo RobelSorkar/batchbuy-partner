@@ -1,11 +1,12 @@
 import { Truck } from "lucide-react";
 
 const LOGISTICS_COMPONENTS = [
-  { label: "Packaging", cost: 10 },
-  { label: "Warehouse handling", cost: 5 },
-  { label: "Delivery to warehouse/reseller", cost: 15 },
-  { label: "Return & damage buffer", cost: 5 },
-  { label: "Platform operations", cost: 5 },
+  { label: "Packaging & labeling", cost: 15 },
+  { label: "Warehouse handling & storage", cost: 15 },
+  { label: "Delivery to warehouse/reseller", cost: 35 },
+  { label: "Last-mile delivery", cost: 15 },
+  { label: "Return & damage buffer", cost: 10 },
+  { label: "Platform operations", cost: 10 },
 ];
 
 interface LogisticsBreakdownProps {
