@@ -10,11 +10,10 @@ import {
   Banknote,
   Truck,
   BarChart3,
-  ChevronDown,
-  ChevronUp,
-  Info,
 } from "lucide-react";
 import { PLATFORM_COMMISSION_RATE } from "@/types/batch";
+import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
+import FinancialBreakdown from "@/components/calculator/FinancialBreakdown";
 
 const presets = [
   { label: "৳10,000", value: 10000 },
