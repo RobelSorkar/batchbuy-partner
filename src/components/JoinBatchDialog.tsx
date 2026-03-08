@@ -163,7 +163,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <TrendingUp className="w-4 h-4 text-primary" />
                   <span className="font-medium text-foreground">Net Profit Estimates</span>
-                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">after 15% commission</span>
+                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">after logistics + 15% commission</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">If sold at wholesale</span>
