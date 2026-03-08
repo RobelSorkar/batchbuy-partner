@@ -10,6 +10,8 @@ import Marketplace from "./pages/Marketplace";
 import BatchDetail from "./pages/BatchDetail";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import DropshipperDashboard from "./pages/DropshipperDashboard";
+import DropshipperProducts from "./pages/DropshipperProducts";
+import DropshipperOrders from "./pages/DropshipperOrders";
 import WalletPage from "./pages/WalletPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import CreateBatch from "./pages/CreateBatch";
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/batch/:id" element={<BatchDetail />} />
           <Route path="/partner" element={<PartnerDashboard />} />
           <Route path="/dropshipper" element={<DropshipperDashboard />} />
+          <Route path="/dropshipper/products" element={<DropshipperProducts />} />
+          <Route path="/dropshipper/orders" element={<DropshipperOrders />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/create-batch" element={<CreateBatch />} />
