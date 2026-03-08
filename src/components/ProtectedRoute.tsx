@@ -26,7 +26,7 @@ const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
         .from("user_roles")
         .select("role")
         .eq("user_id", user.id)
-        .eq("role", requiredRole)
+        .eq("role", requiredRole as any)
         .maybeSingle();
 
       setHasRole(!!data);
