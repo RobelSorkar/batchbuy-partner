@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useBatches } from "@/hooks/useBatches";
+import { getProductImage } from "@/utils/productImages";
 
 const statusColors: Record<string, string> = {
   funding: "bg-accent text-accent-foreground",
