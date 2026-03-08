@@ -230,6 +230,8 @@ const BatchDetail = () => {
                   </div>
                 </div>
 
+                <BatchCountdown deadline={batch.deadline} status={batch.status} />
+
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock className="w-4 h-4" />
                   <span>Production: {batch.production_time_days || 30} days</span>
