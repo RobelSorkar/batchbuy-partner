@@ -124,6 +124,7 @@ const FinancialBreakdown = ({
               value={`৳${main.wholesaleGrossProfit.toLocaleString()}`}
               bold
               negative={main.wholesaleGrossProfit < 0}
+            />
 
             {/* Retail */}
             <div className="border-t border-border/30 pt-2" />
