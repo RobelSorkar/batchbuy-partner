@@ -12,6 +12,7 @@ import PartnerDashboard from "./pages/PartnerDashboard";
 import DropshipperDashboard from "./pages/DropshipperDashboard";
 import WalletPage from "./pages/WalletPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import CreateBatch from "./pages/CreateBatch";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
