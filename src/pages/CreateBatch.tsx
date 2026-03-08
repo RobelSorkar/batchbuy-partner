@@ -124,7 +124,47 @@ const CreateBatch = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
-                <Textarea id="description" placeholder="Describe the product..." rows={4} value={form.description} onChange={(e) => update("description", e.target.value)} />
+                <Textarea id="description" placeholder="Describe the product..." rows={3} value={form.description} onChange={(e) => update("description", e.target.value)} />
+              </div>
+
+              {/* Image Upload */}
+              <div className="space-y-2">
+                <Label>Product Image</Label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setImageFile(file);
+                      setImagePreview(URL.createObjectURL(file));
+                    }
+                  }}
+                />
+                {imagePreview ? (
+                  <div className="relative w-full h-40 rounded-lg overflow-hidden border border-border/50">
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => { setImageFile(null); setImagePreview(null); }}
+                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur flex items-center justify-center hover:bg-destructive/10 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full h-32 border-2 border-dashed border-border/50 rounded-lg flex flex-col items-center justify-center gap-2 hover:border-primary/30 hover:bg-muted/30 transition-colors"
+                  >
+                    <Upload className="w-6 h-6 text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground">Click to upload product image</span>
+                  </button>
+                )}
+                {imageUploading && <p className="text-xs text-primary">Uploading image...</p>}
               </div>
             </div>
 
