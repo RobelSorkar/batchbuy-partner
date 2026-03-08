@@ -27,6 +27,7 @@ const DropshipperProducts = () => {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [orderQty, setOrderQty] = useState(1);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const { toast } = useToast();
   const { data: products, isLoading } = useDropshipProducts();
   const createOrder = useCreateOrder();
