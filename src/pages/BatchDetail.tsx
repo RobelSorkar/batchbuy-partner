@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Clock, TrendingUp, Users, MapPin, Calendar, Shield, Calculator, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -23,9 +24,19 @@ const statusLabels: Record<string, string> = {
 
 const BatchDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { data: batch, isLoading } = useBatchDetail(id);
   const { data: participations } = useBatchParticipations(id);
   const [joinOpen, setJoinOpen] = useState(false);
+
+  const handleJoinClick = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setJoinOpen(true);
+  };
 
   if (isLoading) {
     return (
@@ -239,7 +250,7 @@ const BatchDetail = () => {
 
                 <div className="space-y-3 pt-2">
                   {canJoin ? (
-                    <Button className="w-full" size="lg" onClick={() => setJoinOpen(true)}>
+                    <Button className="w-full" size="lg" onClick={handleJoinClick}>
                       Join This Batch
                     </Button>
                   ) : (
