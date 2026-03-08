@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -32,24 +33,34 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
+            {/* Public routes */}
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/batch/:id" element={<BatchDetail />} />
-            <Route path="/partner" element={<PartnerDashboard />} />
-            <Route path="/dropshipper" element={<DropshipperDashboard />} />
-            <Route path="/dropshipper/products" element={<DropshipperProducts />} />
-            <Route path="/dropshipper/orders" element={<DropshipperOrders />} />
-            <Route path="/wallet" element={<WalletPage />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/create-batch" element={<CreateBatch />} />
-            <Route path="/warehouse" element={<WarehousePage />} />
-            <Route path="/orders" element={<OrderManagement role="admin" />} />
-            <Route path="/admin/orders" element={<OrderManagement role="admin" />} />
-            <Route path="/warehouse/orders" element={<OrderManagement role="warehouse" />} />
-            <Route path="/admin/distribution" element={<DistributionPage />} />
-            <Route path="/admin/analytics" element={<AnalyticsPage />} />
+
+            {/* Partner routes */}
+            <Route path="/partner" element={<ProtectedRoute requiredRole="partner"><PartnerDashboard /></ProtectedRoute>} />
+            <Route path="/create-batch" element={<ProtectedRoute requiredRole="partner"><CreateBatch /></ProtectedRoute>} />
+            <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
+
+            {/* Dropshipper routes */}
+            <Route path="/dropshipper" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperDashboard /></ProtectedRoute>} />
+            <Route path="/dropshipper/products" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperProducts /></ProtectedRoute>} />
+            <Route path="/dropshipper/orders" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperOrders /></ProtectedRoute>} />
+
+            {/* Admin routes */}
+            <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/orders" element={<ProtectedRoute requiredRole="admin"><OrderManagement role="admin" /></ProtectedRoute>} />
+            <Route path="/admin/orders" element={<ProtectedRoute requiredRole="admin"><OrderManagement role="admin" /></ProtectedRoute>} />
+            <Route path="/admin/distribution" element={<ProtectedRoute requiredRole="admin"><DistributionPage /></ProtectedRoute>} />
+            <Route path="/admin/analytics" element={<ProtectedRoute requiredRole="admin"><AnalyticsPage /></ProtectedRoute>} />
+
+            {/* Warehouse routes */}
+            <Route path="/warehouse" element={<ProtectedRoute requiredRole="warehouse"><WarehousePage /></ProtectedRoute>} />
+            <Route path="/warehouse/orders" element={<ProtectedRoute requiredRole="warehouse"><OrderManagement role="warehouse" /></ProtectedRoute>} />
+
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
