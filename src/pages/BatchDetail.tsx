@@ -22,6 +22,7 @@ const statusLabels: Record<string, string> = {
 const BatchDetail = () => {
   const { id } = useParams();
   const batch = mockBatches.find((b) => b.id === id);
+  const [joinOpen, setJoinOpen] = useState(false);
 
   if (!batch) {
     return (
@@ -43,8 +44,6 @@ const BatchDetail = () => {
   const wholesaleProfitPerUnit = batch.wholesalePrice - batch.productionCostPerUnit;
   const returnPct = ((profitPerUnit / batch.productionCostPerUnit) * 100).toFixed(1);
   const wholesaleReturnPct = ((wholesaleProfitPerUnit / batch.productionCostPerUnit) * 100).toFixed(1);
-
-  const [joinOpen, setJoinOpen] = useState(false);
 
   const canJoin = batch.status === "funding" && batch.remainingUnits > 0;
 
