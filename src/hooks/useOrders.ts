@@ -37,6 +37,16 @@ export function useCreateOrder() {
     }) => {
       if (!user) throw new Error("Not authenticated");
 
+      // Check for duplicate order number
+      const { data: existing } = await supabase
+        .from("orders")
+        .select("id")
+        .eq("order_number", order.orderNumber)
+        .maybeSingle();
+      if (existing) {
+        throw new Error("An order with this number already exists. Please use a unique order number.");
+      }
+
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .insert({
@@ -52,7 +62,12 @@ export function useCreateOrder() {
         })
         .select()
         .single();
-      if (orderError) throw orderError;
+      if (orderError) {
+        if (orderError.code === "23505") {
+          throw new Error("An order with this number already exists. Please use a unique order number.");
+        }
+        throw orderError;
+      }
 
       // Insert order items
       const itemsToInsert = order.items.map((item) => ({
