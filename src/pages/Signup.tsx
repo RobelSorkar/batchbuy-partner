@@ -65,7 +65,7 @@ const Signup = () => {
               <span className="font-display font-bold text-xl">ProdPartner</span>
             </Link>
             <h1 className="text-2xl font-display font-bold">Create your account</h1>
-            <p className="text-muted-foreground text-sm mt-1">Start your production partnership journey</p>
+            <p className="text-muted-foreground text-sm mt-1">Start your inventory financing journey</p>
           </div>
 
           <form className="space-y-4" onSubmit={handleSignup}>
