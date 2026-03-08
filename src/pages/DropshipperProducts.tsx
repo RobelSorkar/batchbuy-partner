@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { z } from "zod";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Search, Star, TrendingUp, ShoppingCart, Share2, Copy, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { useDropshipProducts, DropshipProduct } from "@/hooks/useDropshipProducts";
 import { useCreateOrder } from "@/hooks/useOrders";
 import { useToast } from "@/hooks/use-toast";
+
+const orderFormSchema = z.object({
+  customerName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
+  customerPhone: z.string().trim().regex(/^01[3-9]\d{8}$/, "Enter a valid Bangladeshi phone number (e.g. 01XXXXXXXXX)"),
+  customerAddress: z.string().trim().min(5, "Address must be at least 5 characters").max(300, "Address is too long"),
+});
 
 const categories = ["All", "Apparel", "Beauty", "Home & Kitchen", "Accessories", "Food & Beverage", "Electronics", "General"];
 
