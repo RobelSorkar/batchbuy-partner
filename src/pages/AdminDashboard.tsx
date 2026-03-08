@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, AdminUser } from "@/hooks/useAdminData";
+import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, useUpdateUserRole, AdminUser } from "@/hooks/useAdminData";
 import { useBatches } from "@/hooks/useBatches";
 import { useOrders } from "@/hooks/useOrders";
 import { useInventory } from "@/hooks/useInventory";
@@ -59,6 +59,7 @@ const AdminDashboard = () => {
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
   const [batchSearch, setBatchSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
+  const [editingRole, setEditingRole] = useState<string | null>(null);
 
   // Real data hooks
   const { data: users = [], isLoading: loadingUsers } = useAdminUsers();
@@ -67,6 +68,7 @@ const AdminDashboard = () => {
   const { data: inventory = [], isLoading: loadingInventory } = useInventory();
   const { data: withdrawals = [], isLoading: loadingWithdrawals } = useAdminWithdrawals();
   const updateTxnStatus = useUpdateTransactionStatus();
+  const updateUserRole = useUpdateUserRole();
 
   const isLoading = loadingUsers || loadingBatches || loadingOrders || loadingInventory || loadingWithdrawals;
 
@@ -677,19 +679,23 @@ const AdminDashboard = () => {
         </Tabs>
 
         {/* User Detail Dialog */}
-        <Dialog open={!!userDetail} onOpenChange={(open) => !open && setUserDetail(null)}>
+        <Dialog open={!!userDetail} onOpenChange={(open) => { if (!open) { setUserDetail(null); setEditingRole(null); } }}>
           <DialogContent className="max-w-md">
             {userDetail && (
               <>
                 <DialogHeader>
                   <DialogTitle>{userDetail.name}</DialogTitle>
-                  <DialogDescription>Role: {userDetail.role}</DialogDescription>
+                  <DialogDescription>Manage user details and role</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-muted/50 rounded-lg p-3">
-                      <div className="text-[10px] text-muted-foreground uppercase">Role</div>
-                      <div className="text-sm font-medium capitalize mt-1">{userDetail.role}</div>
+                      <div className="text-[10px] text-muted-foreground uppercase">Current Role</div>
+                      <div className="mt-1">
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${roleColors[userDetail.role] || ""}`}>
+                          {userDetail.role}
+                        </span>
+                      </div>
                     </div>
                     <div className="bg-muted/50 rounded-lg p-3">
                       <div className="text-[10px] text-muted-foreground uppercase">Status</div>
@@ -714,9 +720,51 @@ const AdminDashboard = () => {
                       <span className="font-bold text-primary">৳{userDetail.totalEarned.toLocaleString()}</span>
                     </div>
                   </div>
+
+                  {/* Role Assignment */}
+                  <div className="border border-border/50 rounded-lg p-4 space-y-3">
+                    <div className="text-xs font-semibold uppercase text-muted-foreground">Change Role</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {(["partner", "dropshipper", "distributor", "warehouse", "admin"] as const).map((r) => (
+                        <Button
+                          key={r}
+                          variant={editingRole === r || (!editingRole && userDetail.role === r) ? "default" : "outline"}
+                          size="sm"
+                          className="capitalize text-xs"
+                          onClick={() => setEditingRole(r)}
+                          disabled={r === userDetail.role}
+                        >
+                          {r}
+                        </Button>
+                      ))}
+                    </div>
+                    {editingRole && editingRole !== userDetail.role && (
+                      <Button
+                        className="w-full"
+                        size="sm"
+                        disabled={updateUserRole.isPending}
+                        onClick={async () => {
+                          try {
+                            await updateUserRole.mutateAsync({
+                              userId: userDetail.id,
+                              newRole: editingRole as any,
+                            });
+                            toast({ title: "Role Updated", description: `Changed to ${editingRole}` });
+                            setUserDetail({ ...userDetail, role: editingRole });
+                            setEditingRole(null);
+                          } catch (e: any) {
+                            toast({ title: "Failed", description: e.message, variant: "destructive" });
+                          }
+                        }}
+                      >
+                        {updateUserRole.isPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
+                        Assign {editingRole} role
+                      </Button>
+                    )}
+                  </div>
                 </div>
                 <DialogFooter>
-                  <Button variant="outline" onClick={() => setUserDetail(null)}>Close</Button>
+                  <Button variant="outline" onClick={() => { setUserDetail(null); setEditingRole(null); }}>Close</Button>
                 </DialogFooter>
               </>
             )}

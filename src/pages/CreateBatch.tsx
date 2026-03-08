@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Plus, Calculator, Loader2 } from "lucide-react";
+import { ArrowLeft, Plus, Calculator, Loader2, Upload, X, ImageIcon } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { useImageUpload } from "@/hooks/useImageUpload";
 
 const categories = ["Apparel", "Beauty", "Accessories", "Home & Kitchen", "Electronics", "Food & Beverage", "Health", "Sports"];
 
@@ -19,6 +20,10 @@ const CreateBatch = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { upload: uploadImage, uploading: imageUploading } = useImageUpload();
   const [form, setForm] = useState({
     productName: "", batchName: "", productionCostPerUnit: "", wholesalePrice: "", retailPrice: "",
     totalQuantity: "", category: "", description: "", manufacturer: "", warehouse: "", productionTimeDays: "", deadline: "",
@@ -43,6 +48,13 @@ const CreateBatch = () => {
     if (!user) return;
     setLoading(true);
 
+    // Upload image if selected
+    let imageUrl: string | null = null;
+    if (imageFile) {
+      const path = `batches/${Date.now()}-${imageFile.name}`;
+      imageUrl = await uploadImage(imageFile, path);
+    }
+
     const { error } = await supabase.from("batches").insert({
       product_name: form.productName,
       batch_name: form.batchName,
@@ -59,6 +71,7 @@ const CreateBatch = () => {
       deadline: form.deadline || null,
       created_by: user.id,
       status: "funding",
+      image: imageUrl,
     });
 
     setLoading(false);
@@ -111,7 +124,47 @@ const CreateBatch = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
-                <Textarea id="description" placeholder="Describe the product..." rows={4} value={form.description} onChange={(e) => update("description", e.target.value)} />
+                <Textarea id="description" placeholder="Describe the product..." rows={3} value={form.description} onChange={(e) => update("description", e.target.value)} />
+              </div>
+
+              {/* Image Upload */}
+              <div className="space-y-2">
+                <Label>Product Image</Label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setImageFile(file);
+                      setImagePreview(URL.createObjectURL(file));
+                    }
+                  }}
+                />
+                {imagePreview ? (
+                  <div className="relative w-full h-40 rounded-lg overflow-hidden border border-border/50">
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => { setImageFile(null); setImagePreview(null); }}
+                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur flex items-center justify-center hover:bg-destructive/10 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full h-32 border-2 border-dashed border-border/50 rounded-lg flex flex-col items-center justify-center gap-2 hover:border-primary/30 hover:bg-muted/30 transition-colors"
+                  >
+                    <Upload className="w-6 h-6 text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground">Click to upload product image</span>
+                  </button>
+                )}
+                {imageUploading && <p className="text-xs text-primary">Uploading image...</p>}
               </div>
             </div>
 
