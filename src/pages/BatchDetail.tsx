@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JoinBatchDialog from "@/components/JoinBatchDialog";
 import ProductImageZoom from "@/components/ProductImageZoom";
+import BatchCountdown from "@/components/BatchCountdown";
 import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
 import { MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
 
@@ -228,6 +229,8 @@ const BatchDetail = () => {
                     </span>
                   </div>
                 </div>
+
+                <BatchCountdown deadline={batch.deadline} status={batch.status} />
 
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock className="w-4 h-4" />
