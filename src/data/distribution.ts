@@ -112,11 +112,11 @@ export const PRICING_RULES = [
 
 // Helper: compute channel prices from production cost
 export function computeChannelPrices(productionCost: number, retailPrice: number) {
-  const platformPrice = retailPrice;
-  const retailShopPrice = Math.round(retailPrice * 0.85); // ~15% below retail
-  const dropshipPrice = Math.round(retailPrice * 0.65);   // ~35% below retail
-  const distributorPrice = Math.round(retailPrice * 0.55); // ~45% below retail
   const map = Math.round(productionCost * 1.2); // 20% above cost = MAP
+  const platformPrice = retailPrice;
+  const retailShopPrice = Math.max(Math.round(retailPrice * 0.85), map);
+  const dropshipPrice = Math.max(Math.round(retailPrice * 0.65), map);
+  const distributorPrice = Math.max(Math.round(retailPrice * 0.55), map);
 
   return {
     platform: { price: platformPrice, min: map, max: platformPrice },

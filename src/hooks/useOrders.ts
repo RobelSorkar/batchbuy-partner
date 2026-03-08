@@ -41,45 +41,25 @@ export function useCreateOrder() {
     }) => {
       if (!user) throw new Error("Not authenticated");
 
-      // Generate sequential order number server-side
-      const { data: orderNumber, error: seqError } = await supabase.rpc("generate_order_number", {
+      // Use atomic RPC with stock validation
+      const { data, error } = await supabase.rpc("create_order_with_stock_check", {
+        p_customer_name: order.customerName,
+        p_customer_phone: order.customerPhone,
+        p_customer_address: order.customerAddress,
         p_channel: order.channel,
+        p_total_amount: order.totalAmount,
+        p_commission: order.commission,
+        p_batch_id: order.batchId || null,
+        p_items: JSON.stringify(order.items),
       });
-      if (seqError) throw seqError;
-
-      const { data: orderData, error: orderError } = await supabase
-        .from("orders")
-        .insert({
-          order_number: orderNumber,
-          customer_name: order.customerName,
-          customer_phone: order.customerPhone,
-          customer_address: order.customerAddress,
-          channel: order.channel,
-          total_amount: order.totalAmount,
-          commission: order.commission,
-          seller_id: user.id,
-          batch_id: order.batchId || null,
-        })
-        .select()
-        .single();
-      if (orderError) throw orderError;
-
-      // Insert order items
-      const itemsToInsert = order.items.map((item) => ({
-        order_id: orderData.id,
-        product_name: item.productName,
-        quantity: item.quantity,
-        unit_price: item.unitPrice,
-        total_price: item.totalPrice,
-      }));
-
-      const { error: itemsError } = await supabase.from("order_items").insert(itemsToInsert);
-      if (itemsError) throw itemsError;
-
-      return orderData;
+      if (error) throw error;
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["inventory"] });
+      queryClient.invalidateQueries({ queryKey: ["dropship-products"] });
+      queryClient.invalidateQueries({ queryKey: ["distributor-products"] });
     },
   });
 }
