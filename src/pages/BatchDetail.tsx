@@ -71,6 +71,8 @@ const BatchDetail = () => {
 
   const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
   const logisticsCost = Number((batch as any).logistics_cost_per_unit) || 0;
+  const retailMarketingPerUnit = Math.round(batch.retail_price * MARKETING_COST_RATE);
+  const wholesaleMarketingPerUnit = Math.round(batch.wholesale_price * MARKETING_COST_RATE);
 
   // Use global calculation engine
   const perUnit = calcPerUnitProfit(batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price, logisticsCost);
