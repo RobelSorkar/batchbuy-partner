@@ -87,13 +87,6 @@ const FinancialBreakdown = ({
               label={`Units Financed — FLOOR(৳${investment.toLocaleString()} ÷ ৳${costPerUnit})`}
               value={main.unitsFinanced.toString()}
             />
-            {main.unusedAmount > 0 && (
-              <Step
-                label={`Unused Amount Returned (৳${investment.toLocaleString()} − ৳${main.totalCost.toLocaleString()})`}
-                value={`৳${main.unusedAmount.toLocaleString()}`}
-                bold
-              />
-            )}
             <Step
               label={`Units Sold (${main.unitsFinanced} × ${sellThrough}%)`}
               value={main.unitsSold.toString()}
