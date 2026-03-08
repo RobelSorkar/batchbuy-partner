@@ -122,11 +122,12 @@ const PartnerDashboard = () => {
                 <thead>
                   <tr className="border-b border-border/50">
                     <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Product / Batch</th>
-                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Units Owned</th>
-                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Cost/Unit</th>
-                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Retail Price</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Owned</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Sold</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Remaining</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Profit Earned</th>
                     <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Status</th>
-                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3">Mode</th>
+                    <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3"></th>
                     <th className="text-left text-xs font-medium text-muted-foreground px-5 py-3"></th>
                   </tr>
                 </thead>
