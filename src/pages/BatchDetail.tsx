@@ -238,11 +238,12 @@ const BatchDetail = () => {
                   <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 investment</p>
                   <div className="text-sm">
                     <span className="font-semibold">{Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit)} units</span>
-                    <span className="text-muted-foreground"> → retail profit </span>
+                    <span className="text-muted-foreground"> → net profit </span>
                     <span className="font-semibold text-primary">
                       ৳{(Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit) * profitPerUnit).toLocaleString()}
                     </span>
                   </div>
+                  <p className="text-[10px] text-muted-foreground">After 15% platform commission</p>
                 </div>
 
                 <BatchCountdown deadline={batch.deadline} status={batch.status} />
