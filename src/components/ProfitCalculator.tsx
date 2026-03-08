@@ -196,36 +196,17 @@ const ProfitCalculator = () => {
               </div>
             </div>
 
-            {/* Transparent Breakdown Toggle */}
-            <button
-              onClick={() => setShowBreakdown(!showBreakdown)}
-              className="w-full flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-            >
-              <Info className="w-4 h-4" />
-              {showBreakdown ? "Hide" : "Show"} calculation breakdown
-              {showBreakdown ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </button>
-
-            {showBreakdown && (
-              <div className="bg-muted/30 rounded-xl p-5 space-y-3 text-sm border border-border/50">
-                <h4 className="font-semibold text-foreground mb-3">Calculation Steps</h4>
-                <div className="space-y-2">
-                  <Step label="Financing Amount" value={`৳${investment.toLocaleString()}`} />
-                  <Step label={`Units Financed (৳${investment.toLocaleString()} ÷ ৳${costPerUnit})`} value={main.unitsFinanced.toString()} />
-                  <Step label={`Units Sold (${main.unitsFinanced} × ${sellThrough}%)`} value={main.unitsSold.toString()} />
-                  <div className="border-t border-border/30 pt-2" />
-                  <Step label={`Revenue (${main.unitsSold} × ৳${retailPrice})`} value={`৳${main.revenueFromSold.toLocaleString()}`} />
-                  <Step label={`Total Unit Cost (${main.unitsFinanced} × ৳${costPerUnit})`} value={`− ৳${main.totalCost.toLocaleString()}`} muted />
-                  <Step label={`Total Logistics (${main.unitsFinanced} × ৳${logisticsCostPerUnit})`} value={`− ৳${main.totalLogistics.toLocaleString()}`} muted />
-                  <div className="border-t border-border/30 pt-2" />
-                  <Step label="Gross Profit" value={`৳${main.grossProfit.toLocaleString()}`} bold />
-                  <Step label={`Platform Commission (15% of gross profit)`} value={`− ৳${main.commission.toLocaleString()}`} muted />
-                  <div className="border-t border-border/30 pt-2" />
-                  <Step label="Net Profit" value={`৳${main.netProfit.toLocaleString()}`} bold primary />
-                  <Step label={`ROI (Net Profit ÷ Financing Amount × 100)`} value={`${main.roi.toFixed(1)}%`} bold primary />
-                </div>
-              </div>
-            )}
+            {/* Financial Breakdown */}
+            <FinancialBreakdown
+              show={showBreakdown}
+              onToggle={() => setShowBreakdown(!showBreakdown)}
+              investment={investment}
+              costPerUnit={costPerUnit}
+              retailPrice={retailPrice}
+              logisticsCostPerUnit={logisticsCostPerUnit}
+              sellThrough={sellThrough}
+              main={main}
+            />
 
             {/* Scenario Simulation */}
             <div>
