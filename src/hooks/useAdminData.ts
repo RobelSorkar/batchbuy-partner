@@ -99,15 +99,24 @@ export function useUpdateTransactionStatus() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await supabase
-        .from("transactions")
-        .update({ status })
-        .eq("id", id);
-      if (error) throw error;
+      if (status === "failed") {
+        // Use refund_withdrawal to atomically refund and mark as failed
+        const { error } = await supabase.rpc("refund_withdrawal", {
+          p_transaction_id: id,
+        });
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("transactions")
+          .update({ status })
+          .eq("id", id);
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-withdrawals"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["wallet"] });
     },
   });
 }

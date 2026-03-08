@@ -446,6 +446,7 @@ export type Database = {
         Args: { p_account: string; p_amount: number; p_method: string }
         Returns: Json
       }
+      refund_withdrawal: { Args: { p_transaction_id: string }; Returns: Json }
     }
     Enums: {
       app_role:
