@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  role?: "partner" | "dropshipper" | "admin" | "warehouse";
+  role?: "partner" | "dropshipper" | "admin" | "warehouse" | "distributor";
 }
 
 const partnerNav = [
