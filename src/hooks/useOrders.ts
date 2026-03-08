@@ -50,7 +50,7 @@ export function useCreateOrder() {
         p_total_amount: order.totalAmount,
         p_commission: order.commission,
         p_batch_id: order.batchId || null,
-        p_items: JSON.stringify(order.items),
+        p_items: order.items as any,
       });
       if (error) throw error;
       return data;

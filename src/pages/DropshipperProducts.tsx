@@ -65,7 +65,7 @@ const DropshipperProducts = () => {
         customerName: result.data.customerName,
         customerPhone: result.data.customerPhone,
         customerAddress: result.data.customerAddress,
-        channel: "dropship",
+        channel: "dropshipper",
         totalAmount,
         commission,
         batchId: selectedProduct.batchId,
