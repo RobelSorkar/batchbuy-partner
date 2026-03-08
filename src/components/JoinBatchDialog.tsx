@@ -65,7 +65,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const walletBalance = wallet?.balance || 0;
 
   const investmentAmount = Number(investmentInput) || 0;
-  const { units, totalCost, additionalRequired } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
+  const { units, totalCost, unusedAmount } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
   const logisticsCost = batch.logisticsCostPerUnit || 0;
   const est = units > 0 ? calcJoinEstimate(units, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost) : null;
   const isValid = investmentAmount >= MINIMUM_PARTICIPATION_BDT && units > 0 && units <= batch.remainingUnits;
