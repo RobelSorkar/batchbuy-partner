@@ -36,9 +36,9 @@ function calcScenario(
   logisticsCost: number,
   sellThroughPct: number
 ) {
-  const unitsFinanced = Math.ceil(financingAmount / costPerUnit);
+  const unitsFinanced = Math.floor(financingAmount / costPerUnit);
   const totalCost = unitsFinanced * costPerUnit;
-  const additionalRequired = totalCost - financingAmount;
+  const unusedAmount = financingAmount - totalCost;
   const unitsSold = Math.round(unitsFinanced * (sellThroughPct / 100));
   const unsoldUnits = unitsFinanced - unitsSold;
 
@@ -58,7 +58,7 @@ function calcScenario(
   return {
     unitsFinanced,
     totalCost,
-    additionalRequired,
+    unusedAmount,
     unitsSold,
     unsoldUnits,
     totalLogistics,
