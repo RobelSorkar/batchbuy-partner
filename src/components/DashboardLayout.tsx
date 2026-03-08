@@ -23,6 +23,7 @@ const dropshipperNav = [
   { icon: Store, label: "Products", href: "/dropshipper/products" },
   { icon: ShoppingCart, label: "My Orders", href: "/dropshipper/orders" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
+  { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
 
 const adminNav = [
