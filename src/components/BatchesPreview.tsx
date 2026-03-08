@@ -55,7 +55,11 @@ const BatchesPreview = () => {
                   <div className="rounded-xl border border-border bg-card shadow-card hover:shadow-card-hover transition-all duration-300 overflow-hidden">
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-4">
-                        <span className="text-3xl">{batch.image || "📦"}</span>
+                        {getProductImage(batch.product_name) ? (
+                          <img src={getProductImage(batch.product_name)!} alt={batch.product_name} className="w-12 h-12 object-cover rounded-lg" />
+                        ) : (
+                          <span className="text-3xl">{batch.image || "📦"}</span>
+                        )}
                         <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${statusColors[batch.status] || "bg-muted text-muted-foreground"}`}>
                           {batch.status === "funding" ? "Open for Investment" : batch.status}
                         </span>
