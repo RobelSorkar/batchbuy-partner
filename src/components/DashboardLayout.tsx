@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, Settings, LogOut, Menu, Bell, Store, ShieldCheck, Warehouse, ClipboardList, Share2 } from "lucide-react";
+import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, Settings, LogOut, Menu, Bell, Store, ShieldCheck, Warehouse, ClipboardList, Share2, BarChart3 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 
 interface DashboardLayoutProps {
@@ -34,6 +34,7 @@ const adminNav = [
   { icon: Truck, label: "Fulfillment", href: "/admin/fulfillment" },
   { icon: Wallet, label: "Wallets", href: "/admin/wallets" },
   { icon: ShieldCheck, label: "Moderation", href: "/admin/moderation" },
+  { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
