@@ -1,0 +1,1 @@
+UPDATE public.batches SET logistics_cost_per_unit = 40 WHERE id = 'b2c3d4e5-f6a7-8901-bcde-f12345678901';
