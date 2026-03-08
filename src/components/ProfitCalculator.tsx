@@ -92,10 +92,15 @@ const ProfitCalculator = () => {
                   <div className="text-2xl font-display font-bold text-accent-foreground">৳{revenue.toLocaleString()}</div>
                   <div className="text-xs text-muted-foreground">Revenue (at retail)</div>
                 </div>
-                <div className="bg-primary/10 rounded-xl p-4 flex flex-col items-center text-center border border-primary/20">
+                <div className="bg-destructive/5 rounded-xl p-4 flex flex-col items-center text-center border border-destructive/10">
+                  <Truck className="w-5 h-5 text-muted-foreground mb-2" />
+                  <div className="text-2xl font-display font-bold text-foreground">৳{logisticsCost.toLocaleString()}</div>
+                  <div className="text-xs text-muted-foreground">Logistics Cost</div>
+                </div>
+                <div className="col-span-2 bg-primary/10 rounded-xl p-4 flex flex-col items-center text-center border border-primary/20">
                   <Calculator className="w-5 h-5 text-primary mb-2" />
                   <div className="text-2xl font-display font-bold text-primary">৳{profit.toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground">Est. Profit (~{returnPct}%)</div>
+                  <div className="text-xs text-muted-foreground">Net Profit (~{returnPct}% ROI, after logistics + 15% fee)</div>
                 </div>
               </div>
             </div>
