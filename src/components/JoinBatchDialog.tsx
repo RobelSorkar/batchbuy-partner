@@ -5,7 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet } from "lucide-react";
-import { ProductionBatch, MINIMUM_PARTICIPATION_BDT, PLATFORM_COMMISSION_RATE, calculateUnitsFromInvestment } from "@/types/batch";
+import { ProductionBatch } from "@/types/batch";
+import {
+  MINIMUM_PARTICIPATION_BDT,
+  allocateUnits,
+  calcInvestmentEstimate,
+} from "@/lib/calculations";
 import { useJoinBatch } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
 import { useWallet } from "@/hooks/useWallet";
@@ -15,44 +20,6 @@ interface JoinBatchDialogProps {
   batch: ProductionBatch;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}
-
-function calcJoinEstimate(
-  units: number,
-  costPerUnit: number,
-  wholesalePrice: number,
-  retailPrice: number,
-  logisticsCostPerUnit: number
-) {
-  const totalCost = units * costPerUnit;
-  const totalLogistics = units * logisticsCostPerUnit;
-  const totalCostWithLogistics = totalCost + totalLogistics;
-
-  const wholesaleRevenue = units * wholesalePrice;
-  const wholesaleGrossProfit = wholesaleRevenue - totalCostWithLogistics;
-  const wholesaleCommission = wholesaleGrossProfit > 0 ? Math.round(wholesaleGrossProfit * PLATFORM_COMMISSION_RATE) : 0;
-  const wholesaleNetProfit = wholesaleGrossProfit - wholesaleCommission;
-  const wholesaleROI = totalCost > 0 ? (wholesaleNetProfit / totalCost) * 100 : 0;
-
-  const retailRevenue = units * retailPrice;
-  const retailGrossProfit = retailRevenue - totalCostWithLogistics;
-  const retailCommission = retailGrossProfit > 0 ? Math.round(retailGrossProfit * PLATFORM_COMMISSION_RATE) : 0;
-  const retailNetProfit = retailGrossProfit - retailCommission;
-  const retailROI = totalCost > 0 ? (retailNetProfit / totalCost) * 100 : 0;
-
-  return {
-    totalCost,
-    totalLogistics,
-    totalCostWithLogistics,
-    wholesaleRevenue,
-    wholesaleGrossProfit,
-    wholesaleNetProfit,
-    wholesaleROI,
-    retailRevenue,
-    retailGrossProfit,
-    retailNetProfit,
-    retailROI,
-  };
 }
 
 const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) => {
@@ -65,9 +32,14 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const walletBalance = wallet?.balance || 0;
 
   const investmentAmount = Number(investmentInput) || 0;
-  const { units, totalCost, unusedAmount } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
   const logisticsCost = batch.logisticsCostPerUnit || 0;
-  const est = units > 0 ? calcJoinEstimate(units, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost) : null;
+
+  // Use global calculation engine
+  const { units, inventoryCost, unusedAmount } = allocateUnits(investmentAmount, batch.productionCostPerUnit);
+  const est = units > 0
+    ? calcInvestmentEstimate(investmentAmount, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost)
+    : null;
+
   const isValid = investmentAmount >= MINIMUM_PARTICIPATION_BDT && units > 0 && units <= batch.remainingUnits;
 
   const handleSubmit = async () => {
@@ -81,7 +53,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
       await joinBatch.mutateAsync({
         batchId: batch.id,
         units,
-        totalInvested: totalCost,
+        totalInvested: inventoryCost,
       });
       setSubmitted(true);
     } catch (error: any) {
@@ -115,7 +87,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             <div className="bg-accent/50 rounded-lg p-4 text-sm space-y-2 text-left border border-primary/10">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Inventory Cost</span>
-                <span className="font-semibold">৳{totalCost.toLocaleString()}</span>
+                <span className="font-semibold">৳{inventoryCost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Units Financed</span>
@@ -188,25 +160,25 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             <div className="bg-card rounded-lg p-4 border border-border/50 space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Units Financed (FLOOR)</span>
-                <span className="font-bold text-lg">{units}</span>
+                <span className="font-bold text-lg">{est.unitsFinanced}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Inventory Purchase Cost</span>
-                <span className="font-semibold">৳{totalCost.toLocaleString()}</span>
+                <span className="font-semibold">৳{est.inventoryCost.toLocaleString()}</span>
               </div>
-              {unusedAmount > 0 && (
+              {est.unusedAmount > 0 && (
                 <div className="flex justify-between text-xs bg-accent/30 rounded px-2 py-1.5 border border-accent-foreground/10">
                   <span className="text-accent-foreground font-medium">Unused amount returned</span>
-                  <span className="font-mono font-bold text-accent-foreground">৳{unusedAmount.toLocaleString()}</span>
+                  <span className="font-mono font-bold text-accent-foreground">৳{est.unusedAmount.toLocaleString()}</span>
                 </div>
               )}
               <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">Logistics Cost ({units} × ৳{logisticsCost})</span>
-                <span>৳{est.totalLogistics.toLocaleString()}</span>
+                <span className="text-muted-foreground">Logistics Cost ({est.unitsFinanced} × ৳{logisticsCost})</span>
+                <span>৳{est.logisticsCost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Total Cost (Inventory + Logistics)</span>
-                <span className="font-semibold">৳{est.totalCostWithLogistics.toLocaleString()}</span>
+                <span className="font-semibold">৳{est.totalCost.toLocaleString()}</span>
               </div>
 
               <div className="border-t border-border/50 pt-3 space-y-2">
@@ -255,22 +227,22 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
               <Wallet className="w-4 h-4 text-muted-foreground" />
               <span className="text-muted-foreground">Wallet Balance</span>
             </div>
-            <span className={`font-semibold ${walletBalance < totalCost ? "text-destructive" : "text-foreground"}`}>
+            <span className={`font-semibold ${walletBalance < inventoryCost ? "text-destructive" : "text-foreground"}`}>
               ৳{walletBalance.toLocaleString()}
             </span>
           </div>
-          {walletBalance < totalCost && totalCost > 0 && (
+          {walletBalance < inventoryCost && inventoryCost > 0 && (
             <div className="flex items-center justify-between bg-destructive/5 border border-destructive/20 rounded-lg p-3 text-sm">
-              <span className="text-destructive">Insufficient balance — need ৳{(totalCost - walletBalance).toLocaleString()} more</span>
+              <span className="text-destructive">Insufficient balance — need ৳{(inventoryCost - walletBalance).toLocaleString()} more</span>
               <Link to="/wallet" onClick={() => onOpenChange(false)}>
                 <Button size="sm" variant="outline" className="text-xs h-7">Deposit</Button>
               </Link>
             </div>
           )}
 
-          <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending || walletBalance < totalCost} className="w-full" size="lg">
+          <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending || walletBalance < inventoryCost} className="w-full" size="lg">
             {joinBatch.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Confirm Financing — ৳{totalCost.toLocaleString()} for {units} units
+            Confirm Financing — ৳{inventoryCost.toLocaleString()} for {units} units
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">

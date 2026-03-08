@@ -12,7 +12,10 @@ import {
   BarChart3,
   AlertCircle,
 } from "lucide-react";
-import { PLATFORM_COMMISSION_RATE, MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
+import {
+  MINIMUM_PARTICIPATION_BDT,
+  calcInvestmentEstimate,
+} from "@/lib/calculations";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import FinancialBreakdown from "@/components/calculator/FinancialBreakdown";
 
@@ -29,51 +32,6 @@ const scenarios = [
   { label: "Worst Case", rate: 60, color: "text-destructive", bg: "bg-destructive/5 border-destructive/10" },
 ];
 
-function calcScenario(
-  financingAmount: number,
-  costPerUnit: number,
-  wholesalePrice: number,
-  retailPrice: number,
-  logisticsCost: number,
-  sellThroughPct: number
-) {
-  const unitsFinanced = Math.floor(financingAmount / costPerUnit);
-  const totalCost = unitsFinanced * costPerUnit;
-  const unusedAmount = financingAmount - totalCost;
-  const unitsSold = Math.round(unitsFinanced * (sellThroughPct / 100));
-  const unsoldUnits = unitsFinanced - unitsSold;
-
-  const totalLogistics = unitsFinanced * logisticsCost;
-  const totalCostWithLogistics = totalCost + totalLogistics;
-
-  const wholesaleRevenue = unitsSold * wholesalePrice;
-  const wholesaleGrossProfit = wholesaleRevenue - totalCostWithLogistics;
-
-  const retailRevenue = unitsSold * retailPrice;
-  const retailGrossProfit = retailRevenue - totalCostWithLogistics;
-
-  const commission = retailGrossProfit > 0 ? Math.round(retailGrossProfit * PLATFORM_COMMISSION_RATE) : 0;
-  const netProfit = retailGrossProfit - commission;
-  const roi = totalCost > 0 ? (netProfit / totalCost) * 100 : 0;
-
-  return {
-    unitsFinanced,
-    totalCost,
-    unusedAmount,
-    unitsSold,
-    unsoldUnits,
-    totalLogistics,
-    totalCostWithLogistics,
-    wholesaleRevenue,
-    wholesaleGrossProfit,
-    retailRevenue,
-    retailGrossProfit,
-    commission,
-    netProfit,
-    roi,
-  };
-}
-
 const ProfitCalculator = () => {
   const [investment, setInvestment] = useState(25000);
   const [logisticsCostPerUnit, setLogisticsCostPerUnit] = useState(40);
@@ -85,7 +43,25 @@ const ProfitCalculator = () => {
   const retailPrice = 650;
   const isValidInvestment = investment >= MINIMUM_PARTICIPATION_BDT;
 
-  const main = calcScenario(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
+  // Use global calculation engine
+  const main = calcInvestmentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
+
+  // Map for FinancialBreakdown compatibility
+  const mainForBreakdown = {
+    unitsFinanced: main.unitsFinanced,
+    unitsSold: Math.round(main.unitsFinanced * (sellThrough / 100)),
+    totalCost: main.inventoryCost,
+    totalLogistics: main.logisticsCost,
+    totalCostWithLogistics: main.totalCost,
+    wholesaleRevenue: main.wholesaleRevenue,
+    wholesaleGrossProfit: main.wholesaleGrossProfit,
+    retailRevenue: main.retailRevenue,
+    retailGrossProfit: main.retailGrossProfit,
+    unusedAmount: main.unusedAmount,
+    commission: main.retailCommission,
+    netProfit: main.retailNetProfit,
+    roi: main.retailROI,
+  };
 
   return (
     <section className="py-24 px-6">
@@ -180,7 +156,7 @@ const ProfitCalculator = () => {
               unitsFinanced={main.unitsFinanced}
             />
 
-            {/* Additional Amount Required */}
+            {/* Minimum Investment Warning */}
             {!isValidInvestment && investment > 0 && (
               <div className="bg-destructive/10 rounded-xl p-4 border border-destructive/20 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-destructive shrink-0" />
@@ -205,23 +181,23 @@ const ProfitCalculator = () => {
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
                 <Banknote className="w-5 h-5 text-muted-foreground mb-2" />
                 <div className="text-2xl font-display font-bold text-foreground">
-                  ৳{main.totalCostWithLogistics.toLocaleString()}
+                  ৳{main.totalCost.toLocaleString()}
                 </div>
                 <div className="text-xs text-muted-foreground">Total Cost</div>
               </div>
               <div className="bg-accent/50 rounded-xl p-4 flex flex-col items-center text-center">
                 <TrendingUp className="w-5 h-5 text-accent-foreground mb-2" />
                 <div className="text-2xl font-display font-bold text-accent-foreground">
-                  {main.unitsSold} / {main.unitsFinanced}
+                  {mainForBreakdown.unitsSold} / {main.unitsFinanced}
                 </div>
                 <div className="text-xs text-muted-foreground">Units Sold ({sellThrough}%)</div>
               </div>
               <div className="bg-primary/10 rounded-xl p-4 flex flex-col items-center text-center border border-primary/20">
                 <Calculator className="w-5 h-5 text-primary mb-2" />
-                <div className={`text-2xl font-display font-bold ${main.netProfit >= 0 ? "text-primary" : "text-destructive"}`}>
-                  ৳{main.netProfit.toLocaleString()}
+                <div className={`text-2xl font-display font-bold ${main.retailNetProfit >= 0 ? "text-primary" : "text-destructive"}`}>
+                  ৳{main.retailNetProfit.toLocaleString()}
                 </div>
-                <div className="text-xs text-muted-foreground">Net Profit ({main.roi.toFixed(0)}% ROI)</div>
+                <div className="text-xs text-muted-foreground">Net Profit ({main.retailROI.toFixed(0)}% ROI)</div>
               </div>
             </div>
 
@@ -235,7 +211,7 @@ const ProfitCalculator = () => {
               retailPrice={retailPrice}
               logisticsCostPerUnit={logisticsCostPerUnit}
               sellThrough={sellThrough}
-              main={main}
+              main={mainForBreakdown}
             />
 
             {/* Scenario Simulation */}
@@ -246,7 +222,8 @@ const ProfitCalculator = () => {
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {scenarios.map((s) => {
-                  const sc = calcScenario(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, s.rate);
+                  const sc = calcInvestmentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, s.rate);
+                  const unitsSold = Math.round(sc.unitsFinanced * (s.rate / 100));
                   return (
                     <div
                       key={s.label}
@@ -259,10 +236,10 @@ const ProfitCalculator = () => {
                         <span className="text-xs text-muted-foreground">{s.rate}% sell-through</span>
                       </div>
                       <div className={`text-xl font-display font-bold ${s.color}`}>
-                        ৳{sc.netProfit.toLocaleString()}
+                        ৳{sc.retailNetProfit.toLocaleString()}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {sc.unitsSold} units sold · {sc.roi.toFixed(0)}% ROI
+                        {unitsSold} units sold · {sc.retailROI.toFixed(0)}% ROI
                       </div>
                     </div>
                   );

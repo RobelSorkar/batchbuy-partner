@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Plus, Calculator, Loader2, Upload, X, ImageIcon } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
+import { MINIMUM_PARTICIPATION_BDT, allocateUnits, calcPerUnitProfit, calcInvestmentEstimate } from "@/lib/calculations";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -42,9 +42,10 @@ const CreateBatch = () => {
   const totalLogisticsCost = logisticsCost * totalQty;
   const totalWholesaleRevenue = wholesale * totalQty;
   const totalRetailRevenue = retail * totalQty;
-  const wholesaleMargin = costPerUnit > 0 ? (((wholesale - costPerUnit - logisticsCost) * 0.85) / costPerUnit * 100).toFixed(1) : "0";
-  const retailMargin = costPerUnit > 0 ? (((retail - costPerUnit - logisticsCost) * 0.85) / costPerUnit * 100).toFixed(1) : "0";
-  const minUnitsForEntry = costPerUnit > 0 ? Math.ceil(MINIMUM_PARTICIPATION_BDT / costPerUnit) : 0;
+  const perUnit = costPerUnit > 0 ? calcPerUnitProfit(costPerUnit, wholesale, retail, logisticsCost) : null;
+  const wholesaleMargin = perUnit ? perUnit.wholesaleReturnPct.toFixed(1) : "0";
+  const retailMargin = perUnit ? perUnit.retailReturnPct.toFixed(1) : "0";
+  const minUnitsForEntry = costPerUnit > 0 ? allocateUnits(MINIMUM_PARTICIPATION_BDT, costPerUnit).units : 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -253,9 +254,15 @@ const CreateBatch = () => {
               </div>
               {costPerUnit > 0 && totalQty > 0 && (
                 <div className="bg-accent/50 rounded-lg p-4 border border-primary/10">
-                  <p className="text-xs text-muted-foreground mb-1">Example: ৳10,000 financing</p>
-                  <p className="text-sm font-medium">= {Math.floor(10000 / costPerUnit)} units financed</p>
-                  <p className="text-xs text-primary mt-1">Net profit: ৳{Math.round(Math.floor(10000 / costPerUnit) * (retail - costPerUnit - logisticsCost) * 0.85).toLocaleString()} <span className="text-muted-foreground">(after logistics + 15% fee)</span></p>
+                  {(() => {
+                    const ex = calcInvestmentEstimate(10000, costPerUnit, wholesale, retail, logisticsCost);
+                    return (
+                      <>
+                        <p className="text-sm font-medium">= {ex.unitsFinanced} units financed</p>
+                        <p className="text-xs text-primary mt-1">Net profit: ৳{ex.retailNetProfit.toLocaleString()} <span className="text-muted-foreground">(after logistics + 15% fee)</span></p>
+                      </>
+                    );
+                  })()}
                 </div>
               )}
             </div>

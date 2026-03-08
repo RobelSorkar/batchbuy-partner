@@ -34,19 +34,27 @@ export interface BatchParticipation {
   joinedAt: string;
 }
 
-export const MINIMUM_PARTICIPATION_BDT = 10000;
+// Re-export everything from the global calculation engine so existing
+// imports from "@/types/batch" keep working without changes.
+export {
+  MINIMUM_PARTICIPATION_BDT,
+  PLATFORM_COMMISSION_RATE,
+  allocateUnits as calculateUnitsFromInvestment_internal,
+  calcInvestmentEstimate,
+  calcPerUnitProfit,
+} from "@/lib/calculations";
 
+// Keep the legacy API surface so callers don't break.
+import { allocateUnits } from "@/lib/calculations";
 export function calculateUnitsFromInvestment(
   investmentAmount: number,
   costPerUnit: number
 ): { units: number; totalCost: number; unusedAmount: number } {
-  const units = Math.floor(investmentAmount / costPerUnit);
-  const totalCost = units * costPerUnit;
-  const unusedAmount = investmentAmount - totalCost;
-  return { units, totalCost, unusedAmount };
+  const r = allocateUnits(investmentAmount, costPerUnit);
+  return { units: r.units, totalCost: r.inventoryCost, unusedAmount: r.unusedAmount };
 }
 
-export const PLATFORM_COMMISSION_RATE = 0.15;
+import { PLATFORM_COMMISSION_RATE as RATE } from "@/lib/calculations";
 export const DEFAULT_LOGISTICS_COST_PER_UNIT = 40;
 
 export function calculateProfitEstimate(
@@ -59,7 +67,7 @@ export function calculateProfitEstimate(
   const revenue = units * retailPrice;
   const logisticsCost = units * logisticsCostPerUnit;
   const grossProfit = revenue - investment - logisticsCost;
-  const netProfit = Math.round(grossProfit * (1 - PLATFORM_COMMISSION_RATE));
+  const netProfit = Math.round(grossProfit > 0 ? grossProfit * (1 - RATE) : grossProfit);
   const returnPct = investment > 0 ? (netProfit / investment) * 100 : 0;
   return { investment, revenue, grossProfit, logisticsCost, netProfit, profit: netProfit, returnPct };
 }

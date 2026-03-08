@@ -1,0 +1,166 @@
+/**
+ * Global Calculation Engine
+ * 
+ * ALL financial calculations for batches, investments, and profit estimates
+ * MUST use these functions. No batch-specific calculation logic elsewhere.
+ *
+ * Rules:
+ *   Units Financed        = FLOOR(Investment / CostPerUnit)
+ *   Inventory Cost        = Units × CostPerUnit
+ *   Unused Amount         = Investment − Inventory Cost
+ *   Logistics Cost        = Units × LogisticsPerUnit
+ *   Total Cost            = Inventory Cost + Logistics Cost
+ *   Wholesale Gross Profit= Units × (WholesalePrice − CostPerUnit − LogisticsPerUnit)
+ *   Retail Gross Profit   = Units × (RetailPrice − CostPerUnit − LogisticsPerUnit)
+ *   Commission            = 15% of gross profit (only if positive)
+ *   Net Profit            = Gross Profit − Commission
+ *   ROI                   = Net Profit / Inventory Cost × 100
+ */
+
+export const PLATFORM_COMMISSION_RATE = 0.15;
+export const MINIMUM_PARTICIPATION_BDT = 10_000;
+
+// ─── Unit allocation ────────────────────────────────────────────────
+export interface UnitAllocation {
+  units: number;
+  inventoryCost: number;
+  unusedAmount: number;
+}
+
+export function allocateUnits(
+  investmentAmount: number,
+  costPerUnit: number
+): UnitAllocation {
+  const units = Math.floor(investmentAmount / costPerUnit);
+  const inventoryCost = units * costPerUnit;
+  const unusedAmount = investmentAmount - inventoryCost;
+  return { units, inventoryCost, unusedAmount };
+}
+
+// ─── Per-unit profit (useful for quick labels) ──────────────────────
+export interface PerUnitProfit {
+  wholesaleGrossPerUnit: number;
+  wholesaleNetPerUnit: number;
+  retailGrossPerUnit: number;
+  retailNetPerUnit: number;
+  retailReturnPct: number;
+  wholesaleReturnPct: number;
+}
+
+export function calcPerUnitProfit(
+  costPerUnit: number,
+  wholesalePrice: number,
+  retailPrice: number,
+  logisticsPerUnit: number
+): PerUnitProfit {
+  const wholesaleGrossPerUnit = wholesalePrice - costPerUnit - logisticsPerUnit;
+  const wholesaleNetPerUnit = Math.round(
+    wholesaleGrossPerUnit > 0
+      ? wholesaleGrossPerUnit * (1 - PLATFORM_COMMISSION_RATE)
+      : wholesaleGrossPerUnit
+  );
+
+  const retailGrossPerUnit = retailPrice - costPerUnit - logisticsPerUnit;
+  const retailNetPerUnit = Math.round(
+    retailGrossPerUnit > 0
+      ? retailGrossPerUnit * (1 - PLATFORM_COMMISSION_RATE)
+      : retailGrossPerUnit
+  );
+
+  const retailReturnPct = costPerUnit > 0 ? (retailNetPerUnit / costPerUnit) * 100 : 0;
+  const wholesaleReturnPct = costPerUnit > 0 ? (wholesaleNetPerUnit / costPerUnit) * 100 : 0;
+
+  return {
+    wholesaleGrossPerUnit,
+    wholesaleNetPerUnit,
+    retailGrossPerUnit,
+    retailNetPerUnit,
+    retailReturnPct,
+    wholesaleReturnPct,
+  };
+}
+
+// ─── Full investment estimate ───────────────────────────────────────
+export interface InvestmentEstimate {
+  // Allocation
+  unitsFinanced: number;
+  inventoryCost: number;
+  unusedAmount: number;
+
+  // Costs
+  logisticsCost: number;
+  totalCost: number;
+
+  // Wholesale channel
+  wholesaleRevenue: number;
+  wholesaleGrossProfit: number;
+  wholesaleCommission: number;
+  wholesaleNetProfit: number;
+  wholesaleROI: number;
+
+  // Retail channel
+  retailRevenue: number;
+  retailGrossProfit: number;
+  retailCommission: number;
+  retailNetProfit: number;
+  retailROI: number;
+}
+
+export function calcInvestmentEstimate(
+  investmentAmount: number,
+  costPerUnit: number,
+  wholesalePrice: number,
+  retailPrice: number,
+  logisticsPerUnit: number,
+  /** Optional override: apply a sell-through rate (0–100). Default 100 (all sold). */
+  sellThroughPct: number = 100
+): InvestmentEstimate {
+  const { units: unitsFinanced, inventoryCost, unusedAmount } = allocateUnits(
+    investmentAmount,
+    costPerUnit
+  );
+
+  const unitsSoldRaw = Math.round(unitsFinanced * (sellThroughPct / 100));
+  const unitsSold = Math.min(unitsSoldRaw, unitsFinanced);
+
+  const logisticsCost = unitsFinanced * logisticsPerUnit;
+  const totalCost = inventoryCost + logisticsCost;
+
+  // Wholesale
+  const wholesaleRevenue = unitsSold * wholesalePrice;
+  const wholesaleGrossProfit = wholesaleRevenue - totalCost;
+  const wholesaleCommission =
+    wholesaleGrossProfit > 0
+      ? Math.round(wholesaleGrossProfit * PLATFORM_COMMISSION_RATE)
+      : 0;
+  const wholesaleNetProfit = wholesaleGrossProfit - wholesaleCommission;
+  const wholesaleROI = inventoryCost > 0 ? (wholesaleNetProfit / inventoryCost) * 100 : 0;
+
+  // Retail
+  const retailRevenue = unitsSold * retailPrice;
+  const retailGrossProfit = retailRevenue - totalCost;
+  const retailCommission =
+    retailGrossProfit > 0
+      ? Math.round(retailGrossProfit * PLATFORM_COMMISSION_RATE)
+      : 0;
+  const retailNetProfit = retailGrossProfit - retailCommission;
+  const retailROI = inventoryCost > 0 ? (retailNetProfit / inventoryCost) * 100 : 0;
+
+  return {
+    unitsFinanced,
+    inventoryCost,
+    unusedAmount,
+    logisticsCost,
+    totalCost,
+    wholesaleRevenue,
+    wholesaleGrossProfit,
+    wholesaleCommission,
+    wholesaleNetProfit,
+    wholesaleROI,
+    retailRevenue,
+    retailGrossProfit,
+    retailCommission,
+    retailNetProfit,
+    retailROI,
+  };
+}
