@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Calculator, TrendingUp, Package, Banknote } from "lucide-react";
+import { Calculator, TrendingUp, Package, Banknote, Truck } from "lucide-react";
 
 const presets = [
   { label: "৳10,000", value: 10000 },
