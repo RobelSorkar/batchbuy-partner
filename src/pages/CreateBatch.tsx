@@ -254,7 +254,7 @@ const CreateBatch = () => {
               {costPerUnit > 0 && totalQty > 0 && (
                 <div className="bg-accent/50 rounded-lg p-4 border border-primary/10">
                   <p className="text-xs text-muted-foreground mb-1">Example: ৳10,000 financing</p>
-                  <p className="text-sm font-medium">= {Math.floor(10000 / costPerUnit)} units owned</p>
+                  <p className="text-sm font-medium">= {Math.floor(10000 / costPerUnit)} units financed</p>
                   <p className="text-xs text-primary mt-1">Net profit: ৳{Math.round(Math.floor(10000 / costPerUnit) * (retail - costPerUnit - logisticsCost) * 0.85).toLocaleString()} <span className="text-muted-foreground">(after logistics + 15% fee)</span></p>
                 </div>
               )}
