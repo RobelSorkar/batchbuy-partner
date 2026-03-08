@@ -79,10 +79,11 @@ const ProfitCalculator = () => {
   const [sellThrough, setSellThrough] = useState(80);
   const [showBreakdown, setShowBreakdown] = useState(false);
 
-  const costPerUnit = 300;
+  const costPerUnit = 380;
+  const wholesalePrice = 520;
   const retailPrice = 650;
 
-  const main = calcScenario(investment, costPerUnit, retailPrice, logisticsCostPerUnit, sellThrough);
+  const main = calcScenario(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
 
   return (
     <section className="py-24 px-6">
