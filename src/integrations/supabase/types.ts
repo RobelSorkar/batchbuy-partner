@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: string | null
+          new_values: Json | null
+          old_values: Json | null
+          record_id: string | null
+          table_name: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       batch_participations: {
         Row: {
           batch_id: string
@@ -448,21 +487,30 @@ export type Database = {
         Row: {
           balance: number
           created_at: string
+          daily_withdrawal_limit: number | null
+          daily_withdrawn: number | null
           id: string
+          last_withdrawal_date: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           balance?: number
           created_at?: string
+          daily_withdrawal_limit?: number | null
+          daily_withdrawn?: number | null
           id?: string
+          last_withdrawal_date?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           balance?: number
           created_at?: string
+          daily_withdrawal_limit?: number | null
+          daily_withdrawn?: number | null
           id?: string
+          last_withdrawal_date?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -484,6 +532,16 @@ export type Database = {
       join_batch: {
         Args: { p_batch_id: string; p_total_invested: number; p_units: number }
         Returns: Json
+      }
+      log_audit_event: {
+        Args: {
+          p_action: string
+          p_new_values?: Json
+          p_old_values?: Json
+          p_record_id: string
+          p_table_name: string
+        }
+        Returns: undefined
       }
       process_deposit: {
         Args: { p_account: string; p_amount: number; p_method: string }
