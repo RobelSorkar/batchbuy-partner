@@ -178,6 +178,14 @@ const ProfitCalculator = () => {
               unitsFinanced={main.unitsFinanced}
             />
 
+            {/* Additional Amount Required */}
+            {main.additionalRequired > 0 && (
+              <div className="bg-accent/30 rounded-xl p-4 border border-accent-foreground/10 flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Additional amount required</span>
+                <span className="font-mono font-bold text-accent-foreground">৳{main.additionalRequired.toLocaleString()}</span>
+              </div>
+            )}
+
             {/* Main Results */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
@@ -188,7 +196,7 @@ const ProfitCalculator = () => {
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
                 <Banknote className="w-5 h-5 text-muted-foreground mb-2" />
                 <div className="text-2xl font-display font-bold text-foreground">
-                  ৳{main.totalCost.toLocaleString()}
+                  ৳{main.totalCostWithLogistics.toLocaleString()}
                 </div>
                 <div className="text-xs text-muted-foreground">Total Cost</div>
               </div>
