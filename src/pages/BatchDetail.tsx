@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JoinBatchDialog from "@/components/JoinBatchDialog";
+import ProductImageZoom from "@/components/ProductImageZoom";
 import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
 import { MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
-import { getProductImage } from "@/utils/productImages";
 
 const statusColors: Record<string, string> = {
   funding: "bg-accent text-accent-foreground",
