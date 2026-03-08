@@ -164,12 +164,6 @@ const ProfitCalculator = () => {
               </div>
             )}
 
-            {isValidInvestment && main.unusedAmount > 0 && (
-              <div className="bg-accent/30 rounded-xl p-4 border border-accent-foreground/10 flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Unused amount returned</span>
-                <span className="font-mono font-bold text-accent-foreground">৳{main.unusedAmount.toLocaleString()}</span>
-              </div>
-            )}
 
             {/* Main Results */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
