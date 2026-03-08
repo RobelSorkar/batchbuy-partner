@@ -1,39 +1,41 @@
-import { Factory, Users, Package, TrendingUp, ShieldCheck, Truck } from "lucide-react";
+import { Package, Eye, Truck, Briefcase } from "lucide-react";
+
+const badges = [
+  { icon: Package, label: "Real Products" },
+  { icon: Eye, label: "Transparent Inventory" },
+  { icon: Truck, label: "Nationwide Distribution" },
+  { icon: Briefcase, label: "Real Business" },
+];
 
 const stats = [
-  { icon: Factory, value: "50+", label: "Production Batches", desc: "Completed & running" },
-  { icon: Users, value: "500+", label: "Active Partners", desc: "Business owners" },
-  { icon: Package, value: "25,000+", label: "Units Produced", desc: "Real products manufactured" },
-  { icon: TrendingUp, value: "৳2.5Cr+", label: "Total Invested", desc: "By verified partners" },
-  { icon: Truck, value: "12+", label: "Warehouses", desc: "Nationwide fulfillment" },
-  { icon: ShieldCheck, value: "100%", label: "Transparent", desc: "Track every unit & taka" },
+  { value: "500+", label: "Partners" },
+  { value: "৳2.5Cr", label: "Production Value" },
+  { value: "50+", label: "Product Batches" },
 ];
 
 const TrustSection = () => {
   return (
-    <section className="py-20 px-6 bg-card border-y border-border">
-      <div className="container max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-accent text-accent-foreground text-sm font-medium mb-4">
-            Trusted by Real Businesses
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 font-display">
-            Built on <span className="text-gradient-primary">real production</span>, not promises
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Every number here represents real products manufactured, real partners earning, and real customers served across Bangladesh.
-          </p>
+    <section className="py-16 px-6 bg-card border-y border-border">
+      <div className="container max-w-5xl mx-auto">
+        {/* Credibility badges */}
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10">
+          {badges.map((b) => (
+            <div
+              key={b.label}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-accent/60 border border-border/50 text-sm font-medium text-accent-foreground"
+            >
+              <b.icon className="w-4 h-4" />
+              {b.label}
+            </div>
+          ))}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center p-4 rounded-xl bg-background border border-border/50 shadow-card">
-              <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center mx-auto mb-3">
-                <stat.icon className="w-5 h-5 text-accent-foreground" />
-              </div>
-              <div className="text-2xl font-display font-bold text-foreground">{stat.value}</div>
-              <div className="text-sm font-medium text-foreground mt-1">{stat.label}</div>
-              <div className="text-xs text-muted-foreground mt-0.5">{stat.desc}</div>
+        {/* Stats */}
+        <div className="flex flex-wrap justify-center gap-10 md:gap-16">
+          {stats.map((s) => (
+            <div key={s.label} className="text-center">
+              <div className="text-3xl md:text-4xl font-display font-bold text-foreground">{s.value}</div>
+              <div className="text-sm text-muted-foreground mt-1">{s.label}</div>
             </div>
           ))}
         </div>
