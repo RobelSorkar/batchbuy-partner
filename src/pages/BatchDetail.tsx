@@ -261,7 +261,7 @@ const BatchDetail = () => {
                             <span className="font-semibold">{ex.unitsFinanced}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Final Investment Required</span>
+                            <span className="text-muted-foreground">Actual Investment</span>
                             <span className="font-semibold">৳{ex.inventoryCost.toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between">

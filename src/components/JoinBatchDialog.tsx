@@ -138,7 +138,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="investment">Financing Amount (BDT)</Label>
+            <Label htmlFor="investment">Minimum Investment (BDT)</Label>
             <Input
               id="investment" type="number" min={MINIMUM_PARTICIPATION_BDT} step={batch.productionCostPerUnit}
               value={investmentInput} onChange={(e) => setInvestmentInput(e.target.value)} className="text-lg font-semibold"
@@ -163,7 +163,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <span className="font-bold text-lg">{est.unitsFinanced}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Final Investment Required</span>
+                <span className="text-muted-foreground">Actual Investment</span>
                 <span className="font-semibold">৳{est.inventoryCost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-xs">
