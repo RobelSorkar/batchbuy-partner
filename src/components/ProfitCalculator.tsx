@@ -82,6 +82,7 @@ const ProfitCalculator = () => {
   const costPerUnit = 380;
   const wholesalePrice = 520;
   const retailPrice = 650;
+  const isValidInvestment = investment >= MINIMUM_PARTICIPATION_BDT;
 
   const main = calcScenario(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
 
