@@ -55,7 +55,7 @@ const PartnerDashboard = () => {
       profitEarned: unitsSold * profitPerUnit * 0.85,
       costPerUnit,
       retailPrice,
-      mode: "platform" as InventoryMode,
+      mode: (p as any).inventory_mode as InventoryMode || "platform",
       status: batch.status === "completed" ? "Completed" : "Active",
     };
   }).filter(Boolean);
