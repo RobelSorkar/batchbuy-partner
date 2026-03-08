@@ -12,6 +12,7 @@ import PartnerDashboard from "./pages/PartnerDashboard";
 import DropshipperDashboard from "./pages/DropshipperDashboard";
 import WalletPage from "./pages/WalletPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import CreateBatch from "./pages/CreateBatch";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/dropshipper" element={<DropshipperDashboard />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/create-batch" element={<CreateBatch />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

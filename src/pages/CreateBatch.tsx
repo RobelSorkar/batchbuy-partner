@@ -1,0 +1,223 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ArrowLeft, Plus, Calculator } from "lucide-react";
+import DashboardLayout from "@/components/DashboardLayout";
+import { MINIMUM_PARTICIPATION_BDT } from "@/types/batch";
+
+const categories = ["Apparel", "Beauty", "Accessories", "Home & Kitchen", "Electronics", "Food & Beverage", "Health", "Sports"];
+
+const CreateBatch = () => {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    productName: "",
+    batchName: "",
+    productionCostPerUnit: "",
+    wholesalePrice: "",
+    retailPrice: "",
+    totalQuantity: "",
+    category: "",
+    description: "",
+    manufacturer: "",
+    warehouse: "",
+    productionTimeDays: "",
+  });
+
+  const update = (key: string, value: string) => setForm((prev) => ({ ...prev, [key]: value }));
+
+  const costPerUnit = Number(form.productionCostPerUnit) || 0;
+  const wholesale = Number(form.wholesalePrice) || 0;
+  const retail = Number(form.retailPrice) || 0;
+  const totalQty = Number(form.totalQuantity) || 0;
+
+  const totalProductionCost = costPerUnit * totalQty;
+  const totalWholesaleRevenue = wholesale * totalQty;
+  const totalRetailRevenue = retail * totalQty;
+  const wholesaleMargin = costPerUnit > 0 ? ((wholesale - costPerUnit) / costPerUnit * 100).toFixed(1) : "0";
+  const retailMargin = costPerUnit > 0 ? ((retail - costPerUnit) / costPerUnit * 100).toFixed(1) : "0";
+  const minUnitsForEntry = costPerUnit > 0 ? Math.ceil(MINIMUM_PARTICIPATION_BDT / costPerUnit) : 0;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In production, this would save to database
+    navigate("/partner");
+  };
+
+  return (
+    <DashboardLayout role="partner">
+      <div className="max-w-4xl space-y-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" /> Back
+        </button>
+
+        <div>
+          <h1 className="text-2xl font-display font-bold">Create New Batch</h1>
+          <p className="text-muted-foreground text-sm mt-1">Set up a new production batch for partners to join</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6">
+          {/* Main Form */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Product Info */}
+            <div className="bg-card rounded-xl p-6 shadow-card border border-border/50 space-y-4">
+              <h2 className="font-display font-semibold text-lg">Product Information</h2>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="productName">Product Name *</Label>
+                  <Input id="productName" placeholder="e.g. Premium Cotton T-Shirt" value={form.productName} onChange={(e) => update("productName", e.target.value)} required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="batchName">Batch Name *</Label>
+                  <Input id="batchName" placeholder="e.g. Batch #47 — Summer Collection" value={form.batchName} onChange={(e) => update("batchName", e.target.value)} required />
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Category *</Label>
+                  <Select value={form.category} onValueChange={(v) => update("category", v)}>
+                    <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                    <SelectContent>
+                      {categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="totalQuantity">Total Production Quantity *</Label>
+                  <Input id="totalQuantity" type="number" min="1" placeholder="e.g. 500" value={form.totalQuantity} onChange={(e) => update("totalQuantity", e.target.value)} required />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea id="description" placeholder="Describe the product, materials, sizes, colors..." rows={4} value={form.description} onChange={(e) => update("description", e.target.value)} />
+              </div>
+            </div>
+
+            {/* Pricing */}
+            <div className="bg-card rounded-xl p-6 shadow-card border border-border/50 space-y-4">
+              <h2 className="font-display font-semibold text-lg">Pricing (BDT)</h2>
+
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="productionCost">Production Cost / Unit *</Label>
+                  <Input id="productionCost" type="number" min="1" placeholder="e.g. 300" value={form.productionCostPerUnit} onChange={(e) => update("productionCostPerUnit", e.target.value)} required />
+                  <p className="text-xs text-muted-foreground">What partners pay to own a unit</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="wholesalePrice">Wholesale Price *</Label>
+                  <Input id="wholesalePrice" type="number" min="1" placeholder="e.g. 450" value={form.wholesalePrice} onChange={(e) => update("wholesalePrice", e.target.value)} required />
+                  <p className="text-xs text-muted-foreground">Bulk/distributor pricing</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="retailPrice">Retail Price *</Label>
+                  <Input id="retailPrice" type="number" min="1" placeholder="e.g. 650" value={form.retailPrice} onChange={(e) => update("retailPrice", e.target.value)} required />
+                  <p className="text-xs text-muted-foreground">End-customer pricing</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Production Details */}
+            <div className="bg-card rounded-xl p-6 shadow-card border border-border/50 space-y-4">
+              <h2 className="font-display font-semibold text-lg">Production Details</h2>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="manufacturer">Manufacturer</Label>
+                  <Input id="manufacturer" placeholder="e.g. Dhaka Textile Mills Ltd." value={form.manufacturer} onChange={(e) => update("manufacturer", e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="warehouse">Warehouse</Label>
+                  <Input id="warehouse" placeholder="e.g. Gazipur Central Warehouse" value={form.warehouse} onChange={(e) => update("warehouse", e.target.value)} />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="productionTime">Estimated Production Time (days)</Label>
+                <Input id="productionTime" type="number" min="1" placeholder="e.g. 21" value={form.productionTimeDays} onChange={(e) => update("productionTimeDays", e.target.value)} />
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button type="submit" size="lg" className="gap-2">
+                <Plus className="w-4 h-4" /> Create Batch
+              </Button>
+              <Button type="button" variant="outline" size="lg" onClick={() => navigate(-1)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+
+          {/* Sidebar — Live Calculator */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-24 bg-card rounded-xl shadow-card border border-border/50 p-6 space-y-5">
+              <div className="flex items-center gap-2">
+                <Calculator className="w-5 h-5 text-primary" />
+                <h3 className="font-display font-semibold">Batch Summary</h3>
+              </div>
+
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Total Production Cost</span>
+                  <span className="font-semibold">৳{totalProductionCost.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Wholesale Revenue</span>
+                  <span className="font-semibold">৳{totalWholesaleRevenue.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Retail Revenue</span>
+                  <span className="font-semibold">৳{totalRetailRevenue.toLocaleString()}</span>
+                </div>
+
+                <div className="border-t border-border/50 pt-3">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Wholesale Margin</span>
+                    <span className="font-semibold text-primary">{wholesaleMargin}%</span>
+                  </div>
+                  <div className="flex justify-between mt-1">
+                    <span className="text-muted-foreground">Retail Margin</span>
+                    <span className="font-semibold text-primary">{retailMargin}%</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-border/50 pt-3">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Min Participation</span>
+                    <span className="font-semibold">৳{MINIMUM_PARTICIPATION_BDT.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between mt-1">
+                    <span className="text-muted-foreground">Min Units to Join</span>
+                    <span className="font-semibold">{minUnitsForEntry || "—"} units</span>
+                  </div>
+                </div>
+              </div>
+
+              {costPerUnit > 0 && totalQty > 0 && (
+                <div className="bg-accent/50 rounded-lg p-4 border border-primary/10">
+                  <p className="text-xs text-muted-foreground mb-1">Example: ৳10,000 investment</p>
+                  <p className="text-sm font-medium">
+                    = {Math.floor(10000 / costPerUnit)} units owned
+                  </p>
+                  <p className="text-xs text-primary mt-1">
+                    Potential retail profit: ৳{(Math.floor(10000 / costPerUnit) * (retail - costPerUnit)).toLocaleString()}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </form>
+      </div>
+    </DashboardLayout>
+  );
+};
+
+export default CreateBatch;

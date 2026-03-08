@@ -33,9 +33,14 @@ const PartnerDashboard = () => {
             <h1 className="text-2xl font-display font-bold">Welcome back, Partner</h1>
             <p className="text-muted-foreground text-sm mt-1">Your production portfolio overview</p>
           </div>
-          <Link to="/marketplace">
-            <Button>Browse Batches</Button>
-          </Link>
+          <div className="flex gap-3">
+            <Link to="/marketplace">
+              <Button variant="outline">Browse Batches</Button>
+            </Link>
+            <Link to="/create-batch">
+              <Button>Create Batch</Button>
+            </Link>
+          </div>
         </div>
 
         {/* Stats */}
