@@ -5,6 +5,7 @@ interface FinancialBreakdownProps {
   onToggle: () => void;
   investment: number;
   costPerUnit: number;
+  wholesalePrice: number;
   retailPrice: number;
   logisticsCostPerUnit: number;
   sellThrough: number;
@@ -13,8 +14,12 @@ interface FinancialBreakdownProps {
     unitsSold: number;
     totalCost: number;
     totalLogistics: number;
-    revenueFromSold: number;
-    grossProfit: number;
+    totalCostWithLogistics: number;
+    wholesaleRevenue: number;
+    wholesaleGrossProfit: number;
+    retailRevenue: number;
+    retailGrossProfit: number;
+    additionalRequired: number;
     commission: number;
     netProfit: number;
     roi: number;
@@ -27,19 +32,21 @@ function Step({
   bold,
   muted,
   primary,
+  negative,
 }: {
   label: string;
   value: string;
   bold?: boolean;
   muted?: boolean;
   primary?: boolean;
+  negative?: boolean;
 }) {
   return (
     <div className="flex justify-between items-center">
       <span className={muted ? "text-muted-foreground" : "text-foreground"}>{label}</span>
       <span
         className={`font-mono ${bold ? "font-bold" : "font-medium"} ${
-          primary ? "text-primary" : muted ? "text-muted-foreground" : "text-foreground"
+          primary ? "text-primary" : negative ? "text-destructive" : muted ? "text-muted-foreground" : "text-foreground"
         }`}
       >
         {value}
@@ -53,13 +60,12 @@ const FinancialBreakdown = ({
   onToggle,
   investment,
   costPerUnit,
+  wholesalePrice,
   retailPrice,
   logisticsCostPerUnit,
   sellThrough,
   main,
 }: FinancialBreakdownProps) => {
-  const totalCostWithLogistics = main.totalCost + main.totalLogistics;
-
   return (
     <>
       <button
@@ -75,16 +81,25 @@ const FinancialBreakdown = ({
         <div className="bg-muted/30 rounded-xl p-5 space-y-3 text-sm border border-border/50">
           <h4 className="font-semibold text-foreground mb-3">Financial Breakdown</h4>
           <div className="space-y-2">
+            {/* Units */}
             <Step label="Financing Amount" value={`৳${investment.toLocaleString()}`} />
             <Step
-              label={`Units Financed (৳${investment.toLocaleString()} ÷ ৳${costPerUnit})`}
+              label={`Units Financed — CEIL(৳${investment.toLocaleString()} ÷ ৳${costPerUnit})`}
               value={main.unitsFinanced.toString()}
             />
+            {main.additionalRequired > 0 && (
+              <Step
+                label={`Additional Amount Required (৳${main.totalCost.toLocaleString()} − ৳${investment.toLocaleString()})`}
+                value={`৳${main.additionalRequired.toLocaleString()}`}
+                bold
+              />
+            )}
             <Step
               label={`Units Sold (${main.unitsFinanced} × ${sellThrough}%)`}
               value={main.unitsSold.toString()}
             />
 
+            {/* Costs */}
             <div className="border-t border-border/30 pt-2" />
             <Step
               label={`Inventory Purchase Cost (${main.unitsFinanced} × ৳${costPerUnit})`}
@@ -96,30 +111,46 @@ const FinancialBreakdown = ({
             />
             <Step
               label="Total Cost (Inventory + Logistics)"
-              value={`৳${totalCostWithLogistics.toLocaleString()}`}
+              value={`৳${main.totalCostWithLogistics.toLocaleString()}`}
               bold
             />
 
+            {/* Wholesale */}
             <div className="border-t border-border/30 pt-2" />
             <Step
-              label={`Revenue (${main.unitsSold} × ৳${retailPrice})`}
-              value={`৳${main.revenueFromSold.toLocaleString()}`}
+              label={`Wholesale Revenue (${main.unitsSold} × ৳${wholesalePrice})`}
+              value={`৳${main.wholesaleRevenue.toLocaleString()}`}
             />
             <Step
-              label="Gross Profit (Revenue − Total Cost)"
-              value={`৳${main.grossProfit.toLocaleString()}`}
+              label="Wholesale Gross Profit (Revenue − Total Cost)"
+              value={`৳${main.wholesaleGrossProfit.toLocaleString()}`}
               bold
+              negative={main.wholesaleGrossProfit < 0}
+            />
+
+            {/* Retail */}
+            <div className="border-t border-border/30 pt-2" />
+            <Step
+              label={`Retail Revenue (${main.unitsSold} × ৳${retailPrice})`}
+              value={`৳${main.retailRevenue.toLocaleString()}`}
             />
             <Step
-              label="Platform Commission (15% of gross profit)"
+              label="Retail Gross Profit (Revenue − Total Cost)"
+              value={`৳${main.retailGrossProfit.toLocaleString()}`}
+              bold
+              negative={main.retailGrossProfit < 0}
+            />
+
+            {/* Commission & Net */}
+            <div className="border-t border-border/30 pt-2" />
+            <Step
+              label="Platform Commission (15% of retail gross profit)"
               value={`− ৳${main.commission.toLocaleString()}`}
               muted
             />
-
-            <div className="border-t border-border/30 pt-2" />
             <Step label="Net Profit" value={`৳${main.netProfit.toLocaleString()}`} bold primary />
             <Step
-              label="ROI (Net Profit ÷ Financing Amount × 100)"
+              label="ROI (Net Profit ÷ Total Investment × 100)"
               value={`${main.roi.toFixed(1)}%`}
               bold
               primary

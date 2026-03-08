@@ -237,7 +237,7 @@ const ProfitCalculator = () => {
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {scenarios.map((s) => {
-                  const sc = calcScenario(investment, costPerUnit, retailPrice, logisticsCostPerUnit, s.rate);
+                  const sc = calcScenario(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, s.rate);
                   return (
                     <div
                       key={s.label}
