@@ -106,11 +106,12 @@ const AnalyticsPage = () => {
 
   // Top partners by investment
   const partnerInvestments = participations.reduce((acc: any, p: any) => {
-    acc[p.user_id] = (acc[p.user_id] || 0) + Number(p.total_invested);
+    if (!acc[p.user_id]) acc[p.user_id] = { invested: 0, name: p.profiles?.full_name || "Unknown" };
+    acc[p.user_id].invested += Number(p.total_invested);
     return acc;
   }, {});
   const topPartners = Object.entries(partnerInvestments)
-    .map(([userId, invested]) => ({ userId, invested: invested as number }))
+    .map(([userId, data]: [string, any]) => ({ userId, invested: data.invested, name: data.name }))
     .sort((a, b) => b.invested - a.invested)
     .slice(0, 5);
 
