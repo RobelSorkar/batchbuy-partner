@@ -264,9 +264,11 @@ const BatchDetail = () => {
                       {batch.status === "completed" ? "Batch Completed" : batch.remaining_units === 0 ? "Fully Funded" : "Not Available"}
                     </Button>
                   )}
-                  <Button variant="outline" className="w-full" size="lg">
-                    Add to Watchlist
-                  </Button>
+                  <Link to="/marketplace">
+                    <Button variant="outline" className="w-full" size="lg">
+                      Browse More Batches
+                    </Button>
+                  </Link>
                 </div>
 
                 <p className="text-xs text-muted-foreground text-center">

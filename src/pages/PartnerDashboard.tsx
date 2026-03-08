@@ -52,7 +52,7 @@ const PartnerDashboard = () => {
       totalOwned: p.units_owned,
       unitsSold,
       remaining: p.units_owned - unitsSold,
-      profitEarned: unitsSold * profitPerUnit * 0.85,
+      profitEarned: unitsSold * profitPerUnit * 0.85, // net after 15% platform commission
       costPerUnit,
       retailPrice,
       mode: (p as any).inventory_mode as InventoryMode || "platform",

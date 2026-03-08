@@ -121,7 +121,13 @@ const DropshipperProducts = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((product) => (
             <div key={product.id} className="bg-card rounded-xl shadow-card border border-border/50 overflow-hidden group">
-              <div className="h-36 bg-muted/50 flex items-center justify-center text-5xl">{product.image}</div>
+              <div className="h-36 bg-muted/50 flex items-center justify-center overflow-hidden">
+                {product.image && product.image.startsWith("http") ? (
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-5xl">{product.image}</span>
+                )}
+              </div>
               <div className="p-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">{product.category}</span>
