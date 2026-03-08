@@ -12,10 +12,10 @@ interface FinancialBreakdownProps {
   main: {
     unitsFinanced: number;
     unitsSold: number;
+    inventoryCost: number;
+    logisticsCost: number;
+    marketingCost: number;
     totalCost: number;
-    totalLogistics: number;
-    totalMarketing: number;
-    totalCostWithLogisticsAndMarketing: number;
     wholesaleRevenue: number;
     wholesaleGrossProfit: number;
     retailRevenue: number;
