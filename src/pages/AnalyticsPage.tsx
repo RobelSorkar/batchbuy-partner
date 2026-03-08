@@ -213,7 +213,7 @@ const AnalyticsPage = () => {
                   <div className="flex items-center gap-3">
                     <span className="text-lg font-bold text-muted-foreground w-6">#{i + 1}</span>
                     <div>
-                      <div className="text-sm font-medium">{p.userId.substring(0, 8)}…</div>
+                      <div className="text-sm font-medium">{p.name}</div>
                     </div>
                   </div>
                   <div className="text-sm font-bold text-primary">৳{p.invested.toLocaleString()}</div>
