@@ -81,13 +81,30 @@ export function useBatchParticipations(batchId: string | undefined) {
     queryKey: ["batch-participations", batchId],
     queryFn: async () => {
       if (!batchId) return [];
-      const { data, error } = await supabase
+      // Fetch participations first
+      const { data: participations, error } = await supabase
         .from("batch_participations")
-        .select("*, profiles:user_id(full_name)")
+        .select("*")
         .eq("batch_id", batchId)
         .order("joined_at", { ascending: false });
       if (error) throw error;
-      return data;
+      if (!participations || participations.length === 0) return [];
+
+      // Fetch profiles for all participant user_ids
+      const userIds = [...new Set(participations.map((p) => p.user_id))];
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("user_id, full_name")
+        .in("user_id", userIds);
+
+      const profileMap = new Map(
+        (profiles || []).map((p) => [p.user_id, p.full_name])
+      );
+
+      return participations.map((p) => ({
+        ...p,
+        profiles: { full_name: profileMap.get(p.user_id) || "Partner" },
+      }));
     },
     enabled: !!batchId,
   });
