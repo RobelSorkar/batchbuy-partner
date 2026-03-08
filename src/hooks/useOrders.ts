@@ -2,13 +2,18 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 
-export function useOrders(role?: string) {
+export function useOrders(role?: string, channel?: string) {
   const { user } = useAuth();
   return useQuery({
-    queryKey: ["orders", role, user?.id],
+    queryKey: ["orders", role, channel, user?.id],
     queryFn: async () => {
       if (!user) return [];
       let query = supabase.from("orders").select("*, order_items(*)").order("created_at", { ascending: false });
+      
+      // Filter by channel if provided (e.g., for distributor orders)
+      if (channel) {
+        query = query.eq("channel", channel);
+      }
       
       // Sellers only see their own; admins/warehouse see all (RLS handles this)
       const { data, error } = await query;

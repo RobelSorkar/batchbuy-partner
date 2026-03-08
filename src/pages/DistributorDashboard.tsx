@@ -15,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 const DistributorDashboard = () => {
   const { user } = useAuth();
   const { data: wallet } = useWallet();
-  const { data: orders = [], isLoading: ordersLoading } = useOrders("distributor");
+  const { data: orders = [], isLoading: ordersLoading } = useOrders("distributor", "distributor");
   const createOrder = useCreateOrder();
   const { toast } = useToast();
 
