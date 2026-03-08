@@ -96,20 +96,20 @@ const FinancialBreakdown = ({
             {/* Costs */}
             <div className="border-t border-border/30 pt-2" />
             <Step
-              label={`Actual Investment (${main.unitsFinanced} × ৳${costPerUnit})`}
-              value={`৳${main.totalCost.toLocaleString()}`}
+              label={`Inventory Cost (${main.unitsFinanced} × ৳${costPerUnit})`}
+              value={`৳${main.inventoryCost.toLocaleString()}`}
             />
             <Step
               label={`Logistics Cost (${main.unitsFinanced} × ৳${logisticsCostPerUnit})`}
-              value={`৳${main.totalLogistics.toLocaleString()}`}
+              value={`৳${main.logisticsCost.toLocaleString()}`}
             />
             <Step
-              label={`Marketing Cost (10% of selling price)`}
-              value={`৳${main.totalMarketing.toLocaleString()}`}
+              label={`Marketing Cost (10% of retail revenue)`}
+              value={`৳${main.marketingCost.toLocaleString()}`}
             />
             <Step
               label="Total Cost (Inventory + Logistics + Marketing)"
-              value={`৳${main.totalCostWithLogisticsAndMarketing.toLocaleString()}`}
+              value={`৳${main.totalCost.toLocaleString()}`}
               bold
             />
 

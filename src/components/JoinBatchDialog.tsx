@@ -162,17 +162,25 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <span className="text-muted-foreground">Units Financed (CEIL)</span>
                 <span className="font-bold text-lg">{est.unitsFinanced}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Actual Investment</span>
-                <span className="font-semibold">৳{est.inventoryCost.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">Logistics Cost ({est.unitsFinanced} × ৳{logisticsCost})</span>
-                <span>৳{est.logisticsCost.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Total Cost (Inventory + Logistics)</span>
-                <span className="font-semibold">৳{est.totalCost.toLocaleString()}</span>
+
+              {/* Cost Breakdown */}
+              <div className="space-y-1.5 bg-muted/30 rounded-lg p-3">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Inventory Cost ({est.unitsFinanced} × ৳{batch.productionCostPerUnit})</span>
+                  <span>৳{est.inventoryCost.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Logistics Cost ({est.unitsFinanced} × ৳{logisticsCost})</span>
+                  <span>৳{est.logisticsCost.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Marketing Cost (10% of retail revenue)</span>
+                  <span>৳{est.marketingCost.toLocaleString()}</span>
+                </div>
+                <div className="border-t border-border/30 pt-1.5 flex justify-between">
+                  <span className="font-medium text-foreground">Total Cost</span>
+                  <span className="font-semibold">৳{est.totalCost.toLocaleString()}</span>
+                </div>
               </div>
 
               <div className="border-t border-border/50 pt-3 space-y-3">
