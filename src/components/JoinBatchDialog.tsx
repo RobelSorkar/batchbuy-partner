@@ -157,14 +157,15 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
               <div className="border-t border-border/50 pt-3 space-y-2">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <TrendingUp className="w-4 h-4 text-primary" />
-                  <span className="font-medium text-foreground">Profit Estimates</span>
+                  <span className="font-medium text-foreground">Net Profit Estimates</span>
+                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">after 15% commission</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">If sold at wholesale</span>
                   <span className="font-semibold text-primary">
-                    ৳{(units * (batch.wholesalePrice - batch.productionCostPerUnit)).toLocaleString()}
+                    ৳{Math.round(units * (batch.wholesalePrice - batch.productionCostPerUnit) * 0.85).toLocaleString()}
                     <span className="text-xs ml-1">
-                      ({((batch.wholesalePrice - batch.productionCostPerUnit) / batch.productionCostPerUnit * 100).toFixed(0)}%)
+                      ({((batch.wholesalePrice - batch.productionCostPerUnit) * 0.85 / batch.productionCostPerUnit * 100).toFixed(0)}%)
                     </span>
                   </span>
                 </div>
