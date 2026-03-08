@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -29,28 +30,30 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/batch/:id" element={<BatchDetail />} />
-          <Route path="/partner" element={<PartnerDashboard />} />
-          <Route path="/dropshipper" element={<DropshipperDashboard />} />
-          <Route path="/dropshipper/products" element={<DropshipperProducts />} />
-          <Route path="/dropshipper/orders" element={<DropshipperOrders />} />
-          <Route path="/wallet" element={<WalletPage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/create-batch" element={<CreateBatch />} />
-          <Route path="/warehouse" element={<WarehousePage />} />
-          <Route path="/orders" element={<OrderManagement role="admin" />} />
-          <Route path="/admin/orders" element={<OrderManagement role="admin" />} />
-          <Route path="/warehouse/orders" element={<OrderManagement role="warehouse" />} />
-          <Route path="/admin/distribution" element={<DistributionPage />} />
-          <Route path="/admin/analytics" element={<AnalyticsPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/batch/:id" element={<BatchDetail />} />
+            <Route path="/partner" element={<PartnerDashboard />} />
+            <Route path="/dropshipper" element={<DropshipperDashboard />} />
+            <Route path="/dropshipper/products" element={<DropshipperProducts />} />
+            <Route path="/dropshipper/orders" element={<DropshipperOrders />} />
+            <Route path="/wallet" element={<WalletPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/create-batch" element={<CreateBatch />} />
+            <Route path="/warehouse" element={<WarehousePage />} />
+            <Route path="/orders" element={<OrderManagement role="admin" />} />
+            <Route path="/admin/orders" element={<OrderManagement role="admin" />} />
+            <Route path="/warehouse/orders" element={<OrderManagement role="warehouse" />} />
+            <Route path="/admin/distribution" element={<DistributionPage />} />
+            <Route path="/admin/analytics" element={<AnalyticsPage />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
