@@ -51,7 +51,7 @@ const HeroSection = () => {
             >
               <Link to="/signup">
                 <Button variant="hero" size="lg">
-                  Start Investing <ArrowRight className="w-4 h-4 ml-1" />
+                  Start Business <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
               <Link to="/marketplace">
