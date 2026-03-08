@@ -12,13 +12,16 @@ const presets = [
 const ProfitCalculator = () => {
   const [investment, setInvestment] = useState(25000);
 
-  // Example product: cost 300, retail 650
+  // Example product: cost 300, retail 650, logistics 40/unit
   const costPerUnit = 300;
   const retailPrice = 650;
+  const logisticsCostPerUnit = 40;
   const units = Math.floor(investment / costPerUnit);
   const totalCost = units * costPerUnit;
   const revenue = units * retailPrice;
-  const profit = revenue - totalCost;
+  const logisticsCost = units * logisticsCostPerUnit;
+  const grossProfit = revenue - totalCost - logisticsCost;
+  const profit = Math.round(grossProfit * 0.85); // after 15% platform commission
   const returnPct = totalCost > 0 ? ((profit / totalCost) * 100).toFixed(0) : "0";
 
   return (
