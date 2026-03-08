@@ -147,10 +147,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
             <div className="font-display font-semibold text-lg">{activeLabel}</div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative p-2 rounded-lg hover:bg-muted transition-colors">
-              <Bell className="w-5 h-5 text-muted-foreground" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full" />
-            </button>
+            <NotificationDropdown />
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
               {role === "admin" ? "A" : role === "partner" ? "P" : role === "warehouse" ? "W" : "D"}
             </div>
