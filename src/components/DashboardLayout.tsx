@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, Settings, LogOut, Menu, Bell, Store, ShieldCheck, Warehouse } from "lucide-react";
+import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, Settings, LogOut, Menu, Bell, Store, ShieldCheck, Warehouse, ClipboardList } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 
 interface DashboardLayoutProps {
@@ -27,6 +27,7 @@ const dropshipperNav = [
 const adminNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
   { icon: Layers, label: "All Batches", href: "/admin/batches" },
+  { icon: ClipboardList, label: "Orders", href: "/admin/orders" },
   { icon: Users, label: "Users", href: "/admin/users" },
   { icon: Warehouse, label: "Warehouse", href: "/warehouse" },
   { icon: Truck, label: "Fulfillment", href: "/admin/fulfillment" },
@@ -38,7 +39,7 @@ const adminNav = [
 const warehouseNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/warehouse" },
   { icon: Package, label: "Inventory", href: "/warehouse/inventory" },
-  { icon: ShoppingCart, label: "Orders", href: "/warehouse/orders" },
+  { icon: ClipboardList, label: "Orders", href: "/warehouse/orders" },
   { icon: Truck, label: "Fulfillment", href: "/warehouse/fulfillment" },
   { icon: Settings, label: "Settings", href: "/warehouse/settings" },
 ];
