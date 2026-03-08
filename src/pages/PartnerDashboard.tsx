@@ -43,8 +43,9 @@ const PartnerDashboard = () => {
     if (!batch) return null;
     const costPerUnit = Number(batch.production_cost_per_unit);
     const retailPrice = Number(batch.retail_price);
+    const logisticsCostPerUnit = Number((batch as any).logistics_cost_per_unit) || 0;
     const unitsSold = p.units_sold || 0;
-    const profitPerUnit = retailPrice - costPerUnit;
+    const profitPerUnit = retailPrice - costPerUnit - logisticsCostPerUnit;
     return {
       id: p.id,
       batchName: batch.batch_name,
