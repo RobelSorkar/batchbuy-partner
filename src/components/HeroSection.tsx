@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Factory, Warehouse, Store, Users, ChevronRight } from "lucide-react";
+import { ArrowRight, Users, Factory, Package, Store, TrendingUp, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-supply-chain.jpg";
 
-const supplyChainSteps = [
-  { icon: Factory, label: "Manufacturing", desc: "Batch production" },
-  { icon: Warehouse, label: "Warehousing", desc: "Quality & storage" },
-  { icon: Store, label: "Sellers", desc: "Multi-channel sales" },
-  { icon: Users, label: "Customers", desc: "Nationwide delivery" },
+const flowSteps = [
+  { icon: Users, label: "People Pool", desc: "Partners co-invest together" },
+  { icon: Factory, label: "Factory Production", desc: "Manufacturing begins" },
+  { icon: Package, label: "Product Units", desc: "You own real units" },
+  { icon: Store, label: "Sellers / Shops / Dropship", desc: "Multi-channel sales" },
+  { icon: TrendingUp, label: "Profit", desc: "Earnings & withdrawals" },
 ];
 
 const HeroSection = () => {
@@ -16,7 +17,7 @@ const HeroSection = () => {
       {/* Background */}
       <div className="absolute inset-0">
         <img src={heroBg} alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(215,30%,8%)]/80 via-[hsl(215,35%,12%)]/60 to-[hsl(220,30%,18%)]/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(215,30%,8%)]/85 via-[hsl(215,35%,12%)]/70 to-[hsl(220,30%,18%)]/75" />
       </div>
 
       <div className="relative z-10 container max-w-6xl mx-auto px-6 py-20">
@@ -32,17 +33,18 @@ const HeroSection = () => {
               className="text-4xl md:text-5xl lg:text-[3.4rem] font-bold font-display leading-[1.12] mb-6 animate-fade-in"
               style={{ animationDelay: "100ms" }}
             >
-              <span className="text-primary-foreground">From factory floor</span>
+              <span className="text-primary-foreground">Produce Together.</span>
               <br />
-              <span className="text-primary-foreground">to </span>
-              <span className="text-primary">customer door.</span>
+              <span className="text-primary-foreground">Own Products.</span>
+              <br />
+              <span className="text-primary">Sell Anywhere.</span>
             </h1>
 
             <p
               className="text-lg text-primary-foreground/65 mb-8 max-w-lg leading-relaxed animate-fade-in"
               style={{ animationDelay: "200ms" }}
             >
-              Co-invest in real product batches, own units from manufacturing, and sell through retail, dropship, and distribution channels — all on one platform.
+              Join production batches with other partners, own real product units, and sell through dropshippers, shops, or distributors.
             </p>
 
             <div
@@ -51,12 +53,12 @@ const HeroSection = () => {
             >
               <Link to="/signup">
                 <Button variant="hero" size="lg">
-                  Start Business <ArrowRight className="w-4 h-4 ml-1" />
+                  Join Production Batch <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
               <Link to="/marketplace">
                 <Button variant="hero-outline" size="lg">
-                  Browse Batches
+                  Browse Products
                 </Button>
               </Link>
             </div>
@@ -80,48 +82,55 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right — Supply Chain Flow */}
+          {/* Right — Supply Chain Flow Illustration */}
           <div
             className="hidden lg:block animate-fade-in"
             style={{ animationDelay: "350ms" }}
           >
             <div className="relative bg-[hsl(215,25%,12%)]/60 backdrop-blur-xl border border-[hsl(215,20%,25%)]/40 rounded-2xl p-8">
               <p className="text-xs font-medium uppercase tracking-widest text-primary/80 mb-6">
-                How it works
+                The Journey
               </p>
 
               <div className="space-y-0">
-                {supplyChainSteps.map((step, i) => (
-                  <div key={step.label} className="flex items-start gap-4">
-                    {/* Timeline */}
-                    <div className="flex flex-col items-center">
+                {flowSteps.map((step, i) => (
+                  <div key={step.label}>
+                    <div className="flex items-center gap-4">
+                      {/* Icon */}
                       <div
                         className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
-                          i === 0
+                          i === flowSteps.length - 1
                             ? "bg-primary text-primary-foreground"
                             : "bg-[hsl(215,20%,18%)] text-primary/70 border border-[hsl(215,20%,25%)]"
                         }`}
                       >
                         <step.icon className="w-5 h-5" />
                       </div>
-                      {i < supplyChainSteps.length - 1 && (
-                        <div className="w-px h-8 bg-gradient-to-b from-primary/40 to-[hsl(215,20%,25%)]" />
-                      )}
+
+                      {/* Text */}
+                      <div className="flex-1">
+                        <div className="text-sm font-display font-semibold text-primary-foreground">
+                          {step.label}
+                        </div>
+                        <div className="text-xs text-primary-foreground/45 mt-0.5">
+                          {step.desc}
+                        </div>
+                      </div>
+
+                      {/* Step number */}
+                      <span className="text-xs font-mono text-primary-foreground/20">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
                     </div>
 
-                    {/* Content */}
-                    <div className="pt-2 pb-4">
-                      <div className="text-sm font-display font-semibold text-primary-foreground">
-                        {step.label}
+                    {/* Connector arrow */}
+                    {i < flowSteps.length - 1 && (
+                      <div className="flex items-center gap-4 py-1.5">
+                        <div className="w-11 flex justify-center">
+                          <ChevronDown className="w-4 h-4 text-primary/30" />
+                        </div>
+                        <div className="flex-1 h-px bg-gradient-to-r from-[hsl(215,20%,25%)]/40 to-transparent" />
                       </div>
-                      <div className="text-xs text-primary-foreground/45 mt-0.5">
-                        {step.desc}
-                      </div>
-                    </div>
-
-                    {/* Arrow to next */}
-                    {i < supplyChainSteps.length - 1 && (
-                      <ChevronRight className="w-4 h-4 text-primary/30 mt-3 ml-auto" />
                     )}
                   </div>
                 ))}
