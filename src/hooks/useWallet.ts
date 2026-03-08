@@ -52,7 +52,7 @@ export function useWithdraw() {
         type: "withdrawal",
         amount,
         description: `Withdrawal to ${method} — ${account}`,
-        status: "processing",
+        status: "pending",
       });
       if (txnError) throw txnError;
 
