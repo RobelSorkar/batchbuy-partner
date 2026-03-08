@@ -36,7 +36,7 @@ const inventoryData: InventoryItem[] = [
   },
   {
     id: "2", batchName: "Batch #23", productName: "Organic Skincare Set",
-    totalOwned: 30, collected: 0, listedForSale: 30, sold: 12, remaining: 18,
+    totalOwned: 30, collected: 0, listedForSale: 18, sold: 12, remaining: 18,
     profitEarned: 8400, costPerUnit: 500, retailPrice: 1200, mode: "platform", status: "Active",
   },
   {
