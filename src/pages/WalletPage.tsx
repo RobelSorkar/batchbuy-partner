@@ -105,6 +105,22 @@ const WalletPage = () => {
     setTimeout(() => { setReinvestSuccess(false); setReinvestAmount(""); setReinvestBatchId(""); }, 300);
   };
 
+  const handleDeposit = async () => {
+    const amt = Number(depositAmount);
+    if (amt < 500 || !depositAccount) return;
+    try {
+      await deposit.mutateAsync({ amount: amt, method: depositMethod, account: depositAccount });
+      setDepositSuccess(true);
+    } catch (e: any) {
+      toast({ title: "Deposit failed", description: e.message, variant: "destructive" });
+    }
+  };
+
+  const closeDeposit = () => {
+    setDepositOpen(false);
+    setTimeout(() => { setDepositSuccess(false); setDepositAmount(""); setDepositAccount(""); }, 300);
+  };
+
   if (walletLoading || txnLoading) {
     return <DashboardLayout role="partner"><div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div></DashboardLayout>;
   }
