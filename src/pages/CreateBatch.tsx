@@ -48,6 +48,13 @@ const CreateBatch = () => {
     if (!user) return;
     setLoading(true);
 
+    // Upload image if selected
+    let imageUrl: string | null = null;
+    if (imageFile) {
+      const path = `batches/${Date.now()}-${imageFile.name}`;
+      imageUrl = await uploadImage(imageFile, path);
+    }
+
     const { error } = await supabase.from("batches").insert({
       product_name: form.productName,
       batch_name: form.batchName,
