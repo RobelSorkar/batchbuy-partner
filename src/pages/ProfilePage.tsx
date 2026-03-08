@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
-import { User, Phone, MapPin, Loader2, Save, ArrowLeft } from "lucide-react";
+import { User, Phone, MapPin, Loader2, Save, ArrowLeft, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +27,9 @@ const ProfilePage = () => {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<ProfileFormData>({ full_name: "", phone: "", address: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ["profile", user?.id],
@@ -49,8 +53,54 @@ const ProfilePage = () => {
         phone: profile.phone || "",
         address: profile.address || "",
       });
+      setAvatarUrl(profile.avatar_url || null);
     }
   }, [profile]);
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Invalid file", description: "Please select an image file.", variant: "destructive" });
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Max size is 2MB.", variant: "destructive" });
+      return;
+    }
+
+    setUploadingAvatar(true);
+    const ext = file.name.split(".").pop();
+    const path = `avatars/${user.id}.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("product-images")
+      .upload(path, file, { upsert: true });
+
+    if (uploadError) {
+      toast({ title: "Upload failed", description: uploadError.message, variant: "destructive" });
+      setUploadingAvatar(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage.from("product-images").getPublicUrl(path);
+    const newUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ avatar_url: newUrl })
+      .eq("user_id", user.id);
+
+    if (updateError) {
+      toast({ title: "Error", description: updateError.message, variant: "destructive" });
+    } else {
+      setAvatarUrl(newUrl);
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      toast({ title: "Avatar updated" });
+    }
+    setUploadingAvatar(false);
+  };
 
   const updateProfile = useMutation({
     mutationFn: async (data: ProfileFormData) => {
@@ -116,13 +166,34 @@ const ProfilePage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 mb-2">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="w-5 h-5 text-primary" />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarUpload}
+              />
+              <div className="flex flex-col items-center gap-3 p-4 rounded-lg bg-muted/50 mb-2">
+                <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                  <Avatar className="w-20 h-20 border-2 border-border">
+                    {avatarUrl ? (
+                      <AvatarImage src={avatarUrl} alt="Avatar" />
+                    ) : null}
+                    <AvatarFallback className="text-2xl bg-primary/10 text-primary">
+                      {form.full_name?.[0]?.toUpperCase() || <User className="w-8 h-8" />}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                    {uploadingAvatar ? (
+                      <Loader2 className="w-5 h-5 animate-spin text-white" />
+                    ) : (
+                      <Camera className="w-5 h-5 text-white" />
+                    )}
+                  </div>
                 </div>
-                <div>
+                <div className="text-center">
                   <p className="text-sm font-medium">{user?.email}</p>
-                  <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+                  <p className="text-xs text-muted-foreground">Click photo to change</p>
                 </div>
               </div>
 
