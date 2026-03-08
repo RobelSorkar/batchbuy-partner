@@ -1,29 +1,153 @@
 import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import DashboardLayout from "@/components/DashboardLayout";
 import {
   Search, AlertTriangle, CheckCircle, ShieldAlert, Eye, Settings2,
-  TrendingUp, Package, ArrowUpRight, ArrowDownRight, Info, ToggleLeft, ToggleRight
+  TrendingUp, Package, ArrowUpRight, ArrowDownRight, Info, Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
+import { supabase } from "@/integrations/supabase/client";
 import {
-  mockDistributions, ProductDistribution, CHANNEL_CONFIG, PRICING_RULES,
-  DistributionChannel, computeChannelPrices
+  DistributionChannel, CHANNEL_CONFIG, PRICING_RULES,
 } from "@/data/distribution";
 import { useToast } from "@/hooks/use-toast";
+
+type ChannelRow = {
+  id: string;
+  inventory_id: string;
+  channel: string;
+  enabled: boolean;
+  price: number;
+  min_price: number;
+  max_price: number;
+  allocated_stock: number;
+  sold_units: number;
+};
+
+type InventoryWithChannels = {
+  id: string;
+  product_name: string;
+  batch_id: string | null;
+  total_stock: number;
+  sold_units: number;
+  status: string;
+  batch: { production_cost_per_unit: number; retail_price: number } | null;
+  distribution_channels: ChannelRow[];
+};
+
+interface ProductDistribution {
+  productId: string;
+  productName: string;
+  productionCost: number;
+  retailPrice: number;
+  totalStock: number;
+  channels: {
+    id: string;
+    channel: DistributionChannel;
+    enabled: boolean;
+    price: number;
+    minPrice: number;
+    maxPrice: number;
+    allocatedStock: number;
+    soldUnits: number;
+  }[];
+}
 
 const channelOrder: DistributionChannel[] = ["platform", "retail", "dropshipper", "distributor"];
 
 const DistributionPage = () => {
   const { toast } = useToast();
-  const [products, setProducts] = useState(mockDistributions);
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<ProductDistribution | null>(null);
   const [editPrices, setEditPrices] = useState<Record<DistributionChannel, string>>({
     platform: "", retail: "", dropshipper: "", distributor: "",
+  });
+
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["distribution-products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("inventory")
+        .select("*, distribution_channels(*)")
+        .order("product_name");
+      if (error) throw error;
+
+      // Also fetch batch info for production cost
+      const batchIds = [...new Set((data || []).map((i: any) => i.batch_id).filter(Boolean))];
+      let batchMap: Record<string, any> = {};
+      if (batchIds.length > 0) {
+        const { data: batches } = await supabase
+          .from("batches")
+          .select("id, production_cost_per_unit, retail_price")
+          .in("id", batchIds);
+        batchMap = (batches || []).reduce((acc: any, b: any) => { acc[b.id] = b; return acc; }, {});
+      }
+
+      return (data || []).map((inv: any): ProductDistribution => {
+        const batch = inv.batch_id ? batchMap[inv.batch_id] : null;
+        const prodCost = batch?.production_cost_per_unit || 0;
+        const retailPrice = batch?.retail_price || 0;
+
+        const channels = channelOrder.map((ch) => {
+          const dc = (inv.distribution_channels || []).find((d: any) => d.channel === ch);
+          return {
+            id: dc?.id || "",
+            channel: ch,
+            enabled: dc?.enabled ?? false,
+            price: dc?.price || 0,
+            minPrice: dc?.min_price || Math.round(prodCost * 1.2),
+            maxPrice: dc?.max_price || retailPrice,
+            allocatedStock: dc?.allocated_stock || 0,
+            soldUnits: dc?.sold_units || 0,
+          };
+        });
+
+        return {
+          productId: inv.id,
+          productName: inv.product_name,
+          productionCost: prodCost,
+          retailPrice,
+          totalStock: inv.total_stock,
+          channels,
+        };
+      });
+    },
+  });
+
+  const toggleMutation = useMutation({
+    mutationFn: async ({ channelId, enabled }: { channelId: string; enabled: boolean }) => {
+      const { error } = await supabase
+        .from("distribution_channels")
+        .update({ enabled })
+        .eq("id", channelId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["distribution-products"] });
+      toast({ title: "Channel Updated" });
+    },
+  });
+
+  const updatePricesMutation = useMutation({
+    mutationFn: async ({ channels }: { channels: { id: string; price: number }[] }) => {
+      for (const ch of channels) {
+        const { error } = await supabase
+          .from("distribution_channels")
+          .update({ price: ch.price })
+          .eq("id", ch.id);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["distribution-products"] });
+      toast({ title: "Prices Updated" });
+      setSelectedProduct(null);
+    },
   });
 
   const filtered = products.filter((p) =>
@@ -51,7 +175,6 @@ const DistributionPage = () => {
     const dropship = ch.find((c) => c.channel === "dropshipper");
     const distributor = ch.find((c) => c.channel === "distributor");
 
-    // Hierarchy check: Platform ≥ Retail ≥ Dropship > Distributor
     if (platform && retail && retail.enabled && retail.price > platform.price)
       conflicts.push("Retail price exceeds platform price");
     if (retail && dropship && dropship.enabled && dropship.price > retail.price)
@@ -59,20 +182,17 @@ const DistributionPage = () => {
     if (dropship && distributor && distributor.enabled && distributor.price > dropship.price)
       conflicts.push("Distributor price exceeds dropship price");
 
-    // MAP check
     ch.forEach((c) => {
       if (c.enabled && c.price < c.minPrice)
         conflicts.push(`${CHANNEL_CONFIG[c.channel].label} below MAP (৳${c.minPrice})`);
     });
 
-    // Margin check (20% above cost)
     const minMarginPrice = product.productionCost * 1.2;
     ch.forEach((c) => {
       if (c.enabled && c.price < minMarginPrice)
         conflicts.push(`${CHANNEL_CONFIG[c.channel].label} below minimum margin (৳${Math.round(minMarginPrice)})`);
     });
 
-    // Allocation check (no channel > 60%)
     ch.forEach((c) => {
       if (c.enabled && product.totalStock > 0 && (c.allocatedStock / product.totalStock) > 0.6)
         conflicts.push(`${CHANNEL_CONFIG[c.channel].label} exceeds 60% stock allocation`);
@@ -83,23 +203,12 @@ const DistributionPage = () => {
 
   const allConflicts = products.flatMap((p) => detectConflicts(p).map((c) => ({ product: p.productName, conflict: c })));
 
-  // Toggle channel
-  const toggleChannel = (productId: string, channel: DistributionChannel) => {
-    setProducts((prev) =>
-      prev.map((p) => {
-        if (p.productId !== productId) return p;
-        return {
-          ...p,
-          channels: p.channels.map((c) =>
-            c.channel === channel ? { ...c, enabled: !c.enabled } : c
-          ),
-        };
-      })
-    );
-    toast({ title: "Channel Updated" });
+  const toggleChannel = (product: ProductDistribution, channel: DistributionChannel) => {
+    const ch = product.channels.find((c) => c.channel === channel);
+    if (!ch || !ch.id) return;
+    toggleMutation.mutate({ channelId: ch.id, enabled: !ch.enabled });
   };
 
-  // Open edit dialog
   const openEdit = (product: ProductDistribution) => {
     setSelectedProduct(product);
     const prices: Record<DistributionChannel, string> = { platform: "", retail: "", dropshipper: "", distributor: "" };
@@ -107,15 +216,12 @@ const DistributionPage = () => {
     setEditPrices(prices);
   };
 
-  // Save prices
   const savePrices = () => {
     if (!selectedProduct) return;
-    const newPrices = { ...editPrices };
-    // Validate hierarchy
-    const p = Number(newPrices.platform);
-    const r = Number(newPrices.retail);
-    const d = Number(newPrices.dropshipper);
-    const dist = Number(newPrices.distributor);
+    const p = Number(editPrices.platform);
+    const r = Number(editPrices.retail);
+    const d = Number(editPrices.dropshipper);
+    const dist = Number(editPrices.distributor);
 
     if (r > p || d > r || dist > d) {
       toast({ title: "Price Hierarchy Violation", description: "Platform ≥ Retail ≥ Dropship > Distributor", variant: "destructive" });
@@ -128,21 +234,23 @@ const DistributionPage = () => {
       return;
     }
 
-    setProducts((prev) =>
-      prev.map((prod) => {
-        if (prod.productId !== selectedProduct.productId) return prod;
-        return {
-          ...prod,
-          channels: prod.channels.map((c) => ({
-            ...c,
-            price: Number(newPrices[c.channel]) || c.price,
-          })),
-        };
-      })
-    );
-    toast({ title: "Prices Updated", description: `${selectedProduct.productName} channel prices saved.` });
-    setSelectedProduct(null);
+    const channels = channelOrder.map((ch) => ({
+      id: selectedProduct.channels.find((c) => c.channel === ch)!.id,
+      price: Number(editPrices[ch]),
+    })).filter((c) => c.id);
+
+    updatePricesMutation.mutate({ channels });
   };
+
+  if (isLoading) {
+    return (
+      <DashboardLayout role="admin">
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout role="admin">
@@ -186,261 +294,239 @@ const DistributionPage = () => {
           </div>
         )}
 
-        <Tabs defaultValue="products" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="products">Product Channels</TabsTrigger>
-            <TabsTrigger value="pricing-rules">Pricing Rules</TabsTrigger>
-            <TabsTrigger value="channel-overview">Channel Overview</TabsTrigger>
-          </TabsList>
+        {products.length === 0 && (
+          <div className="bg-card rounded-xl shadow-card border border-border/50 p-12 text-center">
+            <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h2 className="font-display font-semibold text-lg">No Products in Distribution</h2>
+            <p className="text-muted-foreground text-sm mt-1">Distribution channels are auto-created when batches complete and inventory is added.</p>
+          </div>
+        )}
 
-          {/* ═══ PRODUCT CHANNELS ═══ */}
-          <TabsContent value="products">
-            <div className="space-y-4">
-              <div className="relative max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input placeholder="Search products..." className="pl-10" value={search} onChange={(e) => setSearch(e.target.value)} />
-              </div>
+        {products.length > 0 && (
+          <Tabs defaultValue="products" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="products">Product Channels</TabsTrigger>
+              <TabsTrigger value="pricing-rules">Pricing Rules</TabsTrigger>
+              <TabsTrigger value="channel-overview">Channel Overview</TabsTrigger>
+            </TabsList>
 
-              {filtered.map((product) => {
-                const conflicts = detectConflicts(product);
-                return (
-                  <div key={product.productId} className={`bg-card rounded-xl shadow-card border ${conflicts.length > 0 ? "border-destructive/30" : "border-border/50"}`}>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 border-b border-border/50 gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-lg bg-muted/50 flex items-center justify-center text-2xl">{product.productImage}</div>
-                        <div>
-                          <div className="font-display font-semibold">{product.productName}</div>
-                          <div className="text-xs text-muted-foreground">
-                            Production: ৳{product.productionCost} · Total Stock: {product.totalStock} units
-                            {conflicts.length > 0 && (
-                              <span className="ml-2 text-destructive font-medium">⚠ {conflicts.length} conflict{conflicts.length > 1 ? "s" : ""}</span>
-                            )}
+            {/* ═══ PRODUCT CHANNELS ═══ */}
+            <TabsContent value="products">
+              <div className="space-y-4">
+                <div className="relative max-w-md">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input placeholder="Search products..." className="pl-10" value={search} onChange={(e) => setSearch(e.target.value)} />
+                </div>
+
+                {filtered.map((product) => {
+                  const conflicts = detectConflicts(product);
+                  return (
+                    <div key={product.productId} className={`bg-card rounded-xl shadow-card border ${conflicts.length > 0 ? "border-destructive/30" : "border-border/50"}`}>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 border-b border-border/50 gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-lg bg-muted/50 flex items-center justify-center">
+                            <Package className="w-6 h-6 text-muted-foreground" />
+                          </div>
+                          <div>
+                            <div className="font-display font-semibold">{product.productName}</div>
+                            <div className="text-xs text-muted-foreground">
+                              Production: ৳{product.productionCost} · Total Stock: {product.totalStock} units
+                              {conflicts.length > 0 && (
+                                <span className="ml-2 text-destructive font-medium">⚠ {conflicts.length} conflict{conflicts.length > 1 ? "s" : ""}</span>
+                              )}
+                            </div>
                           </div>
                         </div>
+                        <Button variant="outline" size="sm" className="gap-1.5" onClick={() => openEdit(product)}>
+                          <Settings2 className="w-3.5 h-3.5" /> Edit Pricing
+                        </Button>
                       </div>
-                      <Button variant="outline" size="sm" className="gap-1.5" onClick={() => openEdit(product)}>
-                        <Settings2 className="w-3.5 h-3.5" /> Edit Pricing
-                      </Button>
-                    </div>
 
-                    {/* Channel Grid */}
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-border/30">
-                      {channelOrder.map((ch) => {
-                        const channel = product.channels.find((c) => c.channel === ch);
-                        if (!channel) return null;
-                        const cfg = CHANNEL_CONFIG[ch];
-                        const margin = channel.price - product.productionCost;
-                        const marginPct = ((margin / product.productionCost) * 100).toFixed(0);
-                        const isBelow = channel.price < channel.minPrice;
+                      {/* Channel Grid */}
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-border/30">
+                        {channelOrder.map((ch) => {
+                          const channel = product.channels.find((c) => c.channel === ch);
+                          if (!channel) return null;
+                          const cfg = CHANNEL_CONFIG[ch];
+                          const margin = channel.price - product.productionCost;
+                          const marginPct = product.productionCost > 0 ? ((margin / product.productionCost) * 100).toFixed(0) : "0";
+                          const isBelow = channel.price < channel.minPrice;
 
-                        return (
-                          <div key={ch} className={`p-4 ${!channel.enabled ? "opacity-50" : ""}`}>
-                            <div className="flex items-center justify-between mb-3">
-                              <div className="flex items-center gap-2">
-                                <span className="text-lg">{cfg.icon}</span>
-                                <span className="text-xs font-medium">{cfg.label}</span>
-                              </div>
-                              <Switch
-                                checked={channel.enabled}
-                                onCheckedChange={() => toggleChannel(product.productId, ch)}
-                              />
-                            </div>
-
-                            <div className={`text-xl font-display font-bold ${isBelow ? "text-destructive" : ""}`}>
-                              ৳{channel.price}
-                            </div>
-
-                            <div className="mt-2 space-y-1 text-xs">
-                              <div className="flex justify-between text-muted-foreground">
-                                <span>Margin</span>
-                                <span className={`font-medium ${Number(marginPct) < 20 ? "text-destructive" : "text-primary"}`}>
-                                  ৳{margin} ({marginPct}%)
-                                </span>
-                              </div>
-                              <div className="flex justify-between text-muted-foreground">
-                                <span>MAP Floor</span>
-                                <span>৳{channel.minPrice}</span>
-                              </div>
-                              <div className="flex justify-between text-muted-foreground">
-                                <span>Allocated</span>
-                                <span>{channel.allocatedStock} units</span>
-                              </div>
-                              <div className="flex justify-between text-muted-foreground">
-                                <span>Sold</span>
-                                <span className="text-primary font-medium">{channel.soldUnits}</span>
-                              </div>
-                            </div>
-
-                            {/* Stock allocation bar */}
-                            <div className="mt-2">
-                              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                                <div
-                                  className={`h-full rounded-full ${channel.soldUnits > 0 ? "bg-primary" : "bg-muted-foreground/30"}`}
-                                  style={{ width: `${channel.allocatedStock > 0 ? (channel.soldUnits / channel.allocatedStock) * 100 : 0}%` }}
+                          return (
+                            <div key={ch} className={`p-4 ${!channel.enabled ? "opacity-50" : ""}`}>
+                              <div className="flex items-center justify-between mb-3">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-lg">{cfg.icon}</span>
+                                  <span className="text-xs font-medium">{cfg.label}</span>
+                                </div>
+                                <Switch
+                                  checked={channel.enabled}
+                                  onCheckedChange={() => toggleChannel(product, ch)}
+                                  disabled={!channel.id}
                                 />
                               </div>
+
+                              <div className={`text-xl font-display font-bold ${isBelow ? "text-destructive" : ""}`}>
+                                ৳{channel.price}
+                              </div>
+
+                              <div className="mt-2 space-y-1 text-xs">
+                                <div className="flex justify-between text-muted-foreground">
+                                  <span>Margin</span>
+                                  <span className={`font-medium ${Number(marginPct) < 20 ? "text-destructive" : "text-primary"}`}>
+                                    ৳{margin} ({marginPct}%)
+                                  </span>
+                                </div>
+                                <div className="flex justify-between text-muted-foreground">
+                                  <span>MAP Floor</span>
+                                  <span>৳{channel.minPrice}</span>
+                                </div>
+                                <div className="flex justify-between text-muted-foreground">
+                                  <span>Allocated</span>
+                                  <span>{channel.allocatedStock} units</span>
+                                </div>
+                                <div className="flex justify-between text-muted-foreground">
+                                  <span>Sold</span>
+                                  <span className="text-primary font-medium">{channel.soldUnits}</span>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                                  <div
+                                    className={`h-full rounded-full ${channel.soldUnits > 0 ? "bg-primary" : "bg-muted-foreground/30"}`}
+                                    style={{ width: `${channel.allocatedStock > 0 ? (channel.soldUnits / channel.allocatedStock) * 100 : 0}%` }}
+                                  />
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                          );
+                        })}
+                      </div>
 
-                    {/* Price hierarchy visual */}
-                    <div className="px-5 py-3 border-t border-border/30 bg-muted/20">
-                      <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                        <span className="font-medium">Price Flow:</span>
-                        {product.channels
-                          .filter((c) => c.enabled)
-                          .sort((a, b) => b.price - a.price)
-                          .map((c, i, arr) => (
-                            <span key={c.channel} className="flex items-center gap-1">
-                              <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${CHANNEL_CONFIG[c.channel].color}`}>
-                                {CHANNEL_CONFIG[c.channel].label.split(" ")[0]} ৳{c.price}
+                      {/* Price hierarchy visual */}
+                      <div className="px-5 py-3 border-t border-border/30 bg-muted/20">
+                        <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                          <span className="font-medium">Price Flow:</span>
+                          {product.channels
+                            .filter((c) => c.enabled)
+                            .sort((a, b) => b.price - a.price)
+                            .map((c, i, arr) => (
+                              <span key={c.channel} className="flex items-center gap-1">
+                                <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${CHANNEL_CONFIG[c.channel].color}`}>
+                                  {CHANNEL_CONFIG[c.channel].label.split(" ")[0]} ৳{c.price}
+                                </span>
+                                {i < arr.length - 1 && <span className="text-muted-foreground">→</span>}
                               </span>
-                              {i < arr.length - 1 && <span className="text-muted-foreground">→</span>}
-                            </span>
-                          ))}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </TabsContent>
-
-          {/* ═══ PRICING RULES ═══ */}
-          <TabsContent value="pricing-rules">
-            <div className="space-y-4">
-              <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
-                <h2 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-                  <ShieldAlert className="w-5 h-5 text-primary" /> Platform Pricing Rules
-                </h2>
-                <p className="text-sm text-muted-foreground mb-6">
-                  These rules prevent price conflicts and protect margins across all distribution channels.
-                </p>
-
-                <div className="space-y-4">
-                  {PRICING_RULES.map((rule) => (
-                    <div key={rule.id} className={`rounded-lg border p-4 ${rule.severity === "critical" ? "border-destructive/30 bg-destructive/5" : "border-border/50 bg-muted/20"}`}>
-                      <div className="flex items-start gap-3">
-                        <div className="mt-0.5">
-                          {rule.severity === "critical" ? (
-                            <AlertTriangle className="w-4 h-4 text-destructive" />
-                          ) : (
-                            <Info className="w-4 h-4 text-accent-foreground" />
-                          )}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">{rule.name}</span>
-                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium uppercase ${rule.severity === "critical" ? "bg-destructive/10 text-destructive" : "bg-accent text-accent-foreground"}`}>
-                              {rule.severity}
-                            </span>
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-1">{rule.description}</p>
+                            ))}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
+            </TabsContent>
 
-              {/* Pricing Example */}
-              <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
-                <h2 className="font-display font-semibold text-lg mb-4">Example: Pricing Waterfall</h2>
-                <div className="bg-muted/30 rounded-lg p-4">
-                  <div className="text-sm text-muted-foreground mb-3">Product: Cotton T-Shirt (Production Cost: ৳300)</div>
-                  <div className="space-y-2">
-                    {[
-                      { label: "Platform (Direct)", price: 650, pct: "117%", bar: 100 },
-                      { label: "Retail Shop", price: 553, pct: "84%", bar: 85 },
-                      { label: "Dropshipper", price: 420, pct: "40%", bar: 65 },
-                      { label: "Distributor", price: 358, pct: "19%", bar: 55 },
-                      { label: "MAP Floor", price: 360, pct: "20%", bar: 55 },
-                    ].map((item, i) => (
-                      <div key={item.label}>
-                        <div className="flex justify-between text-xs mb-1">
-                          <span className={i === 4 ? "text-destructive font-medium" : ""}>{item.label}</span>
-                          <span className="font-medium">৳{item.price} <span className="text-muted-foreground">({item.pct} margin)</span></span>
-                        </div>
-                        <div className="h-2 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full ${i === 4 ? "bg-destructive/50 border-r-2 border-destructive" : "bg-primary"}`}
-                            style={{ width: `${item.bar}%` }}
-                          />
+            {/* ═══ PRICING RULES ═══ */}
+            <TabsContent value="pricing-rules">
+              <div className="space-y-4">
+                <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
+                  <h2 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+                    <ShieldAlert className="w-5 h-5 text-primary" /> Platform Pricing Rules
+                  </h2>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    These rules prevent price conflicts and protect margins across all distribution channels.
+                  </p>
+
+                  <div className="space-y-4">
+                    {PRICING_RULES.map((rule) => (
+                      <div key={rule.id} className={`rounded-lg border p-4 ${rule.severity === "critical" ? "border-destructive/30 bg-destructive/5" : "border-border/50 bg-muted/20"}`}>
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5">
+                            {rule.severity === "critical" ? (
+                              <AlertTriangle className="w-4 h-4 text-destructive" />
+                            ) : (
+                              <Info className="w-4 h-4 text-accent-foreground" />
+                            )}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-semibold">{rule.name}</span>
+                              <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium uppercase ${rule.severity === "critical" ? "bg-destructive/10 text-destructive" : "bg-accent text-accent-foreground"}`}>
+                                {rule.severity}
+                              </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-1">{rule.description}</p>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-3 text-xs text-muted-foreground flex items-center gap-1">
-                    <CheckCircle className="w-3 h-3 text-primary" />
-                    All channels maintain hierarchy: Platform ≥ Retail ≥ Dropship &gt; Distributor ≥ MAP
-                  </div>
                 </div>
               </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
 
-          {/* ═══ CHANNEL OVERVIEW ═══ */}
-          <TabsContent value="channel-overview">
-            <div className="space-y-6">
-              {channelOrder.map((ch) => {
-                const cfg = CHANNEL_CONFIG[ch];
-                const channelProducts = products.filter((p) => p.channels.some((c) => c.channel === ch && c.enabled));
-                const totalRevenue = channelProducts.reduce((s, p) => {
-                  const c = p.channels.find((c) => c.channel === ch);
-                  return s + (c ? c.soldUnits * c.price : 0);
-                }, 0);
-                const totalSold = channelProducts.reduce((s, p) => s + (p.channels.find((c) => c.channel === ch)?.soldUnits || 0), 0);
-                const totalAllocated = channelProducts.reduce((s, p) => s + (p.channels.find((c) => c.channel === ch)?.allocatedStock || 0), 0);
+            {/* ═══ CHANNEL OVERVIEW ═══ */}
+            <TabsContent value="channel-overview">
+              <div className="space-y-6">
+                {channelOrder.map((ch) => {
+                  const cfg = CHANNEL_CONFIG[ch];
+                  const channelProducts = products.filter((p) => p.channels.some((c) => c.channel === ch && c.enabled));
+                  const totalRevenue = channelProducts.reduce((s, p) => {
+                    const c = p.channels.find((c) => c.channel === ch);
+                    return s + (c ? c.soldUnits * c.price : 0);
+                  }, 0);
+                  const totalSold = channelProducts.reduce((s, p) => s + (p.channels.find((c) => c.channel === ch)?.soldUnits || 0), 0);
+                  const totalAllocated = channelProducts.reduce((s, p) => s + (p.channels.find((c) => c.channel === ch)?.allocatedStock || 0), 0);
 
-                return (
-                  <div key={ch} className="bg-card rounded-xl shadow-card border border-border/50">
-                    <div className="flex items-center justify-between p-5 border-b border-border/50">
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">{cfg.icon}</span>
-                        <div>
-                          <h2 className="font-display font-semibold text-lg">{cfg.label}</h2>
-                          <p className="text-xs text-muted-foreground">{cfg.description}</p>
+                  return (
+                    <div key={ch} className="bg-card rounded-xl shadow-card border border-border/50">
+                      <div className="flex items-center justify-between p-5 border-b border-border/50">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{cfg.icon}</span>
+                          <div>
+                            <h2 className="font-display font-semibold text-lg">{cfg.label}</h2>
+                            <p className="text-xs text-muted-foreground">{cfg.description}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-lg font-display font-bold text-primary">৳{totalRevenue.toLocaleString()}</div>
+                          <div className="text-xs text-muted-foreground">{totalSold} sold / {totalAllocated} allocated</div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="text-lg font-display font-bold text-primary">৳{totalRevenue.toLocaleString()}</div>
-                        <div className="text-xs text-muted-foreground">{totalSold} sold / {totalAllocated} allocated</div>
-                      </div>
-                    </div>
-                    <div className="divide-y divide-border/30">
-                      {channelProducts.map((p) => {
-                        const c = p.channels.find((c) => c.channel === ch)!;
-                        const margin = c.price - p.productionCost;
-                        return (
-                          <div key={p.productId} className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors">
-                            <div className="flex items-center gap-3">
-                              <span className="text-xl">{p.productImage}</span>
-                              <div>
-                                <div className="text-sm font-medium">{p.productName}</div>
-                                <div className="text-xs text-muted-foreground">
-                                  {c.soldUnits}/{c.allocatedStock} sold · ৳{margin} margin/unit
+                      <div className="divide-y divide-border/30">
+                        {channelProducts.map((p) => {
+                          const c = p.channels.find((c) => c.channel === ch)!;
+                          const margin = c.price - p.productionCost;
+                          return (
+                            <div key={p.productId} className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors">
+                              <div className="flex items-center gap-3">
+                                <Package className="w-5 h-5 text-muted-foreground" />
+                                <div>
+                                  <div className="text-sm font-medium">{p.productName}</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {c.soldUnits}/{c.allocatedStock} sold · ৳{margin} margin/unit
+                                  </div>
                                 </div>
                               </div>
+                              <div className="text-right">
+                                <div className="text-sm font-bold">৳{c.price}</div>
+                                <div className="text-xs text-primary font-medium">৳{(c.soldUnits * c.price).toLocaleString()} rev</div>
+                              </div>
                             </div>
-                            <div className="text-right">
-                              <div className="text-sm font-bold">৳{c.price}</div>
-                              <div className="text-xs text-primary font-medium">৳{(c.soldUnits * c.price).toLocaleString()} rev</div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {channelProducts.length === 0 && (
-                        <div className="p-4 text-center text-sm text-muted-foreground">No products in this channel</div>
-                      )}
+                          );
+                        })}
+                        {channelProducts.length === 0 && (
+                          <div className="p-4 text-center text-sm text-muted-foreground">No products in this channel</div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </TabsContent>
-        </Tabs>
+                  );
+                })}
+              </div>
+            </TabsContent>
+          </Tabs>
+        )}
 
         {/* Edit Pricing Dialog */}
         <Dialog open={!!selectedProduct} onOpenChange={(open) => !open && setSelectedProduct(null)}>
@@ -480,7 +566,10 @@ const DistributionPage = () => {
                 </div>
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setSelectedProduct(null)}>Cancel</Button>
-                  <Button onClick={savePrices}>Save Prices</Button>
+                  <Button onClick={savePrices} disabled={updatePricesMutation.isPending}>
+                    {updatePricesMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    Save Prices
+                  </Button>
                 </DialogFooter>
               </>
             )}
