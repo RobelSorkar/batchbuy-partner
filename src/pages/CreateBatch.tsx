@@ -20,6 +20,10 @@ const CreateBatch = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { upload: uploadImage, uploading: imageUploading } = useImageUpload();
   const [form, setForm] = useState({
     productName: "", batchName: "", productionCostPerUnit: "", wholesalePrice: "", retailPrice: "",
     totalQuantity: "", category: "", description: "", manufacturer: "", warehouse: "", productionTimeDays: "", deadline: "",
