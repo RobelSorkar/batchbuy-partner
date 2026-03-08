@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { CheckCircle, AlertCircle, TrendingUp } from "lucide-react";
+import { CheckCircle, AlertCircle, TrendingUp, Loader2 } from "lucide-react";
 import { ProductionBatch, MINIMUM_PARTICIPATION_BDT, calculateUnitsFromInvestment, calculateProfitEstimate } from "@/types/batch";
+import { useJoinBatch } from "@/hooks/useJoinBatch";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 interface JoinBatchDialogProps {
   batch: ProductionBatch;
@@ -15,15 +18,32 @@ interface JoinBatchDialogProps {
 const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) => {
   const [investmentInput, setInvestmentInput] = useState(MINIMUM_PARTICIPATION_BDT.toString());
   const [submitted, setSubmitted] = useState(false);
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const joinBatch = useJoinBatch();
 
   const investmentAmount = Number(investmentInput) || 0;
   const { units, totalCost, remainder } = calculateUnitsFromInvestment(investmentAmount, batch.productionCostPerUnit);
   const { investment, revenue, profit, returnPct } = calculateProfitEstimate(units, batch.productionCostPerUnit, batch.retailPrice);
   const isValid = investmentAmount >= MINIMUM_PARTICIPATION_BDT && units > 0 && units <= batch.remainingUnits;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!isValid) return;
-    setSubmitted(true);
+    if (!user) {
+      toast({ title: "Please sign in", description: "You need to be logged in to join a batch.", variant: "destructive" });
+      return;
+    }
+
+    try {
+      await joinBatch.mutateAsync({
+        batchId: batch.id,
+        units,
+        totalInvested: totalCost,
+      });
+      setSubmitted(true);
+    } catch (error: any) {
+      toast({ title: "Failed to join batch", description: error.message, variant: "destructive" });
+    }
   };
 
   const handleClose = () => {
@@ -79,7 +99,6 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
         </DialogHeader>
 
         <div className="space-y-5 pt-2">
-          {/* Batch Summary */}
           <div className="bg-muted/50 rounded-lg p-4 grid grid-cols-3 gap-4 text-center">
             <div>
               <div className="text-xs text-muted-foreground">Cost/Unit</div>
@@ -95,39 +114,25 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
           </div>
 
-          {/* Investment Input */}
           <div className="space-y-2">
             <Label htmlFor="investment">Investment Amount (BDT)</Label>
             <Input
-              id="investment"
-              type="number"
-              min={MINIMUM_PARTICIPATION_BDT}
-              step={batch.productionCostPerUnit}
-              value={investmentInput}
-              onChange={(e) => setInvestmentInput(e.target.value)}
-              className="text-lg font-semibold"
+              id="investment" type="number" min={MINIMUM_PARTICIPATION_BDT} step={batch.productionCostPerUnit}
+              value={investmentInput} onChange={(e) => setInvestmentInput(e.target.value)} className="text-lg font-semibold"
             />
             <p className="text-xs text-muted-foreground">
               Minimum: ৳{MINIMUM_PARTICIPATION_BDT.toLocaleString()} · Available: {batch.remainingUnits} units
             </p>
           </div>
 
-          {/* Quick amounts */}
           <div className="flex gap-2 flex-wrap">
             {[10000, 20000, 50000, 100000].map((amt) => (
-              <Button
-                key={amt}
-                type="button"
-                variant={investmentAmount === amt ? "default" : "outline"}
-                size="sm"
-                onClick={() => setInvestmentInput(amt.toString())}
-              >
+              <Button key={amt} type="button" variant={investmentAmount === amt ? "default" : "outline"} size="sm" onClick={() => setInvestmentInput(amt.toString())}>
                 ৳{(amt / 1000).toFixed(0)}K
               </Button>
             ))}
           </div>
 
-          {/* Calculator Results */}
           {units > 0 && (
             <div className="bg-card rounded-lg p-4 border border-border/50 space-y-3 text-sm">
               <div className="flex justify-between">
@@ -170,7 +175,6 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
           )}
 
-          {/* Validation */}
           {investmentAmount > 0 && investmentAmount < MINIMUM_PARTICIPATION_BDT && (
             <div className="flex items-center gap-2 text-sm text-destructive">
               <AlertCircle className="w-4 h-4" />
@@ -184,7 +188,8 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
           )}
 
-          <Button onClick={handleSubmit} disabled={!isValid} className="w-full" size="lg">
+          <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending} className="w-full" size="lg">
+            {joinBatch.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
             Confirm Investment — ৳{totalCost.toLocaleString()} for {units} units
           </Button>
 
