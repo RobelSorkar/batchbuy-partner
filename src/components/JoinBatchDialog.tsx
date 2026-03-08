@@ -83,9 +83,13 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <span className="text-muted-foreground">Units Owned</span>
                 <span className="font-semibold">{units}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Potential Retail Profit</span>
+               <div className="flex justify-between">
+                <span className="text-muted-foreground">Est. Retail Profit</span>
                 <span className="font-semibold text-primary">৳{profit.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center gap-3 pt-1 text-[10px] text-muted-foreground">
+                <span>✔ Profit estimate only</span>
+                <span>✔ Not guaranteed return</span>
               </div>
             </div>
             <Button onClick={handleClose} className="w-full">Done</Button>
