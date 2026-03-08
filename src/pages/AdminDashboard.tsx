@@ -59,6 +59,7 @@ const AdminDashboard = () => {
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
   const [batchSearch, setBatchSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
+  const [editingRole, setEditingRole] = useState<string | null>(null);
 
   // Real data hooks
   const { data: users = [], isLoading: loadingUsers } = useAdminUsers();
