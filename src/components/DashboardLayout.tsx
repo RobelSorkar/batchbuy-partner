@@ -45,6 +45,7 @@ const navMap = {
   dropshipper: dropshipperNav,
   admin: adminNav,
   warehouse: warehouseNav,
+  distributor: distributorNav,
 };
 
 const roleLabels = {
