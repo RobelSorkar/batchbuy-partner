@@ -200,7 +200,7 @@ const WalletPage = () => {
             </div>
             <div className="text-sm text-muted-foreground mb-1">Total Invested</div>
             <div className="text-2xl font-display font-bold">৳{totalInvested.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground mt-2">Across 4 active batches</div>
+            <div className="text-xs text-muted-foreground mt-2">Across {transactions.filter(t => t.category === "investment" || t.category === "reinvest").length} batches</div>
           </div>
           <div className="bg-card rounded-xl p-6 shadow-card border border-border/50">
             <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center mb-3">
