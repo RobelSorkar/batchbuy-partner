@@ -35,6 +35,11 @@ const warehouseNav = [
   { icon: ClipboardList, label: "Orders", href: "/warehouse/orders" },
 ];
 
+const distributorNav = [
+  { icon: LayoutDashboard, label: "Overview", href: "/distributor" },
+  { icon: Wallet, label: "Wallet", href: "/wallet" },
+];
+
 const navMap = {
   partner: partnerNav,
   dropshipper: dropshipperNav,
