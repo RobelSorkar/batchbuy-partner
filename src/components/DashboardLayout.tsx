@@ -15,6 +15,7 @@ const partnerNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/partner" },
   { icon: Layers, label: "Create Batch", href: "/create-batch" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
+  { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
 
 const dropshipperNav = [
