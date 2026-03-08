@@ -19,7 +19,7 @@ const features = [
   {
     icon: Wallet,
     title: "Partner Wallets",
-    description: "Track earnings, investments, and payouts in real-time. Transparent financial management for all partners.",
+    description: "Track earnings, financing, and payouts in real-time. Transparent financial management for all partners.",
   },
   {
     icon: ShieldCheck,

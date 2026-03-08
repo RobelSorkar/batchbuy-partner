@@ -123,7 +123,7 @@ const Signup = () => {
             <Package className="w-8 h-8 text-primary" />
           </div>
           <h2 className="text-2xl font-display font-bold text-primary-foreground mb-3">Join the Network</h2>
-          <p className="text-primary-foreground/60 leading-relaxed">Whether you invest, sell, or distribute — start earning from real product sales today with a minimum of ৳10,000 BDT.</p>
+          <p className="text-primary-foreground/60 leading-relaxed">Whether you finance, sell, or distribute — start earning from real product sales today with a minimum of ৳10,000 BDT.</p>
         </div>
       </div>
     </div>

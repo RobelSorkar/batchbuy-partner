@@ -49,7 +49,7 @@ const RolesSection = () => {
             Choose your <span className="text-gradient-primary">role</span> in the supply chain
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Whether you want to invest in production, sell products, distribute wholesale, or provide warehousing — there's a place for you.
+            Whether you want to finance production, sell products, distribute wholesale, or provide warehousing — there's a place for you.
           </p>
         </div>
 

@@ -69,7 +69,7 @@ const HeroSection = () => {
             >
               {[
                 { value: "500+", label: "Partners" },
-                { value: "৳2.5Cr", label: "Invested" },
+                { value: "৳2.5Cr", label: "Financed" },
                 { value: "50+", label: "Batches" },
               ].map((stat) => (
                 <div key={stat.label}>
