@@ -166,13 +166,34 @@ const ProfilePage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 mb-2">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="w-5 h-5 text-primary" />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarUpload}
+              />
+              <div className="flex flex-col items-center gap-3 p-4 rounded-lg bg-muted/50 mb-2">
+                <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                  <Avatar className="w-20 h-20 border-2 border-border">
+                    {avatarUrl ? (
+                      <AvatarImage src={avatarUrl} alt="Avatar" />
+                    ) : null}
+                    <AvatarFallback className="text-2xl bg-primary/10 text-primary">
+                      {form.full_name?.[0]?.toUpperCase() || <User className="w-8 h-8" />}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                    {uploadingAvatar ? (
+                      <Loader2 className="w-5 h-5 animate-spin text-white" />
+                    ) : (
+                      <Camera className="w-5 h-5 text-white" />
+                    )}
+                  </div>
                 </div>
-                <div>
+                <div className="text-center">
                   <p className="text-sm font-medium">{user?.email}</p>
-                  <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+                  <p className="text-xs text-muted-foreground">Click photo to change</p>
                 </div>
               </div>
 
