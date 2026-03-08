@@ -42,6 +42,7 @@ const warehouseNav = [
 const distributorNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/distributor" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
+  { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
 
 const navMap = {
