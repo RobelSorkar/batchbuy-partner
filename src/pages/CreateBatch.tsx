@@ -234,11 +234,13 @@ const CreateBatch = () => {
               </div>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">Total Production Cost</span><span className="font-semibold">৳{totalProductionCost.toLocaleString()}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">Total Logistics Cost</span><span className="font-semibold">৳{totalLogisticsCost.toLocaleString()}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">Wholesale Revenue</span><span className="font-semibold">৳{totalWholesaleRevenue.toLocaleString()}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">Retail Revenue</span><span className="font-semibold">৳{totalRetailRevenue.toLocaleString()}</span></div>
                 <div className="border-t border-border/50 pt-3">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Wholesale Margin</span><span className="font-semibold text-primary">{wholesaleMargin}%</span></div>
-                  <div className="flex justify-between mt-1"><span className="text-muted-foreground">Retail Margin</span><span className="font-semibold text-primary">{retailMargin}%</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Net Wholesale ROI</span><span className="font-semibold text-primary">{wholesaleMargin}%</span></div>
+                  <div className="flex justify-between mt-1"><span className="text-muted-foreground">Net Retail ROI</span><span className="font-semibold text-primary">{retailMargin}%</span></div>
+                  <p className="text-[10px] text-muted-foreground mt-1">After logistics + 15% platform fee</p>
                 </div>
                 <div className="border-t border-border/50 pt-3">
                   <div className="flex justify-between"><span className="text-muted-foreground">Min Participation</span><span className="font-semibold">৳{MINIMUM_PARTICIPATION_BDT.toLocaleString()}</span></div>
@@ -249,7 +251,7 @@ const CreateBatch = () => {
                 <div className="bg-accent/50 rounded-lg p-4 border border-primary/10">
                   <p className="text-xs text-muted-foreground mb-1">Example: ৳10,000 investment</p>
                   <p className="text-sm font-medium">= {Math.floor(10000 / costPerUnit)} units owned</p>
-                  <p className="text-xs text-primary mt-1">Net profit: ৳{Math.round(Math.floor(10000 / costPerUnit) * (retail - costPerUnit) * 0.85).toLocaleString()} <span className="text-muted-foreground">(after 15% fee)</span></p>
+                  <p className="text-xs text-primary mt-1">Net profit: ৳{Math.round(Math.floor(10000 / costPerUnit) * (retail - costPerUnit - logisticsCost) * 0.85).toLocaleString()} <span className="text-muted-foreground">(after logistics + 15% fee)</span></p>
                 </div>
               )}
             </div>
