@@ -35,6 +35,10 @@ const Marketplace = () => {
   const { data: batches, isLoading } = useBatches();
 
   const filtered = (batches || []).filter((b) => {
+    // Hide cancelled and draft batches from public marketplace
+    if (b.status === "cancelled" || b.status === "draft") return false;
+    // Hide funding batches whose deadline has passed
+    if (b.status === "funding" && b.deadline && new Date(b.deadline).getTime() < Date.now()) return false;
     const matchSearch = b.product_name.toLowerCase().includes(search.toLowerCase()) ||
       b.batch_name.toLowerCase().includes(search.toLowerCase()) ||
       (b.category || "").toLowerCase().includes(search.toLowerCase());
