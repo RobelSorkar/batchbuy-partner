@@ -75,6 +75,7 @@ const CreateBatch = () => {
       created_by: user.id,
       status: "funding",
       image: imageUrl,
+      logistics_cost_per_unit: logisticsCost,
     });
 
     setLoading(false);
