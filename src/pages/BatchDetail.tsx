@@ -130,11 +130,16 @@ const BatchDetail = () => {
                 <h3 className="font-display font-semibold mb-4 flex items-center gap-2">
                   <Calculator className="w-5 h-5 text-primary" /> Pricing Breakdown (per unit)
                 </h3>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Production Cost</div>
                     <div className="text-xl font-display font-bold">৳{batch.production_cost_per_unit}</div>
                     <div className="text-xs text-muted-foreground mt-1">Your investment</div>
+                  </div>
+                  <div className="text-center p-4 bg-muted/50 rounded-lg">
+                    <div className="text-xs text-muted-foreground mb-1">Logistics</div>
+                    <div className="text-xl font-display font-bold">৳{logisticsCost}</div>
+                    <div className="text-xs text-muted-foreground mt-1">Per unit</div>
                   </div>
                   <div className="text-center p-4 bg-muted/50 rounded-lg">
                     <div className="text-xs text-muted-foreground mb-1">Wholesale Price</div>
@@ -145,7 +150,7 @@ const BatchDetail = () => {
                     <div className="text-xs text-muted-foreground mb-1">Retail Price</div>
                     <div className="text-xl font-display font-bold">৳{batch.retail_price}</div>
                     <div className="text-xs text-primary mt-1">+৳{profitPerUnit} net ({returnPct}%)</div>
-                    <div className="text-[10px] text-muted-foreground">after 15% platform fee</div>
+                    <div className="text-[10px] text-muted-foreground">after logistics + 15% fee</div>
                   </div>
                 </div>
               </div>
