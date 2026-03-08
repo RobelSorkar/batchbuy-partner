@@ -52,7 +52,8 @@ const ProfitCalculator = () => {
     unitsSold: Math.round(main.unitsFinanced * (sellThrough / 100)),
     totalCost: main.inventoryCost,
     totalLogistics: main.logisticsCost,
-    totalCostWithLogistics: main.totalCost,
+    totalMarketing: main.marketingCost,
+    totalCostWithLogisticsAndMarketing: main.totalCost,
     wholesaleRevenue: main.wholesaleRevenue,
     wholesaleGrossProfit: main.wholesaleGrossProfit,
     retailRevenue: main.retailRevenue,
@@ -249,7 +250,7 @@ const ProfitCalculator = () => {
               <span>✔ Commission on gross profit</span>
             </div>
             <p className="text-xs text-muted-foreground text-center">
-              Net Profit = (Revenue − Total Cost − Logistics) × (1 − 15% commission). ROI = Net Profit ÷ Financing Amount × 100.
+              Net Profit = (Revenue − Inventory − Logistics − 10% Marketing) × (1 − 15% commission). ROI = Net Profit ÷ Financing Amount × 100.
             </p>
           </div>
         </div>
