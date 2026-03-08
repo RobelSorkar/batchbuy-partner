@@ -299,6 +299,48 @@ const WalletPage = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Deposit Dialog */}
+      <Dialog open={depositOpen} onOpenChange={closeDeposit}>
+        <DialogContent className="sm:max-w-md">
+          {depositSuccess ? (
+            <div className="text-center py-6 space-y-4">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto"><CheckCircle className="w-8 h-8 text-primary" /></div>
+              <h2 className="text-xl font-display font-bold">Deposit Successful</h2>
+              <p className="text-muted-foreground text-sm">৳{Number(depositAmount).toLocaleString()} has been added to your wallet.</p>
+              <Button onClick={closeDeposit} className="w-full">Done</Button>
+            </div>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle className="font-display text-xl">Deposit Funds</DialogTitle>
+                <DialogDescription>Add funds to your wallet via mobile banking</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-5 pt-2">
+                <div className="space-y-2">
+                  <Label>Payment Method</Label>
+                  <Select value={depositMethod} onValueChange={setDepositMethod}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>{withdrawMethods.map((m) => <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>)}</SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="d-account">Account / Phone Number</Label>
+                  <Input id="d-account" placeholder={depositMethod === "bank" ? "Account number" : "01XXXXXXXXX"} value={depositAccount} onChange={(e) => setDepositAccount(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="d-amount">Amount (BDT)</Label>
+                  <Input id="d-amount" type="number" min="500" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} />
+                  <p className="text-xs text-muted-foreground">Minimum deposit: ৳500</p>
+                </div>
+                <Button className="w-full" disabled={!depositAccount || Number(depositAmount) < 500 || deposit.isPending} onClick={handleDeposit}>
+                  {deposit.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Confirm Deposit
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 };
