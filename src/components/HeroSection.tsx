@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-supply-chain.jpg";
 
 const flowSteps = [
-  { icon: Users, label: "People Pool", desc: "Partners co-invest together" },
+  { icon: Users, label: "Partners Pool", desc: "Co-finance production together" },
   { icon: Factory, label: "Factory Production", desc: "Manufacturing begins" },
   { icon: Package, label: "Product Units", desc: "You own real units" },
   { icon: Store, label: "Sellers / Shops / Dropship", desc: "Multi-channel sales" },
