@@ -1,0 +1,1 @@
+ALTER TABLE public.batches ADD COLUMN logistics_cost_per_unit numeric NOT NULL DEFAULT 0;
