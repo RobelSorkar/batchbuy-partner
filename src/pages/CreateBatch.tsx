@@ -56,6 +56,7 @@ const CreateBatch = () => {
       manufacturer: form.manufacturer || null,
       warehouse: form.warehouse || null,
       production_time_days: Number(form.productionTimeDays) || 30,
+      deadline: form.deadline || null,
       created_by: user.id,
       status: "funding",
     });
