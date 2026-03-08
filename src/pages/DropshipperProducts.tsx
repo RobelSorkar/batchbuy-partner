@@ -204,15 +204,18 @@ const DropshipperProducts = () => {
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1.5 block">Customer Name</label>
-                  <Input value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="Full name" />
+                  <Input value={customerName} onChange={(e) => { setCustomerName(e.target.value); setFieldErrors((p) => ({ ...p, customerName: "" })); }} placeholder="Full name" className={fieldErrors.customerName ? "border-destructive" : ""} />
+                  {fieldErrors.customerName && <p className="text-xs text-destructive mt-1">{fieldErrors.customerName}</p>}
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1.5 block">Customer Phone</label>
-                  <Input value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} placeholder="01XXXXXXXXX" />
+                  <Input value={customerPhone} onChange={(e) => { setCustomerPhone(e.target.value); setFieldErrors((p) => ({ ...p, customerPhone: "" })); }} placeholder="01XXXXXXXXX" className={fieldErrors.customerPhone ? "border-destructive" : ""} />
+                  {fieldErrors.customerPhone && <p className="text-xs text-destructive mt-1">{fieldErrors.customerPhone}</p>}
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1.5 block">Delivery Address</label>
-                  <Input value={customerAddress} onChange={(e) => setCustomerAddress(e.target.value)} placeholder="Full address" />
+                  <Input value={customerAddress} onChange={(e) => { setCustomerAddress(e.target.value); setFieldErrors((p) => ({ ...p, customerAddress: "" })); }} placeholder="Full address" className={fieldErrors.customerAddress ? "border-destructive" : ""} />
+                  {fieldErrors.customerAddress && <p className="text-xs text-destructive mt-1">{fieldErrors.customerAddress}</p>}
                 </div>
                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
                   <div className="flex justify-between text-sm">
