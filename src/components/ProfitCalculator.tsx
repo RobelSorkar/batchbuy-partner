@@ -140,13 +140,6 @@ const ProfitCalculator = () => {
                 />
               </div>
 
-              {/* Logistics Breakdown */}
-              <LogisticsBreakdown
-                logisticsCostPerUnit={logisticsCostPerUnit}
-                unitsFinanced={main.unitsFinanced}
-              />
-              </div>
-
               <div className="space-y-2">
                 <Label className="flex items-center gap-1.5 text-sm">
                   <BarChart3 className="w-4 h-4 text-muted-foreground" />
@@ -165,6 +158,12 @@ const ProfitCalculator = () => {
                 </div>
               </div>
             </div>
+
+            {/* Logistics Breakdown */}
+            <LogisticsBreakdown
+              logisticsCostPerUnit={logisticsCostPerUnit}
+              unitsFinanced={main.unitsFinanced}
+            />
 
             {/* Main Results */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
