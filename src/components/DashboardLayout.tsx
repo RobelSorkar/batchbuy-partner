@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, LogOut, Menu, Store, Warehouse, ClipboardList, Share2, BarChart3 } from "lucide-react";
+import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, LogOut, Menu, Store, Warehouse, ClipboardList, Share2, BarChart3, UserCircle } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 import NotificationDropdown from "@/components/NotificationDropdown";
@@ -15,6 +15,7 @@ const partnerNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/partner" },
   { icon: Layers, label: "Create Batch", href: "/create-batch" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
+  { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
 
 const dropshipperNav = [
@@ -22,6 +23,7 @@ const dropshipperNav = [
   { icon: Store, label: "Products", href: "/dropshipper/products" },
   { icon: ShoppingCart, label: "My Orders", href: "/dropshipper/orders" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
+  { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
 
 const adminNav = [
@@ -40,6 +42,7 @@ const warehouseNav = [
 const distributorNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/distributor" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
+  { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
 
 const navMap = {
