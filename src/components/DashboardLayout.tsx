@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, Settings, LogOut, Menu, Bell, Store, ShieldCheck, Warehouse, ClipboardList, Share2, BarChart3 } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, LogOut, Menu, Bell, Store, Warehouse, ClipboardList, Share2, BarChart3 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
+import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -10,10 +11,8 @@ interface DashboardLayoutProps {
 
 const partnerNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/partner" },
-  { icon: Layers, label: "My Batches", href: "/partner/batches" },
-  { icon: Package, label: "Inventory", href: "/partner/inventory" },
+  { icon: Layers, label: "Create Batch", href: "/create-batch" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
-  { icon: Settings, label: "Settings", href: "/partner/settings" },
 ];
 
 const dropshipperNav = [
@@ -21,29 +20,19 @@ const dropshipperNav = [
   { icon: Store, label: "Products", href: "/dropshipper/products" },
   { icon: ShoppingCart, label: "My Orders", href: "/dropshipper/orders" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
-  { icon: Settings, label: "Settings", href: "/dropshipper/settings" },
 ];
 
 const adminNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
-  { icon: Layers, label: "All Batches", href: "/admin/batches" },
   { icon: ClipboardList, label: "Orders", href: "/admin/orders" },
   { icon: Share2, label: "Distribution", href: "/admin/distribution" },
-  { icon: Users, label: "Users", href: "/admin/users" },
   { icon: Warehouse, label: "Warehouse", href: "/warehouse" },
-  { icon: Truck, label: "Fulfillment", href: "/admin/fulfillment" },
-  { icon: Wallet, label: "Wallets", href: "/admin/wallets" },
-  { icon: ShieldCheck, label: "Moderation", href: "/admin/moderation" },
   { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
-  { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
 const warehouseNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/warehouse" },
-  { icon: Package, label: "Inventory", href: "/warehouse/inventory" },
   { icon: ClipboardList, label: "Orders", href: "/warehouse/orders" },
-  { icon: Truck, label: "Fulfillment", href: "/warehouse/fulfillment" },
-  { icon: Settings, label: "Settings", href: "/warehouse/settings" },
 ];
 
 const navMap = {
@@ -63,9 +52,16 @@ const roleLabels = {
 const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
   const navItems = navMap[role];
 
   const activeLabel = navItems.find((item) => location.pathname === item.href)?.label || "Dashboard";
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -116,13 +112,13 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
               Switch to {role === "partner" ? "Dropshipper" : "Partner"}
             </Link>
           )}
-          <Link
-            to="/"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground/50 hover:text-destructive hover:bg-destructive/10 transition-colors"
           >
             <LogOut className="w-4 h-4" />
-            Back to Home
-          </Link>
+            Sign Out
+          </button>
         </div>
       </aside>
 
