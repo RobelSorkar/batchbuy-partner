@@ -53,6 +53,7 @@ const roleLabels = {
   dropshipper: "Dropshipper",
   admin: "Admin",
   warehouse: "Warehouse Manager",
+  distributor: "Distributor",
 };
 
 const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) => {
