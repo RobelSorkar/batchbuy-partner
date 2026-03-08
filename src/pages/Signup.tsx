@@ -50,7 +50,8 @@ const Signup = () => {
         await supabase.from("user_roles").insert({ user_id: data.user.id, role: selectedRole as any });
       }
       if (selectedRole === "dropshipper") navigate("/dropshipper");
-      else if (selectedRole === "distributor") navigate("/warehouse");
+      else if (selectedRole === "distributor") navigate("/distribution");
+      else if (selectedRole === "warehouse") navigate("/warehouse");
       else navigate("/partner");
     }
   };
