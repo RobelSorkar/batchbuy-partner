@@ -10,14 +10,7 @@ import { Label } from "@/components/ui/label";
 
 type InventoryMode = "collect" | "platform" | "hybrid";
 
-const stats = [
-  { label: "Total Units Owned", value: "248", change: "+24", up: true, icon: Package },
-  { label: "Units Collected", value: "60", change: "+10", up: true, icon: Truck },
-  { label: "Listed for Platform Sale", value: "138", change: "+14", up: true, icon: ShoppingCart },
-  { label: "Units Sold", value: "92", change: "+18", up: true, icon: BarChart3 },
-  { label: "Remaining Inventory", value: "156", change: "-18", up: false, icon: Archive },
-  { label: "Total Profit Earned", value: "৳47,200", change: "+৳5,200", up: true, icon: Wallet },
-];
+// Stats are now derived from live inventory state (see component body)
 
 interface InventoryItem {
   id: string;
@@ -38,7 +31,7 @@ interface InventoryItem {
 const inventoryData: InventoryItem[] = [
   {
     id: "1", batchName: "Batch #47", productName: "Premium Cotton T-Shirt",
-    totalOwned: 50, collected: 10, listedForSale: 25, sold: 18, remaining: 32,
+    totalOwned: 50, collected: 10, listedForSale: 22, sold: 18, remaining: 32,
     profitEarned: 6300, costPerUnit: 300, retailPrice: 650, mode: "hybrid", status: "Active",
   },
   {
@@ -48,7 +41,7 @@ const inventoryData: InventoryItem[] = [
   },
   {
     id: "3", batchName: "Batch #15", productName: "Handcrafted Leather Wallet",
-    totalOwned: 100, collected: 40, listedForSale: 60, sold: 52, remaining: 48,
+    totalOwned: 100, collected: 20, listedForSale: 28, sold: 52, remaining: 48,
     profitEarned: 26000, costPerUnit: 800, retailPrice: 1800, mode: "hybrid", status: "Active",
   },
   {
