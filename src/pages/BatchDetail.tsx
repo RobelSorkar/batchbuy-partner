@@ -257,7 +257,7 @@ const BatchDetail = () => {
                       <>
                         <div className="text-sm space-y-1">
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Units Financed (FLOOR)</span>
+                            <span className="text-muted-foreground">Units Financed (CEIL)</span>
                             <span className="font-semibold">{ex.unitsFinanced}</span>
                           </div>
                           <div className="flex justify-between">
