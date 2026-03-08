@@ -388,6 +388,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      join_batch: {
+        Args: { p_batch_id: string; p_total_invested: number; p_units: number }
+        Returns: Json
+      }
     }
     Enums: {
       app_role:
