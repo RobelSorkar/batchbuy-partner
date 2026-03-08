@@ -252,30 +252,28 @@ const BatchDetail = () => {
                 <div className="bg-accent/50 rounded-lg p-4 border border-primary/10 space-y-2">
                   <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 financing</p>
                   {(() => {
-                    const exUnits = Math.floor(MINIMUM_PARTICIPATION_BDT / batch.production_cost_per_unit);
-                    const exCost = exUnits * batch.production_cost_per_unit;
-                    const exUnused = MINIMUM_PARTICIPATION_BDT - exCost;
+                    const ex = calcInvestmentEstimate(MINIMUM_PARTICIPATION_BDT, batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price, logisticsCost);
                     return (
                       <>
                         <div className="text-sm space-y-1">
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Units Financed (FLOOR)</span>
-                            <span className="font-semibold">{exUnits}</span>
+                            <span className="font-semibold">{ex.unitsFinanced}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Inventory Cost</span>
-                            <span className="font-semibold">৳{exCost.toLocaleString()}</span>
+                            <span className="font-semibold">৳{ex.inventoryCost.toLocaleString()}</span>
                           </div>
-                          {exUnused > 0 && (
+                          {ex.unusedAmount > 0 && (
                             <div className="flex justify-between text-xs bg-accent/30 rounded px-2 py-1 border border-accent-foreground/10">
                               <span className="text-accent-foreground">Unused amount returned</span>
-                              <span className="font-mono font-bold text-accent-foreground">৳{exUnused.toLocaleString()}</span>
+                              <span className="font-mono font-bold text-accent-foreground">৳{ex.unusedAmount.toLocaleString()}</span>
                             </div>
                           )}
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Est. Net Profit</span>
                             <span className="font-semibold text-primary">
-                              ৳{(exUnits * profitPerUnit).toLocaleString()}
+                              ৳{ex.retailNetProfit.toLocaleString()}
                             </span>
                           </div>
                         </div>
