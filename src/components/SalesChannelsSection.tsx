@@ -1,33 +1,25 @@
-import { Store, Users, Truck, Globe } from "lucide-react";
+import { Globe, Store, ShoppingBag, Truck, Warehouse, ArrowRight } from "lucide-react";
 
 const channels = [
   {
     icon: Globe,
-    title: "Platform Direct",
-    desc: "Sell directly through our marketplace to end customers. Set your own retail price and keep maximum profit.",
-    margin: "35-45%",
-    color: "bg-primary/10 text-primary",
+    title: "Online Sellers",
+    desc: "Sell on Facebook, websites, and social platforms. We fulfill orders from warehouse.",
   },
   {
     icon: Store,
-    title: "Dropshippers",
-    desc: "Enable thousands of social media sellers to sell your products. They handle marketing, you handle inventory.",
-    margin: "18-25%",
-    color: "bg-blue-500/10 text-blue-600",
+    title: "Retail Shops",
+    desc: "Wholesale to physical stores. They buy at wholesale price and sell at retail.",
   },
   {
-    icon: Users,
-    title: "Retail & Shops",
-    desc: "Wholesale your units to physical retail stores and online shops at wholesale pricing with bulk discounts.",
-    margin: "25-35%",
-    color: "bg-amber-500/10 text-amber-600",
+    icon: ShoppingBag,
+    title: "Dropshippers",
+    desc: "Zero inventory sellers. They take orders, we ship directly to customers.",
   },
   {
     icon: Truck,
     title: "Distributors",
-    desc: "Partner with regional distributors who manage warehousing, last-mile delivery, and local market coverage.",
-    margin: "15-22%",
-    color: "bg-purple-500/10 text-purple-600",
+    desc: "Regional partners who buy in bulk and handle local market delivery.",
   },
 ];
 
@@ -40,28 +32,62 @@ const SalesChannelsSection = () => {
             Sales Channels
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-3 font-display">
-            Sell through <span className="text-gradient-primary">4 channels</span> simultaneously
+            Your products, <span className="text-gradient-primary">sold everywhere</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Once you own product units, distribute them through multiple channels to maximize revenue and speed up sales.
+            Products go from warehouse to customers through multiple sales channels simultaneously.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        {/* Warehouse → Channels visual */}
+        <div className="flex flex-col items-center mb-12">
+          {/* Warehouse hub */}
+          <div className="flex items-center gap-3 px-6 py-3 rounded-xl bg-card border border-border shadow-card">
+            <Warehouse className="w-6 h-6 text-primary" />
+            <span className="font-display font-semibold text-lg">Warehouse</span>
+          </div>
+
+          {/* Connector lines */}
+          <div className="relative w-full max-w-2xl h-12 mt-1">
+            {/* Center vertical line */}
+            <div className="absolute left-1/2 top-0 w-px h-4 bg-primary/30" />
+            {/* Horizontal spread */}
+            <div className="absolute top-4 left-[12.5%] right-[12.5%] h-px bg-primary/20" />
+            {/* 4 drop lines */}
+            {[12.5, 37.5, 62.5, 87.5].map((pos) => (
+              <div
+                key={pos}
+                className="absolute h-4 w-px bg-primary/30"
+                style={{ left: `${pos}%`, top: "16px" }}
+              />
+            ))}
+            {/* 4 arrows */}
+            {[12.5, 37.5, 62.5, 87.5].map((pos) => (
+              <div
+                key={`arrow-${pos}`}
+                className="absolute"
+                style={{ left: `calc(${pos}% - 6px)`, top: "28px" }}
+              >
+                <svg width="12" height="8" viewBox="0 0 12 8" className="text-primary/40">
+                  <path d="M6 8L0 0h12z" fill="currentColor" />
+                </svg>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Channel cards */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {channels.map((ch) => (
-            <div key={ch.title} className="flex gap-5 p-6 rounded-xl bg-card border border-border/50 shadow-card hover:shadow-card-hover transition-all duration-300">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${ch.color}`}>
-                <ch.icon className="w-6 h-6" />
+            <div
+              key={ch.title}
+              className="bg-card border border-border/50 rounded-xl p-6 text-center shadow-card hover:shadow-card-hover transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mx-auto mb-4">
+                <ch.icon className="w-6 h-6 text-accent-foreground" />
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-display font-semibold text-lg">{ch.title}</h3>
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-accent text-accent-foreground font-medium">
-                    {ch.margin} margin
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{ch.desc}</p>
-              </div>
+              <h3 className="font-display font-semibold text-base mb-2">{ch.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{ch.desc}</p>
             </div>
           ))}
         </div>
