@@ -97,8 +97,7 @@ const PartnerDashboard = () => {
             <p className="text-muted-foreground text-sm mt-1">Manage your production inventory and earnings</p>
           </div>
           <div className="flex gap-3">
-            <Link to="/marketplace"><Button variant="outline">Browse Batches</Button></Link>
-            <Link to="/create-batch"><Button>Create Batch</Button></Link>
+            <Link to="/marketplace"><Button>Browse & Invest in Batches</Button></Link>
           </div>
         </div>
 

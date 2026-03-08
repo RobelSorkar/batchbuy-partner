@@ -13,7 +13,7 @@ interface DashboardLayoutProps {
 
 const partnerNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/partner" },
-  { icon: Layers, label: "Create Batch", href: "/create-batch" },
+  { icon: Layers, label: "Marketplace", href: "/marketplace" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
   { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
