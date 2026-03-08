@@ -130,11 +130,12 @@ export function calcInvestmentEstimate(
   const unitsSold = Math.min(unitsSoldRaw, unitsFinanced);
 
   const logisticsCost = unitsFinanced * logisticsPerUnit;
-  const totalCost = inventoryCost + logisticsCost;
 
   // Wholesale
   const wholesaleRevenue = unitsSold * wholesalePrice;
-  const wholesaleGrossProfit = wholesaleRevenue - totalCost;
+  const wholesaleMarketingCost = Math.round(wholesaleRevenue * MARKETING_COST_RATE);
+  const wholesaleBaseCost = inventoryCost + logisticsCost + wholesaleMarketingCost;
+  const wholesaleGrossProfit = wholesaleRevenue - wholesaleBaseCost;
   const wholesaleCommission =
     wholesaleGrossProfit > 0
       ? Math.round(wholesaleGrossProfit * PLATFORM_COMMISSION_RATE)
@@ -144,7 +145,9 @@ export function calcInvestmentEstimate(
 
   // Retail
   const retailRevenue = unitsSold * retailPrice;
-  const retailGrossProfit = retailRevenue - totalCost;
+  const retailMarketingCost = Math.round(retailRevenue * MARKETING_COST_RATE);
+  const retailBaseCost = inventoryCost + logisticsCost + retailMarketingCost;
+  const retailGrossProfit = retailRevenue - retailBaseCost;
   const retailCommission =
     retailGrossProfit > 0
       ? Math.round(retailGrossProfit * PLATFORM_COMMISSION_RATE)
@@ -152,18 +155,24 @@ export function calcInvestmentEstimate(
   const retailNetProfit = retailGrossProfit - retailCommission;
   const retailROI = inventoryCost > 0 ? (retailNetProfit / inventoryCost) * 100 : 0;
 
+  const marketingCost = retailMarketingCost; // default to retail channel for summary
+  const totalCost = inventoryCost + logisticsCost + marketingCost;
+
   return {
     unitsFinanced,
     inventoryCost,
     unusedAmount,
     logisticsCost,
+    marketingCost,
     totalCost,
     wholesaleRevenue,
+    wholesaleMarketingCost,
     wholesaleGrossProfit,
     wholesaleCommission,
     wholesaleNetProfit,
     wholesaleROI,
     retailRevenue,
+    retailMarketingCost,
     retailGrossProfit,
     retailCommission,
     retailNetProfit,
