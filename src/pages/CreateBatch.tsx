@@ -21,7 +21,7 @@ const CreateBatch = () => {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     productName: "", batchName: "", productionCostPerUnit: "", wholesalePrice: "", retailPrice: "",
-    totalQuantity: "", category: "", description: "", manufacturer: "", warehouse: "", productionTimeDays: "",
+    totalQuantity: "", category: "", description: "", manufacturer: "", warehouse: "", productionTimeDays: "", deadline: "",
   });
 
   const update = (key: string, value: string) => setForm((prev) => ({ ...prev, [key]: value }));
@@ -56,6 +56,7 @@ const CreateBatch = () => {
       manufacturer: form.manufacturer || null,
       warehouse: form.warehouse || null,
       production_time_days: Number(form.productionTimeDays) || 30,
+      deadline: form.deadline || null,
       created_by: user.id,
       status: "funding",
     });
@@ -147,6 +148,11 @@ const CreateBatch = () => {
               <div className="space-y-2">
                 <Label htmlFor="productionTime">Estimated Production Time (days)</Label>
                 <Input id="productionTime" type="number" min="1" placeholder="e.g. 21" value={form.productionTimeDays} onChange={(e) => update("productionTimeDays", e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="deadline">Funding Deadline *</Label>
+                <Input id="deadline" type="date" min={new Date().toISOString().split("T")[0]} value={form.deadline} onChange={(e) => update("deadline", e.target.value)} required />
+                <p className="text-xs text-muted-foreground">Batch will auto-close after this date if not fully funded</p>
               </div>
             </div>
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Package, TrendingUp, Wallet, Layers, ArrowUpRight, ArrowDownRight, Truck, ShoppingCart, Archive, BarChart3, Settings2, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -9,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMyParticipations } from "@/hooks/useBatches";
 import { useWallet, useTransactions } from "@/hooks/useWallet";
+import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 type InventoryMode = "collect" | "platform" | "hybrid";
 
@@ -24,10 +27,13 @@ const PartnerDashboard = () => {
   const { data: participations, isLoading: loadingParts } = useMyParticipations();
   const { data: wallet } = useWallet();
   const { data: transactions } = useTransactions();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const [manageOpen, setManageOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [newMode, setNewMode] = useState<InventoryMode>("hybrid");
+  const [saving, setSaving] = useState(false);
   const [collectQty, setCollectQty] = useState("");
   const [platformQty, setPlatformQty] = useState("");
 
@@ -49,7 +55,7 @@ const PartnerDashboard = () => {
       profitEarned: unitsSold * profitPerUnit * 0.85,
       costPerUnit,
       retailPrice,
-      mode: "platform" as InventoryMode,
+      mode: (p as any).inventory_mode as InventoryMode || "platform",
       status: batch.status === "completed" ? "Completed" : "Active",
     };
   }).filter(Boolean);
@@ -182,7 +188,25 @@ const PartnerDashboard = () => {
                   ))}
                 </div>
               </div>
-              <Button className="w-full" onClick={() => setManageOpen(false)}>Save Changes</Button>
+              <Button className="w-full" disabled={saving} onClick={async () => {
+                if (!selectedItemId) return;
+                setSaving(true);
+                const { error } = await supabase
+                  .from("batch_participations")
+                  .update({ inventory_mode: newMode } as any)
+                  .eq("id", selectedItemId);
+                setSaving(false);
+                if (error) {
+                  toast({ title: "Failed to save", description: error.message, variant: "destructive" });
+                } else {
+                  toast({ title: "Inventory mode updated" });
+                  queryClient.invalidateQueries({ queryKey: ["my-participations"] });
+                  setManageOpen(false);
+                }
+              }}>
+                {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                Save Changes
+              </Button>
             </div>
           )}
         </DialogContent>

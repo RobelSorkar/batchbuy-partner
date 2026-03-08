@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -13,6 +13,8 @@ import {
 import { useWallet, useTransactions, useWithdraw, useReinvest, useDeposit } from "@/hooks/useWallet";
 import { useBatches } from "@/hooks/useBatches";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 const withdrawMethods = [
   { value: "bkash", label: "bKash" },
@@ -35,6 +37,7 @@ const categoryFilters = [
 ];
 
 const WalletPage = () => {
+  const { user } = useAuth();
   const { data: wallet, isLoading: walletLoading } = useWallet();
   const { data: transactions = [], isLoading: txnLoading } = useTransactions();
   const { data: batches = [] } = useBatches();
@@ -42,6 +45,15 @@ const WalletPage = () => {
   const reinvest = useReinvest();
   const deposit = useDeposit();
   const { toast } = useToast();
+  const [userRole, setUserRole] = useState<"partner" | "dropshipper" | "admin" | "warehouse">("partner");
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("user_roles").select("role").eq("user_id", user.id).then(({ data }) => {
+      const role = data?.[0]?.role;
+      if (role === "dropshipper" || role === "admin" || role === "warehouse") setUserRole(role);
+    });
+  }, [user]);
 
   const [txnFilter, setTxnFilter] = useState("all");
   const [withdrawOpen, setWithdrawOpen] = useState(false);
@@ -122,11 +134,11 @@ const WalletPage = () => {
   };
 
   if (walletLoading || txnLoading) {
-    return <DashboardLayout role="partner"><div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div></DashboardLayout>;
+    return <DashboardLayout role={userRole}><div className="flex items-center justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div></DashboardLayout>;
   }
 
   return (
-    <DashboardLayout role="partner">
+    <DashboardLayout role={userRole}>
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-display font-bold">Partner Wallet</h1>
