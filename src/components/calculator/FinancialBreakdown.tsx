@@ -14,7 +14,8 @@ interface FinancialBreakdownProps {
     unitsSold: number;
     totalCost: number;
     totalLogistics: number;
-    totalCostWithLogistics: number;
+    totalMarketing: number;
+    totalCostWithLogisticsAndMarketing: number;
     wholesaleRevenue: number;
     wholesaleGrossProfit: number;
     retailRevenue: number;
