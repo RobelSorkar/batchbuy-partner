@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, LogOut, Menu, Bell, Store, Warehouse, ClipboardList, Share2, BarChart3 } from "lucide-react";
+import { Package, LayoutDashboard, Layers, ShoppingCart, Truck, Wallet, Users, LogOut, Menu, Store, Warehouse, ClipboardList, Share2, BarChart3 } from "lucide-react";
+import { NavLink } from "@/components/NavLink";
+import { useAuth } from "@/hooks/useAuth";
+import NotificationDropdown from "@/components/NotificationDropdown";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 
