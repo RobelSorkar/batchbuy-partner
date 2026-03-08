@@ -193,7 +193,26 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             </div>
           )}
 
-          <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending} className="w-full" size="lg">
+          {/* Wallet balance display */}
+          <div className="flex items-center justify-between bg-muted/50 rounded-lg p-3 text-sm">
+            <div className="flex items-center gap-2">
+              <Wallet className="w-4 h-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Wallet Balance</span>
+            </div>
+            <span className={`font-semibold ${walletBalance < totalCost ? "text-destructive" : "text-foreground"}`}>
+              ৳{walletBalance.toLocaleString()}
+            </span>
+          </div>
+          {walletBalance < totalCost && totalCost > 0 && (
+            <div className="flex items-center justify-between bg-destructive/5 border border-destructive/20 rounded-lg p-3 text-sm">
+              <span className="text-destructive">Insufficient balance — need ৳{(totalCost - walletBalance).toLocaleString()} more</span>
+              <Link to="/wallet" onClick={() => onOpenChange(false)}>
+                <Button size="sm" variant="outline" className="text-xs h-7">Deposit</Button>
+              </Link>
+            </div>
+          )}
+
+          <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending || walletBalance < totalCost} className="w-full" size="lg">
             {joinBatch.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
             Confirm Investment — ৳{totalCost.toLocaleString()} for {units} units
           </Button>
