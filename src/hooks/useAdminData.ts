@@ -82,22 +82,14 @@ export function useAdminWithdrawals() {
   return useQuery({
     queryKey: ["admin-withdrawals"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // transactions.user_id has no FK to profiles, so query separately
+      const { data: txns, error } = await supabase
         .from("transactions")
-        .select("*, profiles!inner(full_name)")
+        .select("*")
         .eq("type", "withdrawal")
         .order("created_at", { ascending: false });
-      if (error) {
-        // Fallback without join if profiles FK doesn't exist
-        const { data: txns, error: e2 } = await supabase
-          .from("transactions")
-          .select("*")
-          .eq("type", "withdrawal")
-          .order("created_at", { ascending: false });
-        if (e2) throw e2;
-        return txns || [];
-      }
-      return data || [];
+      if (error) throw error;
+      return txns || [];
     },
     enabled: !!user,
   });

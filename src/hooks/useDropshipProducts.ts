@@ -51,7 +51,7 @@ export function useDropshipProducts() {
           sellerProfit,
           stock: Math.max(0, stock),
           description: batch.description || "",
-          rating: 4.5 + Math.random() * 0.5, // placeholder until we add reviews
+          rating: 0, // No reviews system yet
           totalSold: inv?.sold_units || batch.funded_units - batch.remaining_units,
           batchId: batch.id,
         } as DropshipProduct;

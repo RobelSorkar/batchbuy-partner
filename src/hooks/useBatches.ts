@@ -68,7 +68,7 @@ export function useBatchDetail(id: string | undefined) {
         .from("batches")
         .select("*")
         .eq("id", id)
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data as BatchRow;
     },
