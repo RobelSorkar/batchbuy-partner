@@ -97,6 +97,7 @@ const BatchDetail = () => {
     createdAt: batch.created_at,
     image: batch.image || "📦",
     partnersJoined: batch.partners_joined,
+    logisticsCostPerUnit: logisticsCost,
   };
 
   return (
