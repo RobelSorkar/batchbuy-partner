@@ -90,7 +90,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <span className="font-semibold">৳{inventoryCost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Units Financed</span>
+                <span className="text-muted-foreground">Product Units</span>
                 <span className="font-semibold">{units}</span>
               </div>
               <div className="flex justify-between">
@@ -159,7 +159,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
           {units > 0 && est && investmentAmount >= MINIMUM_PARTICIPATION_BDT && (
             <div className="bg-card rounded-lg p-4 border border-border/50 space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Units Financed</span>
+                <span className="text-muted-foreground">Product Units</span>
                 <span className="font-bold text-lg">{est.unitsFinanced}</span>
               </div>
 
