@@ -178,23 +178,25 @@ const ProfitCalculator = () => {
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
                 <Banknote className="w-5 h-5 text-muted-foreground mb-2" />
                 <div className="text-2xl font-display font-bold text-foreground">
-                  ৳{main.totalCost.toLocaleString()}
+                  ৳{main.inventoryCost.toLocaleString()}
                 </div>
-                <div className="text-xs text-muted-foreground">Total Cost</div>
-              </div>
-              <div className="bg-accent/50 rounded-xl p-4 flex flex-col items-center text-center">
-                <TrendingUp className="w-5 h-5 text-accent-foreground mb-2" />
-                <div className="text-2xl font-display font-bold text-accent-foreground">
-                  {mainForBreakdown.unitsSold} / {main.unitsFinanced}
-                </div>
-                <div className="text-xs text-muted-foreground">Units Sold ({sellThrough}%)</div>
+                <div className="text-xs text-muted-foreground">Inventory Cost</div>
               </div>
               <div className="bg-primary/10 rounded-xl p-4 flex flex-col items-center text-center border border-primary/20">
                 <Calculator className="w-5 h-5 text-primary mb-2" />
                 <div className={`text-2xl font-display font-bold ${main.retailNetProfit >= 0 ? "text-primary" : "text-destructive"}`}>
                   ৳{main.retailNetProfit.toLocaleString()}
                 </div>
-                <div className="text-xs text-muted-foreground">Net Profit ({main.retailROI.toFixed(0)}% ROI)</div>
+                <div className="text-xs text-muted-foreground">Platform Sale Profit</div>
+                <div className="text-[10px] text-muted-foreground">{main.retailROI.toFixed(0)}% ROI</div>
+              </div>
+              <div className="bg-accent/50 rounded-xl p-4 flex flex-col items-center text-center border border-accent-foreground/10">
+                <HandCoins className="w-5 h-5 text-accent-foreground mb-2" />
+                <div className={`text-2xl font-display font-bold ${indie.potentialProfit >= 0 ? "text-accent-foreground" : "text-destructive"}`}>
+                  ৳{indie.potentialProfit.toLocaleString()}
+                </div>
+                <div className="text-xs text-muted-foreground">Independent Sale Profit</div>
+                <div className="text-[10px] text-muted-foreground">{indie.potentialROI.toFixed(0)}% ROI</div>
               </div>
             </div>
 
