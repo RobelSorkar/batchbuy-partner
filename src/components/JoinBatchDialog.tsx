@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import {
   CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet,
-  Store, PackageCheck, ChevronRight, Coins, ArrowRight,
+  Store, PackageCheck, ChevronRight, Coins, ArrowRight, CreditCard, X,
 } from "lucide-react";
 import { ProductionBatch } from "@/types/batch";
 import {
@@ -16,7 +17,7 @@ import {
 } from "@/lib/calculations";
 import { useJoinBatch, SellingPreference } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
-import { useWallet } from "@/hooks/useWallet";
+import { useWallet, useDeposit } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
 
 interface JoinBatchDialogProps {
