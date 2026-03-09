@@ -90,7 +90,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <span className="font-semibold">৳{inventoryCost.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Units Financed</span>
+                <span className="text-muted-foreground">Product Units</span>
                 <span className="font-semibold">{units}</span>
               </div>
               <div className="flex justify-between">
