@@ -317,7 +317,8 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
 
           <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending || walletBalance < inventoryCost} className="w-full" size="lg">
             {joinBatch.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Confirm Financing — ৳{inventoryCost.toLocaleString()} for {units} units
+            {sellingPreference === "platform" ? <Store className="w-4 h-4 mr-2" /> : <PackageCheck className="w-4 h-4 mr-2" />}
+            Confirm — ৳{inventoryCost.toLocaleString()} · {units} units · {sellingPreference === "platform" ? "Platform" : "Independent"}
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">
