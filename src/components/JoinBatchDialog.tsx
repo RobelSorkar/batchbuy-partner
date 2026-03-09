@@ -173,6 +173,51 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             ))}
           </div>
 
+          {/* Selling Preference Selection */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Choose your selling option</Label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setSellingPreference("platform")}
+                className={`rounded-lg p-4 border-2 text-left transition-all ${
+                  sellingPreference === "platform"
+                    ? "border-primary bg-primary/5 shadow-sm"
+                    : "border-border hover:border-primary/30"
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Store className={`w-5 h-5 ${sellingPreference === "platform" ? "text-primary" : "text-muted-foreground"}`} />
+                  <span className={`text-sm font-semibold ${sellingPreference === "platform" ? "text-primary" : "text-foreground"}`}>
+                    Sell via Platform
+                  </span>
+                </div>
+                <p className="text-[11px] text-muted-foreground leading-tight">
+                  Platform handles sales, logistics, marketing. You earn net profit after deductions.
+                </p>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSellingPreference("collect")}
+                className={`rounded-lg p-4 border-2 text-left transition-all ${
+                  sellingPreference === "collect"
+                    ? "border-accent-foreground bg-accent/50 shadow-sm"
+                    : "border-border hover:border-accent-foreground/30"
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <PackageCheck className={`w-5 h-5 ${sellingPreference === "collect" ? "text-accent-foreground" : "text-muted-foreground"}`} />
+                  <span className={`text-sm font-semibold ${sellingPreference === "collect" ? "text-accent-foreground" : "text-foreground"}`}>
+                    Take Delivery
+                  </span>
+                </div>
+                <p className="text-[11px] text-muted-foreground leading-tight">
+                  Collect your units and sell independently. No logistics, marketing, or commission fees.
+                </p>
+              </button>
+            </div>
+          </div>
+
           {units > 0 && est && indie && investmentAmount >= MINIMUM_PARTICIPATION_BDT && (
             <div className="bg-card rounded-lg p-4 border border-border/50 space-y-3 text-sm">
               <div className="flex justify-between">
