@@ -103,7 +103,31 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
       setSubmitted(false);
       setInvestmentInput(MINIMUM_PARTICIPATION_BDT.toString());
       setSellingPreference("platform");
+      setShowDeposit(false);
+      setDepositAmount("");
+      setAccountNumber("");
     }, 300);
+  };
+
+  const handleDeposit = async () => {
+    const amount = Number(depositAmount);
+    if (!amount || amount < 500) {
+      toast({ title: "Invalid amount", description: "Minimum deposit is ৳500", variant: "destructive" });
+      return;
+    }
+    if (!accountNumber.trim()) {
+      toast({ title: "Account required", description: "Please enter your payment account number", variant: "destructive" });
+      return;
+    }
+    try {
+      await deposit.mutateAsync({ amount, method: paymentMethod, account: accountNumber });
+      toast({ title: "Deposit successful", description: `৳${amount.toLocaleString()} added to your wallet` });
+      setShowDeposit(false);
+      setDepositAmount("");
+      setAccountNumber("");
+    } catch (error: any) {
+      toast({ title: "Deposit failed", description: error.message, variant: "destructive" });
+    }
   };
 
   // ─── Success screen ──────────────────────────────────────────────────────────
