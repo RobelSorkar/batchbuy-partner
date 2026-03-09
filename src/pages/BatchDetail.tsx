@@ -159,18 +159,17 @@ const BatchDetail = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-xs text-muted-foreground mb-1">Wholesale Price</div>
-                    <div className="text-xl font-display font-bold">৳{batch.wholesale_price}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">Marketing: ৳{wholesaleMarketingPerUnit}</div>
-                    <div className="text-xs text-primary mt-1">+৳{wholesaleProfitPerUnit} net ({wholesaleReturnPct}%)</div>
-                  </div>
                   <div className="text-center p-4 bg-primary/5 rounded-lg border border-primary/10">
-                    <div className="text-xs text-muted-foreground mb-1">Retail Price</div>
-                    <div className="text-xl font-display font-bold">৳{batch.retail_price}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">Marketing: ৳{retailMarketingPerUnit}</div>
-                    <div className="text-xs text-primary mt-1">+৳{profitPerUnit} net ({returnPct}%)</div>
-                    <div className="text-[10px] text-muted-foreground">after logistics + marketing + 15% fee</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-primary mb-1">Option A: Sell via Platform</div>
+                    <div className="text-xs text-muted-foreground mb-1">Retail Price: ৳{batch.retail_price}</div>
+                    <div className="text-xs text-primary">+৳{profitPerUnit} net/unit ({returnPct}%)</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">After logistics + marketing + 15% fee</div>
+                  </div>
+                  <div className="text-center p-4 bg-accent/50 rounded-lg border border-accent-foreground/10">
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-accent-foreground mb-1">Option B: Take Delivery</div>
+                    <div className="text-xs text-muted-foreground mb-1">Retail Price: ৳{batch.retail_price}</div>
+                    <div className="text-xs text-accent-foreground">+৳{batch.retail_price - batch.production_cost_per_unit} potential/unit ({((batch.retail_price - batch.production_cost_per_unit) / batch.production_cost_per_unit * 100).toFixed(1)}%)</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">No logistics, marketing, or commission</div>
                   </div>
                 </div>
 
