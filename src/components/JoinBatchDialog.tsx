@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet } from "lucide-react";
+import { CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet, Store, PackageCheck } from "lucide-react";
 import { ProductionBatch } from "@/types/batch";
 import {
   MINIMUM_PARTICIPATION_BDT,
@@ -12,7 +12,7 @@ import {
   calcInvestmentEstimate,
   calcIndependentEstimate,
 } from "@/lib/calculations";
-import { useJoinBatch } from "@/hooks/useJoinBatch";
+import { useJoinBatch, SellingPreference } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
 import { useWallet } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
