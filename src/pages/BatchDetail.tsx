@@ -15,6 +15,7 @@ import {
   MINIMUM_PARTICIPATION_BDT,
   calcPerUnitProfit,
   calcInvestmentEstimate,
+  calcIndependentEstimate,
 } from "@/lib/calculations";
 
 const statusColors: Record<string, string> = {
@@ -158,18 +159,17 @@ const BatchDetail = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-xs text-muted-foreground mb-1">Wholesale Price</div>
-                    <div className="text-xl font-display font-bold">৳{batch.wholesale_price}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">Marketing: ৳{wholesaleMarketingPerUnit}</div>
-                    <div className="text-xs text-primary mt-1">+৳{wholesaleProfitPerUnit} net ({wholesaleReturnPct}%)</div>
-                  </div>
                   <div className="text-center p-4 bg-primary/5 rounded-lg border border-primary/10">
-                    <div className="text-xs text-muted-foreground mb-1">Retail Price</div>
-                    <div className="text-xl font-display font-bold">৳{batch.retail_price}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">Marketing: ৳{retailMarketingPerUnit}</div>
-                    <div className="text-xs text-primary mt-1">+৳{profitPerUnit} net ({returnPct}%)</div>
-                    <div className="text-[10px] text-muted-foreground">after logistics + marketing + 15% fee</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-primary mb-1">Option A: Sell via Platform</div>
+                    <div className="text-xs text-muted-foreground mb-1">Retail Price: ৳{batch.retail_price}</div>
+                    <div className="text-xs text-primary">+৳{profitPerUnit} net/unit ({returnPct}%)</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">After logistics + marketing + 15% fee</div>
+                  </div>
+                  <div className="text-center p-4 bg-accent/50 rounded-lg border border-accent-foreground/10">
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-accent-foreground mb-1">Option B: Take Delivery</div>
+                    <div className="text-xs text-muted-foreground mb-1">Retail Price: ৳{batch.retail_price}</div>
+                    <div className="text-xs text-accent-foreground">+৳{batch.retail_price - batch.production_cost_per_unit} potential/unit ({((batch.retail_price - batch.production_cost_per_unit) / batch.production_cost_per_unit * 100).toFixed(1)}%)</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">No logistics, marketing, or commission</div>
                   </div>
                 </div>
 
@@ -273,6 +273,7 @@ const BatchDetail = () => {
                   <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 financing</p>
                   {(() => {
                     const ex = calcInvestmentEstimate(MINIMUM_PARTICIPATION_BDT, batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price, logisticsCost);
+                    const indie = calcIndependentEstimate(MINIMUM_PARTICIPATION_BDT, batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price);
                     return (
                       <div className="text-sm space-y-1">
                         <div className="flex justify-between">
@@ -283,28 +284,27 @@ const BatchDetail = () => {
                           <span className="text-muted-foreground">Inventory Cost</span>
                           <span>৳{ex.inventoryCost.toLocaleString()}</span>
                         </div>
-                        <div className="flex justify-between text-xs">
-                          <span className="text-muted-foreground">Logistics Cost</span>
-                          <span>৳{ex.logisticsCost.toLocaleString()}</span>
+
+                        <div className="border-t border-border/30 pt-2 mt-2 space-y-1.5">
+                          <div className="text-[10px] font-bold uppercase tracking-wide text-primary">Option A: Platform Sale</div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-muted-foreground">Est. Net Profit</span>
+                            <span className="font-semibold text-primary">৳{ex.retailNetProfit.toLocaleString()}</span>
+                          </div>
+                          <div className="text-[10px] text-muted-foreground">After logistics + marketing + 15% fee</div>
                         </div>
-                        <div className="flex justify-between text-xs">
-                          <span className="text-muted-foreground">Marketing Cost (10%)</span>
-                          <span>৳{ex.marketingCost.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between border-t border-border/30 pt-1">
-                          <span className="text-muted-foreground font-medium">Total Cost</span>
-                          <span className="font-semibold">৳{ex.totalCost.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Est. Net Profit</span>
-                          <span className="font-semibold text-primary">
-                            ৳{ex.retailNetProfit.toLocaleString()}
-                          </span>
+
+                        <div className="border-t border-border/30 pt-2 mt-1 space-y-1.5">
+                          <div className="text-[10px] font-bold uppercase tracking-wide text-accent-foreground">Option B: Take Delivery</div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-muted-foreground">Potential Profit</span>
+                            <span className="font-semibold text-accent-foreground">৳{indie.potentialProfit.toLocaleString()}</span>
+                          </div>
+                          <div className="text-[10px] text-muted-foreground">No logistics, marketing, or commission</div>
                         </div>
                       </div>
                     );
                   })()}
-                  <p className="text-[10px] text-muted-foreground">After logistics + 10% marketing + 15% platform commission</p>
                   <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-1">
                     <span>✔ Estimate only</span>
                     <span>✔ Not guaranteed</span>

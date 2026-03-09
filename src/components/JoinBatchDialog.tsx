@@ -10,6 +10,7 @@ import {
   MINIMUM_PARTICIPATION_BDT,
   allocateUnits,
   calcInvestmentEstimate,
+  calcIndependentEstimate,
 } from "@/lib/calculations";
 import { useJoinBatch } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
@@ -38,6 +39,9 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const { units, inventoryCost, unusedAmount } = allocateUnits(investmentAmount, batch.productionCostPerUnit);
   const est = units > 0
     ? calcInvestmentEstimate(investmentAmount, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost)
+    : null;
+  const indie = units > 0
+    ? calcIndependentEstimate(investmentAmount, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice)
     : null;
 
   const isValid = investmentAmount >= MINIMUM_PARTICIPATION_BDT && units > 0 && units <= batch.remainingUnits;
@@ -93,9 +97,15 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 <span className="text-muted-foreground">Product Units</span>
                 <span className="font-semibold">{units}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Est. Retail Net Profit</span>
-                <span className="font-semibold text-primary">৳{est?.retailNetProfit.toLocaleString()}</span>
+              <div className="border-t border-border/30 pt-2 mt-1">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Est. Platform Sale Profit</span>
+                  <span className="font-semibold text-primary">৳{est?.retailNetProfit.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between mt-1">
+                  <span className="text-muted-foreground">Independent Sale Potential</span>
+                  <span className="font-semibold text-accent-foreground">৳{indie?.potentialProfit.toLocaleString()}</span>
+                </div>
               </div>
               <div className="flex items-center gap-3 pt-1 text-[10px] text-muted-foreground">
                 <span>✔ Profit estimate only</span>
@@ -156,37 +166,44 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
             ))}
           </div>
 
-          {units > 0 && est && investmentAmount >= MINIMUM_PARTICIPATION_BDT && (
+          {units > 0 && est && indie && investmentAmount >= MINIMUM_PARTICIPATION_BDT && (
             <div className="bg-card rounded-lg p-4 border border-border/50 space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Product Units</span>
                 <span className="font-bold text-lg">{est.unitsFinanced}</span>
               </div>
 
-              {/* Cost Breakdown */}
-              <div className="space-y-1.5 bg-muted/30 rounded-lg p-3">
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Inventory Cost ({est.unitsFinanced} × ৳{batch.productionCostPerUnit})</span>
-                  <span>৳{est.inventoryCost.toLocaleString()}</span>
+              {/* Dual Profit Comparison */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-lg p-3 bg-primary/5 border border-primary/10 space-y-2">
+                  <div className="text-[10px] font-bold uppercase tracking-wide text-primary">Option A: Sell via Platform</div>
+                  <div className="text-lg font-display font-bold text-primary">৳{est.retailNetProfit.toLocaleString()}</div>
+                  <div className="text-[10px] text-muted-foreground">{est.retailROI.toFixed(0)}% ROI</div>
+                  <div className="space-y-1 text-[10px] text-muted-foreground pt-1 border-t border-border/30">
+                    <div>Revenue: ৳{est.retailRevenue.toLocaleString()}</div>
+                    <div>− Inventory: ৳{est.inventoryCost.toLocaleString()}</div>
+                    <div>− Logistics: ৳{est.logisticsCost.toLocaleString()}</div>
+                    <div>− Marketing: ৳{est.marketingCost.toLocaleString()}</div>
+                    <div>− Commission: ৳{est.retailCommission.toLocaleString()}</div>
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Logistics Cost ({est.unitsFinanced} × ৳{logisticsCost})</span>
-                  <span>৳{est.logisticsCost.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Marketing Cost (10% of retail revenue)</span>
-                  <span>৳{est.marketingCost.toLocaleString()}</span>
-                </div>
-                <div className="border-t border-border/30 pt-1.5 flex justify-between">
-                  <span className="font-medium text-foreground">Total Cost</span>
-                  <span className="font-semibold">৳{est.totalCost.toLocaleString()}</span>
+                <div className="rounded-lg p-3 bg-accent/50 border border-accent-foreground/10 space-y-2">
+                  <div className="text-[10px] font-bold uppercase tracking-wide text-accent-foreground">Option B: Take Delivery</div>
+                  <div className="text-lg font-display font-bold text-accent-foreground">৳{indie.potentialProfit.toLocaleString()}</div>
+                  <div className="text-[10px] text-muted-foreground">{indie.potentialROI.toFixed(0)}% ROI</div>
+                  <div className="space-y-1 text-[10px] text-muted-foreground pt-1 border-t border-border/30">
+                    <div>Potential Revenue: ৳{indie.potentialRevenue.toLocaleString()}</div>
+                    <div>− Inventory: ৳{indie.inventoryCost.toLocaleString()}</div>
+                    <div className="text-accent-foreground font-medium">No logistics/marketing/fee</div>
+                  </div>
                 </div>
               </div>
 
+              {/* Scenario Cards */}
               <div className="border-t border-border/50 pt-3 space-y-3">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <TrendingUp className="w-4 h-4 text-primary" />
-                  <span className="font-medium text-foreground">Profit Scenarios</span>
+                  <span className="font-medium text-foreground">Platform Sale Scenarios</span>
                   <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded">15% commission</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -199,13 +216,9 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                     const unitsSold = Math.round(sc.unitsFinanced * (s.rate / 100));
                     return (
                       <div key={s.label} className={`rounded-lg p-3 border ${s.bg} space-y-1`}>
-                        <div className="flex items-center justify-between">
-                          <span className={`text-[10px] font-bold uppercase tracking-wide ${s.color}`}>{s.label} ({s.rate}%)</span>
-                        </div>
+                        <span className={`text-[10px] font-bold uppercase tracking-wide ${s.color}`}>{s.label} ({s.rate}%)</span>
                         <div className="text-[10px] text-muted-foreground">{unitsSold}/{sc.unitsFinanced} sold</div>
-                        <div className={`text-sm font-display font-bold ${s.color}`}>
-                          ৳{sc.retailNetProfit.toLocaleString()}
-                        </div>
+                        <div className={`text-sm font-display font-bold ${s.color}`}>৳{sc.retailNetProfit.toLocaleString()}</div>
                         <div className="text-[10px] text-muted-foreground">{sc.retailROI.toFixed(0)}% ROI</div>
                       </div>
                     );
