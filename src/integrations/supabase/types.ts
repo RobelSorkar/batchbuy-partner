@@ -549,10 +549,24 @@ export type Database = {
         }
         Returns: boolean
       }
-      join_batch: {
-        Args: { p_batch_id: string; p_total_invested: number; p_units: number }
-        Returns: Json
-      }
+      join_batch:
+        | {
+            Args: {
+              p_batch_id: string
+              p_total_invested: number
+              p_units: number
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_batch_id: string
+              p_selling_preference?: string
+              p_total_invested: number
+              p_units: number
+            }
+            Returns: Json
+          }
       log_audit_event: {
         Args: {
           p_action: string
