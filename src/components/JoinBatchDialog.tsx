@@ -25,6 +25,7 @@ interface JoinBatchDialogProps {
 
 const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) => {
   const [investmentInput, setInvestmentInput] = useState(MINIMUM_PARTICIPATION_BDT.toString());
+  const [sellingPreference, setSellingPreference] = useState<SellingPreference>("platform");
   const [submitted, setSubmitted] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
