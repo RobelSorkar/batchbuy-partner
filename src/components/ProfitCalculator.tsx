@@ -11,10 +11,12 @@ import {
   Truck,
   BarChart3,
   AlertCircle,
+  HandCoins,
 } from "lucide-react";
 import {
   MINIMUM_PARTICIPATION_BDT,
   calcInvestmentEstimate,
+  calcIndependentEstimate,
 } from "@/lib/calculations";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import FinancialBreakdown from "@/components/calculator/FinancialBreakdown";
