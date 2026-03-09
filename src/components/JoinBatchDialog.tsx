@@ -412,12 +412,29 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                       {SCENARIOS.map((s) => {
                         const sc = calcInvestmentEstimate(investmentAmount, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost, s.rate);
                         const unitsSold = Math.round(sc.unitsFinanced * (s.rate / 100));
+                        const remainingUnits = sc.unitsFinanced - unitsSold;
+                        const inventoryAssetValue = remainingUnits * batch.productionCostPerUnit;
+                        const showAsset = s.rate < 100 && remainingUnits > 0;
+
                         return (
                           <div key={s.label} className={`rounded-lg p-3 border ${s.bg} space-y-1`}>
                             <div className={`text-[10px] font-bold uppercase tracking-wider ${s.color}`}>{s.label}</div>
-                            <div className="text-[10px] text-muted-foreground">{unitsSold}/{sc.unitsFinanced} sold</div>
-                            <div className={`text-sm font-display font-bold ${s.color}`}>৳{sc.retailNetProfit.toLocaleString()}</div>
-                            <div className="text-[10px] text-muted-foreground">{sc.retailROI.toFixed(0)}% ROI</div>
+                            {showAsset ? (
+                              <>
+                                <div className="text-[10px] text-muted-foreground">{unitsSold} sold · {remainingUnits} remaining</div>
+                                <div className="text-[10px] text-muted-foreground">Inventory: <span className="font-semibold text-accent-foreground">৳{inventoryAssetValue.toLocaleString()}</span></div>
+                                <div className={`text-sm font-display font-bold ${(sc.retailNetProfit + inventoryAssetValue) >= 0 ? "text-primary" : s.color}`}>
+                                  ৳{(sc.retailNetProfit + inventoryAssetValue).toLocaleString()}
+                                </div>
+                                <div className="text-[10px] text-muted-foreground">total value</div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="text-[10px] text-muted-foreground">{unitsSold}/{sc.unitsFinanced} sold</div>
+                                <div className={`text-sm font-display font-bold ${s.color}`}>৳{sc.retailNetProfit.toLocaleString()}</div>
+                                <div className="text-[10px] text-muted-foreground">{sc.retailROI.toFixed(0)}% ROI</div>
+                              </>
+                            )}
                           </div>
                         );
                       })}

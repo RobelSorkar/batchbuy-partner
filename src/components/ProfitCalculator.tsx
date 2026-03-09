@@ -223,6 +223,13 @@ const ProfitCalculator = () => {
                 {scenarios.map((s) => {
                   const sc = calcInvestmentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, s.rate);
                   const unitsSold = Math.round(sc.unitsFinanced * (s.rate / 100));
+                  const remainingUnits = sc.unitsFinanced - unitsSold;
+                  const inventoryAssetValue = remainingUnits * costPerUnit;
+                  const cashEarned = sc.retailNetProfit + sc.inventoryCost; // net cash position
+                  const totalInvestorValue = sc.retailNetProfit + inventoryAssetValue;
+                  const netPosition = totalInvestorValue;
+                  const showAsset = s.rate < 100 && remainingUnits > 0;
+
                   return (
                     <div
                       key={s.label}
@@ -234,12 +241,50 @@ const ProfitCalculator = () => {
                         </span>
                         <span className="text-xs text-muted-foreground">{s.rate}% sell-through</span>
                       </div>
-                      <div className={`text-xl font-display font-bold ${s.color}`}>
-                        ৳{sc.retailNetProfit.toLocaleString()}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {unitsSold} units sold · {sc.retailROI.toFixed(0)}% ROI
-                      </div>
+
+                      {showAsset ? (
+                        <>
+                          <div className="space-y-1 text-xs">
+                            <div className="flex justify-between text-muted-foreground">
+                              <span>Units sold</span>
+                              <span className="font-semibold text-foreground">{unitsSold}/{sc.unitsFinanced}</span>
+                            </div>
+                            <div className="flex justify-between text-muted-foreground">
+                              <span>Remaining units</span>
+                              <span className="font-semibold text-foreground">{remainingUnits}</span>
+                            </div>
+                            <div className="flex justify-between text-muted-foreground">
+                              <span>Cash received</span>
+                              <span className="font-semibold text-foreground">৳{sc.retailNetProfit > 0 ? (sc.retailRevenue - sc.logisticsCost - sc.retailMarketingCost - sc.retailCommission).toLocaleString() : "0"}</span>
+                            </div>
+                            <div className="flex justify-between text-muted-foreground">
+                              <span>Inventory asset</span>
+                              <span className="font-semibold text-accent-foreground">৳{inventoryAssetValue.toLocaleString()}</span>
+                            </div>
+                            <div className="border-t border-border/30 pt-1 flex justify-between">
+                              <span className="font-medium text-foreground">Total value</span>
+                              <span className={`font-bold ${s.color}`}>
+                                ৳{(sc.retailNetProfit + inventoryAssetValue).toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="font-medium text-foreground">Net position</span>
+                              <span className={`font-bold ${(sc.retailNetProfit + inventoryAssetValue) >= 0 ? "text-primary" : "text-destructive"}`}>
+                                {(sc.retailNetProfit + inventoryAssetValue) >= 0 ? "+" : ""}৳{(sc.retailNetProfit + inventoryAssetValue).toLocaleString()}
+                              </span>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className={`text-xl font-display font-bold ${s.color}`}>
+                            ৳{sc.retailNetProfit.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {unitsSold} units sold · {sc.retailROI.toFixed(0)}% ROI
+                          </div>
+                        </>
+                      )}
                     </div>
                   );
                 })}
