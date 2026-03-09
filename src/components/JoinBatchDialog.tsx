@@ -90,6 +90,10 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 You financed <span className="font-semibold text-foreground">{units} units</span> of{" "}
                 <span className="font-semibold text-foreground">{batch.productName}</span>
               </p>
+              <div className="inline-flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full bg-muted text-xs font-medium">
+                {sellingPreference === "platform" ? <Store className="w-3 h-3" /> : <PackageCheck className="w-3 h-3" />}
+                {sellingPreference === "platform" ? "Sell via Platform" : "Take Delivery"}
+              </div>
             </div>
             <div className="bg-accent/50 rounded-lg p-4 text-sm space-y-2 text-left border border-primary/10">
               <div className="flex justify-between">
