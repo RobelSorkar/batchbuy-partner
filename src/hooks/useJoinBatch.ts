@@ -1,15 +1,28 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+export type SellingPreference = "platform" | "collect";
+
 export function useJoinBatch() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ batchId, units, totalInvested }: { batchId: string; units: number; totalInvested: number }) => {
-      const { data, error } = await supabase.rpc("join_batch", {
+    mutationFn: async ({
+      batchId,
+      units,
+      totalInvested,
+      sellingPreference = "platform",
+    }: {
+      batchId: string;
+      units: number;
+      totalInvested: number;
+      sellingPreference?: SellingPreference;
+    }) => {
+      const { data, error } = await supabase.rpc("join_batch" as any, {
         p_batch_id: batchId,
         p_units: units,
         p_total_invested: totalInvested,
+        p_selling_preference: sellingPreference,
       });
       if (error) throw error;
       return data;

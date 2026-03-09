@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet } from "lucide-react";
+import { CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet, Store, PackageCheck } from "lucide-react";
 import { ProductionBatch } from "@/types/batch";
 import {
   MINIMUM_PARTICIPATION_BDT,
@@ -12,7 +12,7 @@ import {
   calcInvestmentEstimate,
   calcIndependentEstimate,
 } from "@/lib/calculations";
-import { useJoinBatch } from "@/hooks/useJoinBatch";
+import { useJoinBatch, SellingPreference } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
 import { useWallet } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
@@ -25,6 +25,7 @@ interface JoinBatchDialogProps {
 
 const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) => {
   const [investmentInput, setInvestmentInput] = useState(MINIMUM_PARTICIPATION_BDT.toString());
+  const [sellingPreference, setSellingPreference] = useState<SellingPreference>("platform");
   const [submitted, setSubmitted] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
@@ -58,6 +59,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
         batchId: batch.id,
         units,
         totalInvested: inventoryCost,
+        sellingPreference,
       });
       setSubmitted(true);
     } catch (error: any) {
@@ -70,6 +72,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
     setTimeout(() => {
       setSubmitted(false);
       setInvestmentInput(MINIMUM_PARTICIPATION_BDT.toString());
+      setSellingPreference("platform");
     }, 300);
   };
 
@@ -87,6 +90,10 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 You financed <span className="font-semibold text-foreground">{units} units</span> of{" "}
                 <span className="font-semibold text-foreground">{batch.productName}</span>
               </p>
+              <div className="inline-flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full bg-muted text-xs font-medium">
+                {sellingPreference === "platform" ? <Store className="w-3 h-3" /> : <PackageCheck className="w-3 h-3" />}
+                {sellingPreference === "platform" ? "Sell via Platform" : "Take Delivery"}
+              </div>
             </div>
             <div className="bg-accent/50 rounded-lg p-4 text-sm space-y-2 text-left border border-primary/10">
               <div className="flex justify-between">
@@ -164,6 +171,51 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                 ৳{(amt / 1000).toFixed(0)}K
               </Button>
             ))}
+          </div>
+
+          {/* Selling Preference Selection */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Choose your selling option</Label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setSellingPreference("platform")}
+                className={`rounded-lg p-4 border-2 text-left transition-all ${
+                  sellingPreference === "platform"
+                    ? "border-primary bg-primary/5 shadow-sm"
+                    : "border-border hover:border-primary/30"
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Store className={`w-5 h-5 ${sellingPreference === "platform" ? "text-primary" : "text-muted-foreground"}`} />
+                  <span className={`text-sm font-semibold ${sellingPreference === "platform" ? "text-primary" : "text-foreground"}`}>
+                    Sell via Platform
+                  </span>
+                </div>
+                <p className="text-[11px] text-muted-foreground leading-tight">
+                  Platform handles sales, logistics, marketing. You earn net profit after deductions.
+                </p>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSellingPreference("collect")}
+                className={`rounded-lg p-4 border-2 text-left transition-all ${
+                  sellingPreference === "collect"
+                    ? "border-accent-foreground bg-accent/50 shadow-sm"
+                    : "border-border hover:border-accent-foreground/30"
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <PackageCheck className={`w-5 h-5 ${sellingPreference === "collect" ? "text-accent-foreground" : "text-muted-foreground"}`} />
+                  <span className={`text-sm font-semibold ${sellingPreference === "collect" ? "text-accent-foreground" : "text-foreground"}`}>
+                    Take Delivery
+                  </span>
+                </div>
+                <p className="text-[11px] text-muted-foreground leading-tight">
+                  Collect your units and sell independently. No logistics, marketing, or commission fees.
+                </p>
+              </button>
+            </div>
           </div>
 
           {units > 0 && est && indie && investmentAmount >= MINIMUM_PARTICIPATION_BDT && (
@@ -265,7 +317,8 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
 
           <Button onClick={handleSubmit} disabled={!isValid || joinBatch.isPending || walletBalance < inventoryCost} className="w-full" size="lg">
             {joinBatch.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Confirm Financing — ৳{inventoryCost.toLocaleString()} for {units} units
+            {sellingPreference === "platform" ? <Store className="w-4 h-4 mr-2" /> : <PackageCheck className="w-4 h-4 mr-2" />}
+            Confirm — ৳{inventoryCost.toLocaleString()} · {units} units · {sellingPreference === "platform" ? "Platform" : "Independent"}
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">
