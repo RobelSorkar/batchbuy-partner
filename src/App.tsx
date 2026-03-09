@@ -12,6 +12,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Marketplace from "./pages/Marketplace";
 import BatchDetail from "./pages/BatchDetail";
 import PartnerDashboard from "./pages/PartnerDashboard";
+import PartnerInventory from "./pages/PartnerInventory";
 import DistributorDashboard from "./pages/DistributorDashboard";
 import DropshipperDashboard from "./pages/DropshipperDashboard";
 import DropshipperProducts from "./pages/DropshipperProducts";
@@ -54,6 +55,7 @@ const App = () => (
 
             {/* Partner routes */}
             <Route path="/partner" element={<ProtectedRoute requiredRole="partner"><PartnerDashboard /></ProtectedRoute>} />
+            <Route path="/partner/inventory" element={<ProtectedRoute requiredRole="partner"><PartnerInventory /></ProtectedRoute>} />
             <Route path="/create-batch" element={<ProtectedRoute requiredRole="admin"><CreateBatch /></ProtectedRoute>} />
             <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />

@@ -229,6 +229,7 @@ export type Database = {
           created_at: string
           id: string
           product_name: string
+          shelf_location: string | null
           sku: string | null
           sold_units: number
           status: string
@@ -242,6 +243,7 @@ export type Database = {
           created_at?: string
           id?: string
           product_name: string
+          shelf_location?: string | null
           sku?: string | null
           sold_units?: number
           status?: string
@@ -255,6 +257,7 @@ export type Database = {
           created_at?: string
           id?: string
           product_name?: string
+          shelf_location?: string | null
           sku?: string | null
           sold_units?: number
           status?: string
