@@ -12,6 +12,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Marketplace from "./pages/Marketplace";
 import BatchDetail from "./pages/BatchDetail";
 import PartnerDashboard from "./pages/PartnerDashboard";
+import PartnerInventory from "./pages/PartnerInventory";
 import DistributorDashboard from "./pages/DistributorDashboard";
 import DropshipperDashboard from "./pages/DropshipperDashboard";
 import DropshipperProducts from "./pages/DropshipperProducts";
