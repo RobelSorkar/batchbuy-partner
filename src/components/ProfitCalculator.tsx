@@ -45,8 +45,8 @@ const ProfitCalculator = () => {
   const retailPrice = 650;
   const isValidInvestment = investment >= MINIMUM_PARTICIPATION_BDT;
 
-  // Use global calculation engine
   const main = calcInvestmentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
+  const indie = calcIndependentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, sellThrough);
 
   // Map for FinancialBreakdown compatibility
   const mainForBreakdown = {
