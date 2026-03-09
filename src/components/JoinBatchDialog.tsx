@@ -440,12 +440,113 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
               ৳{walletBalance.toLocaleString()}
             </span>
           </div>
-          {insufficientBalance && (
+          {insufficientBalance && !showDeposit && (
             <div className="flex items-center justify-between bg-destructive/5 border border-destructive/20 rounded-lg px-4 py-3 text-sm">
               <span className="text-destructive text-xs">Need ৳{(inventoryCost - walletBalance).toLocaleString()} more</span>
-              <Link to="/wallet" onClick={() => onOpenChange(false)}>
-                <Button size="sm" variant="outline" className="text-xs h-7">Deposit</Button>
-              </Link>
+              <Button size="sm" variant="default" onClick={() => setShowDeposit(true)} className="text-xs h-7">
+                <CreditCard className="w-3 h-3 mr-1" /> Top Up
+              </Button>
+            </div>
+          )}
+
+          {/* ── Inline deposit panel ────────────────────────────────────── */}
+          {showDeposit && (
+            <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 space-y-3 relative">
+              <button
+                onClick={() => setShowDeposit(false)}
+                className="absolute top-2 right-2 w-6 h-6 rounded-full bg-background hover:bg-muted flex items-center justify-center text-muted-foreground"
+              >
+                <X className="w-3 h-3" />
+              </button>
+              <div className="flex items-center gap-2 mb-1">
+                <CreditCard className="w-4 h-4 text-primary" />
+                <h4 className="text-sm font-semibold text-foreground">Quick Deposit</h4>
+              </div>
+              <p className="text-[11px] text-muted-foreground">Add funds instantly to complete your investment</p>
+
+              {/* Preset amounts */}
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Deposit Amount</Label>
+                <div className="flex gap-2 flex-wrap">
+                  {[
+                    (inventoryCost - walletBalance),
+                    5000,
+                    10000,
+                    20000,
+                  ].filter((amt, idx, arr) => amt >= 500 && arr.indexOf(amt) === idx).map((amt) => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => setDepositAmount(amt.toString())}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                        Number(depositAmount) === amt
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-background text-foreground border-border hover:border-primary/50"
+                      }`}
+                    >
+                      ৳{(amt / 1000).toFixed(0)}K
+                    </button>
+                  ))}
+                </div>
+                <Input
+                  type="number"
+                  placeholder="Custom amount..."
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
+                  className="text-sm"
+                  min={500}
+                />
+              </div>
+
+              {/* Payment method */}
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Payment Method</Label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: "bkash", label: "bKash" },
+                    { id: "nagad", label: "Nagad" },
+                    { id: "rocket", label: "Rocket" },
+                  ].map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => setPaymentMethod(m.id)}
+                      className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-all ${
+                        paymentMethod === m.id
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-background text-foreground border-border hover:border-primary/50"
+                      }`}
+                    >
+                      {m.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Account number */}
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Account Number</Label>
+                <Input
+                  type="text"
+                  placeholder="01XXXXXXXXX"
+                  value={accountNumber}
+                  onChange={(e) => setAccountNumber(e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+
+              <Button
+                onClick={handleDeposit}
+                disabled={deposit.isPending || !depositAmount || Number(depositAmount) < 500 || !accountNumber.trim()}
+                className="w-full"
+                size="sm"
+              >
+                {deposit.isPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <CreditCard className="w-3 h-3 mr-1" />}
+                Deposit ৳{Number(depositAmount || 0).toLocaleString()}
+              </Button>
+              <p className="text-[10px] text-muted-foreground text-center">
+                Auto-credited for testing · In production, payment verification applies
+              </p>
             </div>
           )}
 
