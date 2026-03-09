@@ -10,6 +10,7 @@ import {
   MINIMUM_PARTICIPATION_BDT,
   allocateUnits,
   calcInvestmentEstimate,
+  calcIndependentEstimate,
 } from "@/lib/calculations";
 import { useJoinBatch } from "@/hooks/useJoinBatch";
 import { useAuth } from "@/hooks/useAuth";
