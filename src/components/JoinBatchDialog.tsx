@@ -72,6 +72,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
     setTimeout(() => {
       setSubmitted(false);
       setInvestmentInput(MINIMUM_PARTICIPATION_BDT.toString());
+      setSellingPreference("platform");
     }, 300);
   };
 
