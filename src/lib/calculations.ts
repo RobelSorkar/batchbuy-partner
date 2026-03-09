@@ -83,6 +83,50 @@ export function calcPerUnitProfit(
   };
 }
 
+// ─── Independent sale estimate (take delivery, sell yourself) ────────
+export interface IndependentSaleEstimate {
+  unitsFinanced: number;
+  inventoryCost: number;
+  unusedAmount: number;
+  potentialRevenue: number;       // units × retailPrice
+  potentialProfit: number;        // potentialRevenue − inventoryCost
+  potentialROI: number;           // potentialProfit / inventoryCost × 100
+  wholesalePotentialRevenue: number;
+  wholesalePotentialProfit: number;
+  wholesalePotentialROI: number;
+}
+
+export function calcIndependentEstimate(
+  investmentAmount: number,
+  costPerUnit: number,
+  wholesalePrice: number,
+  retailPrice: number,
+  sellThroughPct: number = 100
+): IndependentSaleEstimate {
+  const { units: unitsFinanced, inventoryCost, unusedAmount } = allocateUnits(investmentAmount, costPerUnit);
+  const unitsSold = Math.min(Math.round(unitsFinanced * (sellThroughPct / 100)), unitsFinanced);
+
+  const potentialRevenue = unitsSold * retailPrice;
+  const potentialProfit = potentialRevenue - inventoryCost;
+  const potentialROI = inventoryCost > 0 ? (potentialProfit / inventoryCost) * 100 : 0;
+
+  const wholesalePotentialRevenue = unitsSold * wholesalePrice;
+  const wholesalePotentialProfit = wholesalePotentialRevenue - inventoryCost;
+  const wholesalePotentialROI = inventoryCost > 0 ? (wholesalePotentialProfit / inventoryCost) * 100 : 0;
+
+  return {
+    unitsFinanced,
+    inventoryCost,
+    unusedAmount,
+    potentialRevenue,
+    potentialProfit,
+    potentialROI,
+    wholesalePotentialRevenue,
+    wholesalePotentialProfit,
+    wholesalePotentialROI,
+  };
+}
+
 // ─── Full investment estimate ───────────────────────────────────────
 export interface InvestmentEstimate {
   // Allocation

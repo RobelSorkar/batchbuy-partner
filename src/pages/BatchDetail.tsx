@@ -15,6 +15,7 @@ import {
   MINIMUM_PARTICIPATION_BDT,
   calcPerUnitProfit,
   calcInvestmentEstimate,
+  calcIndependentEstimate,
 } from "@/lib/calculations";
 
 const statusColors: Record<string, string> = {
