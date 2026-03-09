@@ -171,7 +171,7 @@ const ProfitCalculator = () => {
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
                 <Package className="w-5 h-5 text-muted-foreground mb-2" />
                 <div className="text-2xl font-display font-bold text-foreground">{main.unitsFinanced}</div>
-                <div className="text-xs text-muted-foreground">Units Financed</div>
+                <div className="text-xs text-muted-foreground">Product Units</div>
               </div>
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
                 <Banknote className="w-5 h-5 text-muted-foreground mb-2" />

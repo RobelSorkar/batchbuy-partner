@@ -85,7 +85,7 @@ const FinancialBreakdown = ({
             {/* Units */}
             <Step label="Financing Amount" value={`৳${investment.toLocaleString()}`} />
             <Step
-              label={`Units Financed (৳${investment.toLocaleString()} ÷ ৳${costPerUnit})`}
+              label={`Product Units (৳${investment.toLocaleString()} ÷ ৳${costPerUnit})`}
               value={main.unitsFinanced.toString()}
             />
             <Step
