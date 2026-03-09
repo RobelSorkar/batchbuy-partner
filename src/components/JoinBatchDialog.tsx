@@ -53,10 +53,15 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const [investmentInput, setInvestmentInput] = useState(MINIMUM_PARTICIPATION_BDT.toString());
   const [sellingPreference, setSellingPreference] = useState<SellingPreference>("platform");
   const [submitted, setSubmitted] = useState(false);
+  const [showDeposit, setShowDeposit] = useState(false);
+  const [depositAmount, setDepositAmount] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("bkash");
+  const [accountNumber, setAccountNumber] = useState("");
   const { user } = useAuth();
   const { toast } = useToast();
   const { data: wallet } = useWallet();
   const joinBatch = useJoinBatch();
+  const deposit = useDeposit();
   const walletBalance = wallet?.balance || 0;
 
   const investmentAmount = Number(investmentInput) || 0;
