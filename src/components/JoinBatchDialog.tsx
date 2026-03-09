@@ -59,6 +59,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
         batchId: batch.id,
         units,
         totalInvested: inventoryCost,
+        sellingPreference,
       });
       setSubmitted(true);
     } catch (error: any) {
