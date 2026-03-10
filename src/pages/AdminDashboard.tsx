@@ -53,7 +53,7 @@ const orderStatusColors: Record<string, string> = {
 
 // ── Component ─────────────────────────────────────────
 
-const AdminDashboard = ({ defaultTab = "overview" }: { defaultTab?: string }) => {
+const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaultTab?: string; defaultRoleFilter?: string }) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState(defaultTab);
