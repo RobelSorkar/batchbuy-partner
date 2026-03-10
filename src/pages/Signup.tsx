@@ -120,8 +120,8 @@ const Signup = () => {
           <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-6">
             <Package className="w-8 h-8 text-primary" />
           </div>
-          <h2 className="text-2xl font-display font-bold text-primary-foreground mb-3">Join the Network</h2>
-          <p className="text-primary-foreground/60 leading-relaxed">Whether you finance, sell, or distribute — start earning from real product sales today with a minimum of ৳10,000 BDT.</p>
+          <h2 className="text-2xl font-display font-bold text-primary-foreground mb-3">Start Your Product Business</h2>
+          <p className="text-primary-foreground/60 leading-relaxed">Join production batches, own real product units, and sell through dropshippers, shops, or distributors.<br /><br />Build your own product business starting from ৳10,000.</p>
         </div>
       </div>
     </div>
