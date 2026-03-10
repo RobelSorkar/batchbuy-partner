@@ -10,6 +10,7 @@ import JoinBatchDialog from "@/components/JoinBatchDialog";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import ProductImageZoom from "@/components/ProductImageZoom";
 import BatchCountdown from "@/components/BatchCountdown";
+import CustomerOrderForm from "@/components/CustomerOrderForm";
 import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
 import {
   MINIMUM_PARTICIPATION_BDT,
