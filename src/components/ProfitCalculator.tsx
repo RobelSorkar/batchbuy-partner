@@ -293,10 +293,10 @@ const ProfitCalculator = () => {
           </div>
 
           <div className="bg-muted/30 border-t border-border px-8 py-4 space-y-1">
-            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-              <span>✔ Profit estimate only</span>
-              <span>✔ Not guaranteed return</span>
-              <span>✔ Commission on gross profit</span>
+            <div className="text-xs text-muted-foreground text-center space-y-0.5">
+              <p>✔ এটি কোনো বিনিয়োগ নয়।</p>
+              <p>✔ আপনি নির্দিষ্ট প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
+              <p>✔ বিক্রি না হলে আপনার প্রোডাক্ট অবিকৃত অবস্থায় সংগ্রহ করতে পারবেন।</p>
             </div>
             <p className="text-xs text-muted-foreground text-center">
               Net Profit = (Revenue − Inventory − Logistics − 10% Marketing) × (1 − 15% commission). ROI = Net Profit ÷ Financing Amount × 100.

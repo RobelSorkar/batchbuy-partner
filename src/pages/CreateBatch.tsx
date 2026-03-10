@@ -242,9 +242,10 @@ const CreateBatch = () => {
                   <div className="flex justify-between"><span className="text-muted-foreground">Net Wholesale ROI</span><span className="font-semibold text-primary">{wholesaleMargin}%</span></div>
                   <div className="flex justify-between mt-1"><span className="text-muted-foreground">Net Retail ROI</span><span className="font-semibold text-primary">{retailMargin}%</span></div>
                   <p className="text-[10px] text-muted-foreground mt-1">After logistics + 15% platform fee</p>
-                  <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-1">
-                    <span>✔ Estimate only</span>
-                    <span>✔ Not guaranteed</span>
+                  <div className="text-[10px] text-muted-foreground mt-1 space-y-0.5">
+                    <p>✔ এটি কোনো বিনিয়োগ নয়।</p>
+                    <p>✔ আপনি নির্দিষ্ট প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
+                    <p>✔ বিক্রি না হলে আপনার প্রোডাক্ট অবিকৃত অবস্থায় সংগ্রহ করতে পারবেন।</p>
                   </div>
                 </div>
                 <div className="border-t border-border/50 pt-3">
