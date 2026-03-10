@@ -19,7 +19,7 @@ const DropshipperOrders = () => {
   const [filter, setFilter] = useState<string>("all");
   const { data: allOrders, isLoading } = useOrders("dropshipper");
 
-  const dropshipOrders = (allOrders || []).filter((o: any) => o.channel === "dropship");
+  const dropshipOrders = (allOrders || []).filter((o: any) => o.channel === "dropship" || o.channel === "dropshipper");
   const orders = dropshipOrders.filter((o: any) => filter === "all" || o.status === filter);
   const totalCommission = dropshipOrders
     .filter((o: any) => o.status === "delivered")
