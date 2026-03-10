@@ -105,7 +105,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const { data: withdrawals = [], isLoading: loadingWithdrawals } = useAdminWithdrawals();
   const updateTxnStatus = useUpdateTransactionStatus();
   const updateUserRole = useUpdateUserRole();
-
+  const toggleUserRole = useToggleUserRole();
   const isLoading = loadingUsers || loadingBatches || loadingOrders || loadingInventory || loadingWithdrawals;
 
   // Filtered data
