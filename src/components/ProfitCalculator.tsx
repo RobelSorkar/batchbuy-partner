@@ -19,7 +19,6 @@ import {
   calcIndependentEstimate,
 } from "@/lib/calculations";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
-import FinancialBreakdown from "@/components/calculator/FinancialBreakdown";
 
 const presets = [
   { label: "৳10,000", value: 10000 },
