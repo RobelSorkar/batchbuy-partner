@@ -148,8 +148,14 @@ const AnalyticsPage = () => {
     acc[o.channel] = (acc[o.channel] || 0) + 1;
     return acc;
   }, {});
+  const channelLabels: Record<string, string> = {
+    dropshipper: "Sales Partners",
+    platform: "Platform",
+    retail: "Retail",
+    distributor: "Distributor",
+  };
   const channelData = Object.entries(channelCounts).map(([name, value]) => ({
-    name: name.charAt(0).toUpperCase() + name.slice(1),
+    name: channelLabels[name] || name.charAt(0).toUpperCase() + name.slice(1),
     value: value as number,
     fill: channelColors[name] || "hsl(var(--muted))",
   }));
