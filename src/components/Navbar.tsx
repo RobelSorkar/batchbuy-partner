@@ -71,6 +71,7 @@ const Navbar = () => {
           <a href="#features" className="block text-sm text-muted-foreground">Features</a>
           <a href="#how-it-works" className="block text-sm text-muted-foreground">How It Works</a>
           <a href="#roles" className="block text-sm text-muted-foreground">Roles</a>
+          <Link to="/transparency" className="block text-sm text-muted-foreground" onClick={() => setMobileOpen(false)}>Transparency</Link>
           {user ? (
             <Link to={dashboardPath}><Button className="w-full mt-2" size="sm"><LayoutDashboard className="w-3.5 h-3.5 mr-1.5" /> Dashboard</Button></Link>
           ) : (
