@@ -59,6 +59,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [syncing, setSyncing] = useState(false);
+  const [reconciling, setReconciling] = useState(false);
 
   const syncBatchStats = useCallback(async () => {
     setSyncing(true);
@@ -72,6 +73,22 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
       setSyncing(false);
     }
   }, [toast]);
+
+  const reconcileWallets = useCallback(async () => {
+    setReconciling(true);
+    try {
+      const { data, error } = await supabase.rpc("reconcile_wallet_balances");
+      if (error) throw error;
+      const result = data as any;
+      queryClient.invalidateQueries({ queryKey: ["wallet"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      toast({ title: "Wallet reconciliation complete", description: `${result.wallets_checked} wallets checked, ${result.mismatches_fixed} mismatches fixed.` });
+    } catch (e: any) {
+      toast({ title: "Reconciliation failed", description: e.message, variant: "destructive" });
+    } finally {
+      setReconciling(false);
+    }
+  }, [toast, queryClient]);
   const [userSearch, setUserSearch] = useState("");
   const [userRoleFilter, setUserRoleFilter] = useState(defaultRoleFilter || "all");
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
