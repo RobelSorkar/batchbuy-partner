@@ -528,6 +528,7 @@ export type Database = {
     }
     Functions: {
       admin_sync_batch_stats: { Args: never; Returns: undefined }
+      calculate_ledger_balance: { Args: { p_user_id: string }; Returns: number }
       create_order_with_stock_check: {
         Args: {
           p_batch_id?: string
@@ -585,6 +586,7 @@ export type Database = {
         Args: { p_account: string; p_amount: number; p_method: string }
         Returns: Json
       }
+      reconcile_wallet_balances: { Args: never; Returns: Json }
       refund_withdrawal: { Args: { p_transaction_id: string }; Returns: Json }
     }
     Enums: {
