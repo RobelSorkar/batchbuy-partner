@@ -298,9 +298,6 @@ const ProfitCalculator = () => {
               <p>✔ আপনি নির্দিষ্ট প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
               <p>✔ বিক্রি না হলে আপনার প্রোডাক্ট অবিকৃত অবস্থায় সংগ্রহ করতে পারবেন।</p>
             </div>
-            <p className="text-xs text-muted-foreground text-center">
-              Net Profit = (Revenue − Inventory − Logistics − 10% Marketing) × (1 − 15% commission). ROI = Net Profit ÷ Financing Amount × 100.
-            </p>
           </div>
         </div>
       </div>
