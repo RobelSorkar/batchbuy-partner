@@ -369,6 +369,21 @@ const AdminDashboard = () => {
                         funding: "bg-accent text-accent-foreground",
                         production: "bg-secondary text-secondary-foreground",
                         completed: "bg-primary/10 text-primary",
+                        cancelled: "bg-destructive/10 text-destructive",
+                        shipping: "bg-accent text-accent-foreground",
+                      };
+                      const canAdvanceBatch = (status: string) => {
+                        return ["funding", "production", "shipping"].includes(status);
+                      };
+                      const nextBatchStatus: Record<string, string> = {
+                        funding: "production",
+                        production: "shipping",
+                        shipping: "completed",
+                      };
+                      const nextBatchLabel: Record<string, string> = {
+                        funding: "→ Production",
+                        production: "→ Shipping",
+                        shipping: "→ Completed",
                       };
                       return (
                         <tr key={b.id} className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors">
@@ -393,7 +408,40 @@ const AdminDashboard = () => {
                           <td className="px-5 py-4 text-sm">{b.partners_joined}</td>
                           <td className="px-5 py-4 text-xs text-muted-foreground">{b.deadline ? new Date(b.deadline).toLocaleDateString() : "—"}</td>
                           <td className="px-5 py-4">
-                            <Link to={`/batch/${b.id}`}><Button variant="ghost" size="sm"><Eye className="w-3.5 h-3.5" /></Button></Link>
+                            <div className="flex gap-1">
+                              <Link to={`/batch/${b.id}`}><Button variant="ghost" size="sm"><Eye className="w-3.5 h-3.5" /></Button></Link>
+                              {canAdvanceBatch(b.status) && (
+                                <Button size="sm" variant="outline" className="h-7 text-[10px] px-2"
+                                  onClick={async () => {
+                                    const next = nextBatchStatus[b.status];
+                                    try {
+                                      const { error } = await supabase.from("batches").update({ status: next }).eq("id", b.id);
+                                      if (error) throw error;
+                                      toast({ title: `${b.batch_name} → ${next}` });
+                                      queryClient.invalidateQueries({ queryKey: ["batches"] });
+                                    } catch (e: any) {
+                                      toast({ title: "Error", description: e.message, variant: "destructive" });
+                                    }
+                                  }}>
+                                  {nextBatchLabel[b.status]}
+                                </Button>
+                              )}
+                              {b.status === "funding" && (
+                                <Button size="sm" variant="ghost" className="h-7 text-[10px] px-2 text-destructive"
+                                  onClick={async () => {
+                                    try {
+                                      const { error } = await supabase.from("batches").update({ status: "cancelled" }).eq("id", b.id);
+                                      if (error) throw error;
+                                      toast({ title: `${b.batch_name} cancelled`, variant: "destructive" });
+                                      queryClient.invalidateQueries({ queryKey: ["batches"] });
+                                    } catch (e: any) {
+                                      toast({ title: "Error", description: e.message, variant: "destructive" });
+                                    }
+                                  }}>
+                                  <Ban className="w-3 h-3" />
+                                </Button>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       );
