@@ -149,7 +149,7 @@ const CustomerOrderForm = ({
           <Input
             type="number"
             min={1}
-            max={stock || 100}
+            max={Math.min(stock || 10, 10)}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
           />
