@@ -172,3 +172,28 @@ export function useUpdateUserRole() {
     },
   });
 }
+
+export function useToggleUserRole() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userId, role, action }: { userId: string; role: Database["public"]["Enums"]["app_role"]; action: "add" | "remove" }) => {
+      if (action === "add") {
+        const { error } = await supabase
+          .from("user_roles")
+          .insert({ user_id: userId, role });
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("user_roles")
+          .delete()
+          .eq("user_id", userId)
+          .eq("role", role as any);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+}
