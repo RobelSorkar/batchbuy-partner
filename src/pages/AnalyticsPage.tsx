@@ -4,6 +4,7 @@ import {
   Users, TrendingUp, Layers, Package, ShoppingCart, Wallet,
   ArrowUpRight, ArrowDownRight, BarChart3, Loader2
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip,
