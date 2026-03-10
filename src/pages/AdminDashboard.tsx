@@ -840,11 +840,13 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-muted/50 rounded-lg p-3">
-                      <div className="text-[10px] text-muted-foreground uppercase">Current Role</div>
-                      <div className="mt-1">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${roleColors[userDetail.role] || ""}`}>
-                          {userDetail.role}
-                        </span>
+                      <div className="text-[10px] text-muted-foreground uppercase">Roles</div>
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {userDetail.roles.map((r) => (
+                          <span key={r} className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${roleColors[r] || ""}`}>
+                            {r === "dropshipper" ? "sales partner" : r}
+                          </span>
+                        ))}
                       </div>
                     </div>
                     <div className="bg-muted/50 rounded-lg p-3">
@@ -871,46 +873,52 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                     </div>
                   </div>
 
-                  {/* Role Assignment */}
+                  {/* Multi-Role Management */}
                   <div className="border border-border/50 rounded-lg p-4 space-y-3">
-                    <div className="text-xs font-semibold uppercase text-muted-foreground">Change Role</div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {(["partner", "dropshipper", "distributor", "warehouse", "admin"] as const).map((r) => (
-                        <Button
-                          key={r}
-                          variant={editingRole === r || (!editingRole && userDetail.role === r) ? "default" : "outline"}
-                          size="sm"
-                          className="capitalize text-xs"
-                          onClick={() => setEditingRole(r)}
-                          disabled={r === userDetail.role}
-                        >
-                          {r === "dropshipper" ? "Sales Partner" : r}
-                        </Button>
-                      ))}
+                    <div className="text-xs font-semibold uppercase text-muted-foreground">Manage Roles</div>
+                    <p className="text-[11px] text-muted-foreground">Toggle roles on/off. Users must have at least one role.</p>
+                    <div className="space-y-2">
+                      {(["partner", "dropshipper", "distributor", "warehouse", "admin"] as const).map((r) => {
+                        const hasRole = userDetail.roles.includes(r);
+                        const isOnlyRole = hasRole && userDetail.roles.length === 1;
+                        const displayName = r === "dropshipper" ? "Sales Partner" : r === "partner" ? "Production Partner" : r === "warehouse" ? "Warehouse Manager" : r.charAt(0).toUpperCase() + r.slice(1);
+                        return (
+                          <div key={r} className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-muted/30 transition-colors">
+                            <div className="flex items-center gap-2">
+                              <span className={`w-2 h-2 rounded-full ${hasRole ? "bg-primary" : "bg-muted-foreground/30"}`} />
+                              <span className="text-sm font-medium">{displayName}</span>
+                            </div>
+                            <Button
+                              variant={hasRole ? "default" : "outline"}
+                              size="sm"
+                              className="h-7 text-xs px-3"
+                              disabled={toggleUserRole.isPending || isOnlyRole}
+                              onClick={async () => {
+                                try {
+                                  await toggleUserRole.mutateAsync({
+                                    userId: userDetail.id,
+                                    role: r,
+                                    action: hasRole ? "remove" : "add",
+                                  });
+                                  const newRoles = hasRole
+                                    ? userDetail.roles.filter((x) => x !== r)
+                                    : [...userDetail.roles, r];
+                                  setUserDetail({ ...userDetail, roles: newRoles, role: newRoles[0] });
+                                  toast({
+                                    title: hasRole ? "Role Removed" : "Role Added",
+                                    description: `${displayName} ${hasRole ? "removed from" : "added to"} ${userDetail.name}`,
+                                  });
+                                } catch (e: any) {
+                                  toast({ title: "Failed", description: e.message, variant: "destructive" });
+                                }
+                              }}
+                            >
+                              {toggleUserRole.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : hasRole ? "Remove" : "Add"}
+                            </Button>
+                          </div>
+                        );
+                      })}
                     </div>
-                    {editingRole && editingRole !== userDetail.role && (
-                      <Button
-                        className="w-full"
-                        size="sm"
-                        disabled={updateUserRole.isPending}
-                        onClick={async () => {
-                          try {
-                            await updateUserRole.mutateAsync({
-                              userId: userDetail.id,
-                              newRole: editingRole as any,
-                            });
-                            toast({ title: "Role Updated", description: `Changed to ${editingRole}` });
-                            setUserDetail({ ...userDetail, role: editingRole });
-                            setEditingRole(null);
-                          } catch (e: any) {
-                            toast({ title: "Failed", description: e.message, variant: "destructive" });
-                          }
-                        }}
-                      >
-                        {updateUserRole.isPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
-                        Assign {editingRole} role
-                      </Button>
-                    )}
                   </div>
                 </div>
                 <DialogFooter>
