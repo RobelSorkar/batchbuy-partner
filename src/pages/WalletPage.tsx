@@ -71,8 +71,6 @@ const WalletPage = () => {
 
   const [depositOpen, setDepositOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState("");
-  const [depositMethod, setDepositMethod] = useState("bkash");
-  const [depositAccount, setDepositAccount] = useState("");
   const [depositSuccess, setDepositSuccess] = useState(false);
   const balance = wallet?.balance || 0;
 
