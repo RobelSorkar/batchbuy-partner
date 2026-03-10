@@ -47,23 +47,7 @@ const ProfitCalculator = () => {
   const main = calcInvestmentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
   const indie = calcIndependentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, sellThrough);
 
-  // Map for FinancialBreakdown compatibility
-  const mainForBreakdown = {
-    unitsFinanced: main.unitsFinanced,
-    unitsSold: Math.round(main.unitsFinanced * (sellThrough / 100)),
-    inventoryCost: main.inventoryCost,
-    logisticsCost: main.logisticsCost,
-    marketingCost: main.marketingCost,
-    totalCost: main.totalCost,
-    wholesaleRevenue: main.wholesaleRevenue,
-    wholesaleGrossProfit: main.wholesaleGrossProfit,
-    retailRevenue: main.retailRevenue,
-    retailGrossProfit: main.retailGrossProfit,
-    unusedAmount: main.unusedAmount,
-    commission: main.retailCommission,
-    netProfit: main.retailNetProfit,
-    roi: main.retailROI,
-  };
+
 
   return (
     <section className="py-24 px-6">
