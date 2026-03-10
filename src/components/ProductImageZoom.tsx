@@ -5,11 +5,13 @@ import { getProductImage } from "@/utils/productImages";
 interface ProductImageZoomProps {
   productName: string;
   fallbackEmoji?: string;
+  imageUrl?: string | null;
 }
 
-const ProductImageZoom = ({ productName, fallbackEmoji = "📦" }: ProductImageZoomProps) => {
+const ProductImageZoom = ({ productName, fallbackEmoji = "📦", imageUrl }: ProductImageZoomProps) => {
   const [zoomed, setZoomed] = useState(false);
-  const imageSrc = getProductImage(productName);
+  const localImage = getProductImage(productName);
+  const imageSrc = imageUrl && imageUrl.startsWith("http") ? imageUrl : localImage;
 
   return (
     <>
