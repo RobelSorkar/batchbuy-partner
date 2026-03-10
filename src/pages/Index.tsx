@@ -21,7 +21,7 @@ const Index = () => {
       <BatchesPreview />
       <div id="features"><SalesChannelsSection /></div>
       <div id="roles"><RolesSection /></div>
-      <ProfitCalculator />
+      
       <TransparencySection />
       <CTASection />
       <Footer />
