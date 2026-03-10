@@ -175,10 +175,13 @@ const AdminDashboard = () => {
               </div>
               <div className="text-xl font-display font-bold">{stat.value}</div>
               <div className="text-xs text-muted-foreground">{stat.label}</div>
-              <div className={`text-[10px] font-medium mt-1 flex items-center gap-0.5 ${stat.up ? "text-primary" : "text-muted-foreground"}`}>
+              <button
+                onClick={() => setActiveTab(stat.tab)}
+                className={`text-[10px] font-medium mt-1 flex items-center gap-0.5 hover:underline cursor-pointer ${stat.up ? "text-primary" : "text-muted-foreground"}`}
+              >
                 {stat.up ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                 {stat.change}
-              </div>
+              </button>
             </div>
           ))}
         </div>
