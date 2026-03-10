@@ -489,17 +489,62 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredOrders.slice(0, 10).map((o: any) => (
-                      <tr key={o.id} className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors">
-                        <td className="px-5 py-4 text-sm font-mono font-medium">{o.order_number}</td>
-                        <td className="px-5 py-4 text-sm text-muted-foreground">{o.customer_name}</td>
-                        <td className="px-5 py-4 text-xs text-muted-foreground">{(o.order_items || []).map((i: any) => i.product_name).join(", ") || "—"}</td>
-                        <td className="px-5 py-4 text-sm font-semibold">৳{Number(o.total_amount).toLocaleString()}</td>
-                        <td className="px-5 py-4"><span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-muted text-muted-foreground capitalize">{o.channel}</span></td>
-                        <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${orderStatusColors[o.status] || ""}`}>{o.status}</span></td>
-                        <td className="px-5 py-4 text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString()}</td>
-                      </tr>
-                    ))}
+                    {filteredOrders.slice(0, 10).map((o: any) => {
+                      const canAdvance = !["delivered", "cancelled"].includes(o.status);
+                      const nextStatusMap: Record<string, string> = {
+                        pending: "confirmed",
+                        confirmed: "processing",
+                        processing: "packed",
+                        packed: "shipped",
+                        shipped: "out_for_delivery",
+                        out_for_delivery: "delivered",
+                      };
+                      const nextStatus = nextStatusMap[o.status];
+                      return (
+                        <tr key={o.id} className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors">
+                          <td className="px-5 py-4 text-sm font-mono font-medium">{o.order_number}</td>
+                          <td className="px-5 py-4 text-sm text-muted-foreground">{o.customer_name}</td>
+                          <td className="px-5 py-4 text-xs text-muted-foreground">{(o.order_items || []).map((i: any) => i.product_name).join(", ") || "—"}</td>
+                          <td className="px-5 py-4 text-sm font-semibold">৳{Number(o.total_amount).toLocaleString()}</td>
+                          <td className="px-5 py-4"><span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-muted text-muted-foreground capitalize">{o.channel}</span></td>
+                          <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${orderStatusColors[o.status] || ""}`}>{o.status}</span></td>
+                          <td className="px-5 py-4 text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString()}</td>
+                          <td className="px-5 py-4">
+                            <div className="flex gap-1">
+                              {canAdvance && nextStatus && (
+                                <Button size="sm" variant="outline" className="h-6 text-[10px] px-2"
+                                  onClick={async () => {
+                                    try {
+                                      await supabase.from("orders").update({ status: nextStatus }).eq("id", o.id);
+                                      toast({ title: `Order ${o.order_number} → ${nextStatus}` });
+                                      // Refresh
+                                      window.location.reload();
+                                    } catch (e: any) {
+                                      toast({ title: "Error", description: e.message, variant: "destructive" });
+                                    }
+                                  }}>
+                                  {nextStatus === "confirmed" ? "Approve" : nextStatus.charAt(0).toUpperCase() + nextStatus.slice(1)}
+                                </Button>
+                              )}
+                              {canAdvance && o.status !== "cancelled" && (
+                                <Button size="sm" variant="ghost" className="h-6 text-[10px] px-2 text-destructive"
+                                  onClick={async () => {
+                                    try {
+                                      await supabase.from("orders").update({ status: "cancelled" }).eq("id", o.id);
+                                      toast({ title: `Order ${o.order_number} cancelled`, variant: "destructive" });
+                                      window.location.reload();
+                                    } catch (e: any) {
+                                      toast({ title: "Error", description: e.message, variant: "destructive" });
+                                    }
+                                  }}>
+                                  <XCircle className="w-3 h-3" />
+                                </Button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
