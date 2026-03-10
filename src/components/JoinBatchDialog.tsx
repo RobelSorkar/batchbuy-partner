@@ -445,7 +445,11 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                   </div>
                 )}
 
-                <p className="text-[10px] text-muted-foreground">✔ Estimates only · ✔ Not guaranteed returns</p>
+                <div className="text-[10px] text-muted-foreground space-y-0.5">
+                  <p>✔ এটি কোনো বিনিয়োগ নয়।</p>
+                  <p>✔ আপনি নির্দিষ্ট প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
+                  <p>✔ বিক্রি না হলে আপনার প্রোডাক্ট অবিকৃত অবস্থায় সংগ্রহ করতে পারবেন।</p>
+                </div>
               </div>
             </div>
           )}
