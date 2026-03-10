@@ -37,7 +37,7 @@ const ProfitCalculator = () => {
   const [investment, setInvestment] = useState(25000);
   const [logisticsCostPerUnit, setLogisticsCostPerUnit] = useState(40);
   const [sellThrough, setSellThrough] = useState(80);
-  const [showBreakdown, setShowBreakdown] = useState(false);
+  
 
   const costPerUnit = 380;
   const wholesalePrice = 520;
