@@ -101,7 +101,7 @@ const DropshipperDashboard = () => {
           <div className="bg-card rounded-xl shadow-card border border-border/50">
             <div className="flex items-center justify-between p-5 border-b border-border/50">
               <h2 className="font-display font-semibold text-lg">Top Products</h2>
-              <Link to="/dropshipper/products"><Button variant="ghost" size="sm">View All</Button></Link>
+              <Link to="/sales-partner/products"><Button variant="ghost" size="sm">View All</Button></Link>
             </div>
             <div className="divide-y divide-border/30">
               {topProducts.length === 0 && <div className="p-8 text-center text-muted-foreground">No products available yet.</div>}
