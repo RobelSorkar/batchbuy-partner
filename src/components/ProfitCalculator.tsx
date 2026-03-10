@@ -19,7 +19,6 @@ import {
   calcIndependentEstimate,
 } from "@/lib/calculations";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
-import FinancialBreakdown from "@/components/calculator/FinancialBreakdown";
 
 const presets = [
   { label: "৳10,000", value: 10000 },
@@ -38,7 +37,7 @@ const ProfitCalculator = () => {
   const [investment, setInvestment] = useState(25000);
   const [logisticsCostPerUnit, setLogisticsCostPerUnit] = useState(40);
   const [sellThrough, setSellThrough] = useState(80);
-  const [showBreakdown, setShowBreakdown] = useState(false);
+  
 
   const costPerUnit = 380;
   const wholesalePrice = 520;
@@ -48,23 +47,7 @@ const ProfitCalculator = () => {
   const main = calcInvestmentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, logisticsCostPerUnit, sellThrough);
   const indie = calcIndependentEstimate(investment, costPerUnit, wholesalePrice, retailPrice, sellThrough);
 
-  // Map for FinancialBreakdown compatibility
-  const mainForBreakdown = {
-    unitsFinanced: main.unitsFinanced,
-    unitsSold: Math.round(main.unitsFinanced * (sellThrough / 100)),
-    inventoryCost: main.inventoryCost,
-    logisticsCost: main.logisticsCost,
-    marketingCost: main.marketingCost,
-    totalCost: main.totalCost,
-    wholesaleRevenue: main.wholesaleRevenue,
-    wholesaleGrossProfit: main.wholesaleGrossProfit,
-    retailRevenue: main.retailRevenue,
-    retailGrossProfit: main.retailGrossProfit,
-    unusedAmount: main.unusedAmount,
-    commission: main.retailCommission,
-    netProfit: main.retailNetProfit,
-    roi: main.retailROI,
-  };
+
 
   return (
     <section className="py-24 px-6">
@@ -200,18 +183,8 @@ const ProfitCalculator = () => {
               </div>
             </div>
 
-            {/* Financial Breakdown */}
-            <FinancialBreakdown
-              show={showBreakdown}
-              onToggle={() => setShowBreakdown(!showBreakdown)}
-              investment={investment}
-              costPerUnit={costPerUnit}
-              wholesalePrice={wholesalePrice}
-              retailPrice={retailPrice}
-              logisticsCostPerUnit={logisticsCostPerUnit}
-              sellThrough={sellThrough}
-              main={mainForBreakdown}
-            />
+
+
 
             {/* Scenario Simulation */}
             <div>
