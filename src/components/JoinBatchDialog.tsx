@@ -407,7 +407,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                       <span className="font-medium text-foreground">Platform Sale Scenarios</span>
                       <span className="ml-auto text-[10px] bg-muted px-1.5 py-0.5 rounded">15% commission</span>
                     </div>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                       {SCENARIOS.map((s) => {
                         const sc = calcInvestmentEstimate(investmentAmount, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost, s.rate);
                         const unitsSold = Math.round(sc.unitsFinanced * (s.rate / 100));
