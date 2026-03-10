@@ -6,8 +6,9 @@ import {
   Users, Layers, TrendingUp, ShoppingCart, ArrowUpRight, ArrowDownRight,
   AlertTriangle, CheckCircle, Clock, Wallet, Package, Eye,
   Ban, DollarSign, BarChart3, PieChart,
-  Search, XCircle, RefreshCw, Loader2
+  Search, XCircle, RefreshCw, Loader2, Pencil
 } from "lucide-react";
+import EditBatchDialog from "@/components/EditBatchDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -77,6 +78,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const [batchSearch, setBatchSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
   const [editingRole, setEditingRole] = useState<string | null>(null);
+  const [editingBatch, setEditingBatch] = useState<any>(null);
 
   // Real data hooks
   const { data: users = [], isLoading: loadingUsers } = useAdminUsers();
@@ -413,6 +415,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                           <td className="px-5 py-4">
                             <div className="flex gap-1">
                               <Link to={`/batch/${b.id}`}><Button variant="ghost" size="sm"><Eye className="w-3.5 h-3.5" /></Button></Link>
+                              <Button variant="ghost" size="sm" onClick={() => setEditingBatch(b)}><Pencil className="w-3.5 h-3.5" /></Button>
                               {canAdvanceBatch(b.status) && (
                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2"
                                   onClick={async () => {
@@ -885,6 +888,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
             )}
           </DialogContent>
         </Dialog>
+        <EditBatchDialog batch={editingBatch} open={!!editingBatch} onOpenChange={(o) => !o && setEditingBatch(null)} />
       </div>
     </DashboardLayout>
   );
