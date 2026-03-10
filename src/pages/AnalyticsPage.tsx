@@ -4,6 +4,7 @@ import {
   Users, TrendingUp, Layers, Package, ShoppingCart, Wallet,
   ArrowUpRight, ArrowDownRight, BarChart3, Loader2
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip,
@@ -32,6 +33,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const AnalyticsPage = () => {
+  const navigate = useNavigate();
   const { data: batches = [], isLoading: batchesLoading } = useQuery({
     queryKey: ["analytics-batches"],
     queryFn: async () => {
@@ -96,12 +98,12 @@ const AnalyticsPage = () => {
   }));
 
   const stats = [
-    { label: "Total Partners", value: totalPartners.toString(), change: `${participations.length} participations`, up: true, icon: Users },
-    { label: "Total Sales", value: `৳${(totalSales / 100000).toFixed(1)}L`, change: `${totalOrders} orders`, up: totalSales > 0, icon: TrendingUp },
-    { label: "Active Batches", value: activeBatches.toString(), change: `${batches.length} total`, up: activeBatches > 0, icon: Layers },
-    { label: "Warehouse Stock", value: totalStock.toLocaleString(), change: `${inventory.length} products`, up: false, icon: Package },
-    { label: "Total Orders", value: totalOrders.toString(), change: "all channels", up: totalOrders > 0, icon: ShoppingCart },
-    { label: "Commissions", value: `৳${totalCommission.toLocaleString()}`, change: "total earned", up: totalCommission > 0, icon: Wallet },
+    { label: "Total Partners", value: totalPartners.toString(), change: `${participations.length} participations`, up: true, icon: Users, link: "/admin/users" },
+    { label: "Total Sales", value: `৳${(totalSales / 100000).toFixed(1)}L`, change: `${totalOrders} orders`, up: totalSales > 0, icon: TrendingUp, link: "/admin/orders" },
+    { label: "Active Batches", value: activeBatches.toString(), change: `${batches.length} total`, up: activeBatches > 0, icon: Layers, link: "/admin" },
+    { label: "Warehouse Stock", value: totalStock.toLocaleString(), change: `${inventory.length} products`, up: false, icon: Package, link: "/warehouse" },
+    { label: "Total Orders", value: totalOrders.toString(), change: "all channels", up: totalOrders > 0, icon: ShoppingCart, link: "/admin/orders" },
+    { label: "Commissions", value: `৳${totalCommission.toLocaleString()}`, change: "total earned", up: totalCommission > 0, icon: Wallet, link: "/wallet" },
   ];
 
   // Top partners by investment
@@ -138,7 +140,11 @@ const AnalyticsPage = () => {
         {/* KPI Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="bg-card rounded-xl p-4 shadow-card border border-border/50">
+            <div
+              key={stat.label}
+              onClick={() => navigate(stat.link)}
+              className="bg-card rounded-xl p-4 shadow-card border border-border/50 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all"
+            >
               <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center mb-2">
                 <stat.icon className="w-4 h-4 text-accent-foreground" />
               </div>
