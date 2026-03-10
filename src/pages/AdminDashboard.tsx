@@ -72,7 +72,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
     }
   }, [toast]);
   const [userSearch, setUserSearch] = useState("");
-  const [userRoleFilter, setUserRoleFilter] = useState("all");
+  const [userRoleFilter, setUserRoleFilter] = useState(defaultRoleFilter || "all");
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
   const [batchSearch, setBatchSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
