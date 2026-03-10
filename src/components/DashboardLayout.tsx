@@ -56,7 +56,7 @@ const navMap = {
 
 const roleLabels = {
   partner: "Production Partner",
-  dropshipper: "Dropshipper",
+  dropshipper: "Sales Partner",
   admin: "Admin",
   warehouse: "Warehouse Manager",
   distributor: "Distributor",
