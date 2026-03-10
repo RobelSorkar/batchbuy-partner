@@ -53,7 +53,7 @@ const orderStatusColors: Record<string, string> = {
 
 // ── Component ─────────────────────────────────────────
 
-const AdminDashboard = ({ defaultTab = "overview" }: { defaultTab?: string }) => {
+const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaultTab?: string; defaultRoleFilter?: string }) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState(defaultTab);
@@ -72,7 +72,7 @@ const AdminDashboard = ({ defaultTab = "overview" }: { defaultTab?: string }) =>
     }
   }, [toast]);
   const [userSearch, setUserSearch] = useState("");
-  const [userRoleFilter, setUserRoleFilter] = useState("all");
+  const [userRoleFilter, setUserRoleFilter] = useState(defaultRoleFilter || "all");
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
   const [batchSearch, setBatchSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
