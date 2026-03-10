@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Clock, TrendingUp, Users, MapPin, Calendar, Shield, Calculator, Loader2, Megaphone } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { MARKETING_COST_RATE } from "@/lib/calculations";
