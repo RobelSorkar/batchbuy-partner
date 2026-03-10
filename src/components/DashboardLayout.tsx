@@ -29,6 +29,7 @@ const dropshipperNav = [
 
 const adminNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
+  { icon: Users, label: "Users", href: "/admin/users" },
   { icon: ClipboardList, label: "Orders", href: "/admin/orders" },
   { icon: Share2, label: "Distribution", href: "/admin/distribution" },
   { icon: Warehouse, label: "Warehouse", href: "/warehouse" },

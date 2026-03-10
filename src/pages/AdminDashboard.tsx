@@ -53,10 +53,10 @@ const orderStatusColors: Record<string, string> = {
 
 // ── Component ─────────────────────────────────────────
 
-const AdminDashboard = () => {
+const AdminDashboard = ({ defaultTab = "overview" }: { defaultTab?: string }) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const [syncing, setSyncing] = useState(false);
 
   const syncBatchStats = useCallback(async () => {
