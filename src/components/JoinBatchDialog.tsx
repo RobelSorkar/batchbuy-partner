@@ -31,7 +31,6 @@ const PRESETS = [10000, 20000, 50000, 100000];
 const SCENARIOS = [
   { label: "Best", rate: 100, color: "text-primary", bg: "bg-primary/5 border-primary/20" },
   { label: "Expected", rate: 80, color: "text-accent-foreground", bg: "bg-accent/50 border-accent-foreground/15" },
-  { label: "Conservative", rate: 60, color: "text-destructive", bg: "bg-destructive/5 border-destructive/10" },
 ] as const;
 
 // ─── Step indicator ───────────────────────────────────────────────────────────
