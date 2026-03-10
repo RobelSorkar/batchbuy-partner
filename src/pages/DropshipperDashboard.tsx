@@ -64,7 +64,7 @@ const DropshipperDashboard = () => {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-display font-bold">Dropshipper Dashboard</h1>
+            <h1 className="text-2xl font-display font-bold">Sales Partner Dashboard</h1>
             <p className="text-muted-foreground text-sm mt-1">Promote products, generate orders, earn commission</p>
           </div>
           <Link to="/dropshipper/products">
