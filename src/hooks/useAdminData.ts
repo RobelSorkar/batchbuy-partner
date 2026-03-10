@@ -7,7 +7,8 @@ export interface AdminUser {
   id: string;
   name: string;
   email: string;
-  role: string;
+  roles: string[];
+  role: string; // primary role for display
   joined: string;
   status: string;
   walletBalance: number;
