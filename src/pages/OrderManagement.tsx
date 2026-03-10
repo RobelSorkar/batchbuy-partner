@@ -25,8 +25,8 @@ const statusIcons: Record<OrderStatus, typeof Clock> = {
 };
 
 const sourceLabels: Record<string, string> = {
-  dropshipper: "Dropshipper",
-  dropship: "Dropship",
+  dropshipper: "Sales Partner",
+  dropship: "Sales Partner",
   distributor: "Distributor",
   distribution: "Distribution",
   direct: "Direct",
