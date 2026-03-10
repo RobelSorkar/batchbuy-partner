@@ -529,6 +529,16 @@ export type Database = {
     Functions: {
       admin_sync_batch_stats: { Args: never; Returns: undefined }
       calculate_ledger_balance: { Args: { p_user_id: string }; Returns: number }
+      check_order_fraud: {
+        Args: {
+          p_batch_id: string
+          p_customer_address: string
+          p_customer_name: string
+          p_customer_phone: string
+          p_quantity: number
+        }
+        Returns: Json
+      }
       create_order_with_stock_check: {
         Args: {
           p_batch_id?: string
