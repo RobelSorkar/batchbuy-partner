@@ -7,7 +7,8 @@ export interface AdminUser {
   id: string;
   name: string;
   email: string;
-  role: string;
+  roles: string[];
+  role: string; // primary role for display
   joined: string;
   status: string;
   walletBalance: number;
@@ -45,8 +46,12 @@ export function useAdminUsers() {
         .select("*");
       if (tErr) throw tErr;
 
-      const roleMap = new Map<string, string>();
-      (roles || []).forEach((r: any) => roleMap.set(r.user_id, r.role));
+      const roleMap = new Map<string, string[]>();
+      (roles || []).forEach((r: any) => {
+        const existing = roleMap.get(r.user_id) || [];
+        existing.push(r.role);
+        roleMap.set(r.user_id, existing);
+      });
 
       const walletMap = new Map<string, number>();
       (wallets || []).forEach((w: any) => walletMap.set(w.user_id, Number(w.balance)));
@@ -62,17 +67,23 @@ export function useAdminUsers() {
         }
       });
 
-      return (profiles || []).map((p: any) => ({
-        id: p.user_id,
-        name: p.full_name || "Unknown",
-        email: "", // email from auth not accessible from client
-        role: roleMap.get(p.user_id) || "partner",
-        joined: new Date(p.created_at).toLocaleDateString(),
-        status: "active",
-        walletBalance: walletMap.get(p.user_id) || 0,
-        totalInvested: investedMap.get(p.user_id) || 0,
-        totalEarned: earnedMap.get(p.user_id) || 0,
-      })) as AdminUser[];
+      const rolePriority = ["admin", "warehouse", "distributor", "dropshipper", "partner"];
+      return (profiles || []).map((p: any) => {
+        const userRoles = roleMap.get(p.user_id) || ["partner"];
+        const primaryRole = rolePriority.find(r => userRoles.includes(r)) || userRoles[0];
+        return {
+          id: p.user_id,
+          name: p.full_name || "Unknown",
+          email: "",
+          roles: userRoles,
+          role: primaryRole,
+          joined: new Date(p.created_at).toLocaleDateString(),
+          status: "active",
+          walletBalance: walletMap.get(p.user_id) || 0,
+          totalInvested: investedMap.get(p.user_id) || 0,
+          totalEarned: earnedMap.get(p.user_id) || 0,
+        };
+      }) as AdminUser[];
     },
     enabled: !!user,
   });
@@ -155,6 +166,31 @@ export function useUpdateUserRole() {
         .from("user_roles")
         .insert({ user_id: userId, role: newRole });
       if (insertError) throw insertError;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+}
+
+export function useToggleUserRole() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userId, role, action }: { userId: string; role: Database["public"]["Enums"]["app_role"]; action: "add" | "remove" }) => {
+      if (action === "add") {
+        const { error } = await supabase
+          .from("user_roles")
+          .insert({ user_id: userId, role });
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("user_roles")
+          .delete()
+          .eq("user_id", userId)
+          .eq("role", role as any);
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
