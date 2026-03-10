@@ -98,12 +98,12 @@ const AnalyticsPage = () => {
   }));
 
   const stats = [
-    { label: "Total Partners", value: totalPartners.toString(), change: `${participations.length} participations`, up: true, icon: Users },
-    { label: "Total Sales", value: `৳${(totalSales / 100000).toFixed(1)}L`, change: `${totalOrders} orders`, up: totalSales > 0, icon: TrendingUp },
-    { label: "Active Batches", value: activeBatches.toString(), change: `${batches.length} total`, up: activeBatches > 0, icon: Layers },
-    { label: "Warehouse Stock", value: totalStock.toLocaleString(), change: `${inventory.length} products`, up: false, icon: Package },
-    { label: "Total Orders", value: totalOrders.toString(), change: "all channels", up: totalOrders > 0, icon: ShoppingCart },
-    { label: "Commissions", value: `৳${totalCommission.toLocaleString()}`, change: "total earned", up: totalCommission > 0, icon: Wallet },
+    { label: "Total Partners", value: totalPartners.toString(), change: `${participations.length} participations`, up: true, icon: Users, link: "/admin/users" },
+    { label: "Total Sales", value: `৳${(totalSales / 100000).toFixed(1)}L`, change: `${totalOrders} orders`, up: totalSales > 0, icon: TrendingUp, link: "/admin/orders" },
+    { label: "Active Batches", value: activeBatches.toString(), change: `${batches.length} total`, up: activeBatches > 0, icon: Layers, link: "/admin" },
+    { label: "Warehouse Stock", value: totalStock.toLocaleString(), change: `${inventory.length} products`, up: false, icon: Package, link: "/warehouse" },
+    { label: "Total Orders", value: totalOrders.toString(), change: "all channels", up: totalOrders > 0, icon: ShoppingCart, link: "/admin/orders" },
+    { label: "Commissions", value: `৳${totalCommission.toLocaleString()}`, change: "total earned", up: totalCommission > 0, icon: Wallet, link: "/wallet" },
   ];
 
   // Top partners by investment
