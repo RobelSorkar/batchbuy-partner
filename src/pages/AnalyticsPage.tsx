@@ -33,6 +33,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const AnalyticsPage = () => {
+  const navigate = useNavigate();
   const { data: batches = [], isLoading: batchesLoading } = useQuery({
     queryKey: ["analytics-batches"],
     queryFn: async () => {
