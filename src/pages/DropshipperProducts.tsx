@@ -172,7 +172,7 @@ const DropshipperProducts = () => {
                   <Button size="sm" variant="outline" onClick={() => handleCopyLink(product)}>
                     {linkCopied === product.id ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   </Button>
-                  <Button size="sm" variant="outline"><Share2 className="w-3.5 h-3.5" /></Button>
+                  <Button size="sm" variant="outline" onClick={() => handleCopyLink(product)}><Share2 className="w-3.5 h-3.5" /></Button>
                 </div>
               </div>
             </div>
