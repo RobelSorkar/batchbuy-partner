@@ -20,9 +20,9 @@ const partnerNav = [
 ];
 
 const dropshipperNav = [
-  { icon: LayoutDashboard, label: "Overview", href: "/dropshipper" },
-  { icon: Store, label: "Products", href: "/dropshipper/products" },
-  { icon: ShoppingCart, label: "My Orders", href: "/dropshipper/orders" },
+  { icon: LayoutDashboard, label: "Overview", href: "/sales-partner" },
+  { icon: Store, label: "Products", href: "/sales-partner/products" },
+  { icon: ShoppingCart, label: "My Orders", href: "/sales-partner/orders" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
   { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
