@@ -38,8 +38,11 @@ const DropshipperDashboard = () => {
     { label: "Pending Commission", value: `৳${pendingCommission.toLocaleString()}`, icon: DollarSign },
   ];
 
+  const { user } = useAuth();
+
   const handleCopyLink = (productId: string) => {
-    navigator.clipboard.writeText(`${window.location.origin}/batch/${productId}?ref=dropshipper`);
+    const refId = user?.id || "dropshipper";
+    navigator.clipboard.writeText(`${window.location.origin}/batch/${productId}?ref=${refId}`);
     setLinkCopied(productId);
     toast({ title: "Link Copied!", description: "Share this referral link to earn commission." });
     setTimeout(() => setLinkCopied(null), 2000);
