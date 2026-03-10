@@ -71,8 +71,6 @@ const WalletPage = () => {
 
   const [depositOpen, setDepositOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState("");
-  const [depositMethod, setDepositMethod] = useState("bkash");
-  const [depositAccount, setDepositAccount] = useState("");
   const [depositSuccess, setDepositSuccess] = useState(false);
   const balance = wallet?.balance || 0;
 
@@ -122,9 +120,9 @@ const WalletPage = () => {
 
   const handleDeposit = async () => {
     const amt = Number(depositAmount);
-    if (amt < 500 || !depositAccount) return;
+    if (amt < 500) return;
     try {
-      await deposit.mutateAsync({ amount: amt, method: depositMethod, account: depositAccount });
+      await deposit.mutateAsync({ amount: amt, method: "direct", account: "wallet" });
       setDepositSuccess(true);
     } catch (e: any) {
       toast({ title: "Deposit failed", description: e.message, variant: "destructive" });
@@ -133,7 +131,7 @@ const WalletPage = () => {
 
   const closeDeposit = () => {
     setDepositOpen(false);
-    setTimeout(() => { setDepositSuccess(false); setDepositAmount(""); setDepositAccount(""); }, 300);
+    setTimeout(() => { setDepositSuccess(false); setDepositAmount(""); }, 300);
   };
 
   if (walletLoading || txnLoading) {
@@ -329,27 +327,16 @@ const WalletPage = () => {
             <>
               <DialogHeader>
                 <DialogTitle className="font-display text-xl">Deposit Funds</DialogTitle>
-                <DialogDescription>Add funds to your wallet via mobile banking</DialogDescription>
+                <DialogDescription>Add funds to your wallet balance</DialogDescription>
               </DialogHeader>
               <div className="space-y-5 pt-2">
-                <div className="space-y-2">
-                  <Label>Payment Method</Label>
-                  <Select value={depositMethod} onValueChange={setDepositMethod}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>{withdrawMethods.map((m) => <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>)}</SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="d-account">Account / Phone Number</Label>
-                  <Input id="d-account" placeholder={depositMethod === "bank" ? "Account number" : "01XXXXXXXXX"} value={depositAccount} onChange={(e) => setDepositAccount(e.target.value)} />
-                </div>
                 <div className="space-y-2">
                   <Label htmlFor="d-amount">Amount (BDT)</Label>
                   <Input id="d-amount" type="number" min="500" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} />
                   <p className="text-xs text-muted-foreground">Minimum deposit: ৳500</p>
                 </div>
-                <Button className="w-full" disabled={!depositAccount || Number(depositAmount) < 500 || deposit.isPending} onClick={handleDeposit}>
-                  {deposit.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Confirm Deposit
+                <Button className="w-full" disabled={Number(depositAmount) < 500 || deposit.isPending} onClick={handleDeposit}>
+                  {deposit.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Add ৳{Number(depositAmount || 0).toLocaleString()} to Wallet
                 </Button>
               </div>
             </>
