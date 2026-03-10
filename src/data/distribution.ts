@@ -66,8 +66,8 @@ export const CHANNEL_CONFIG: Record<DistributionChannel, ChannelPricingRule> = {
   },
   dropshipper: {
     channel: "dropshipper",
-    label: "Dropshippers",
-    description: "No-inventory model. Dropshippers promote at retail and earn the margin above dropship price.",
+    label: "Sales Partners",
+    description: "No-inventory model. Sales Partners promote at retail and earn the margin above wholesale price.",
     icon: "📱",
     marginPct: 40,
     minPrice: 0,
