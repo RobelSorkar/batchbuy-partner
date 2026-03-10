@@ -177,6 +177,9 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
             <p className="text-muted-foreground text-sm mt-1">Platform overview and management</p>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" className="gap-2" onClick={reconcileWallets} disabled={reconciling}>
+              <DollarSign className={`w-4 h-4 ${reconciling ? "animate-spin" : ""}`} /> {reconciling ? "Reconciling…" : "Reconcile Wallets"}
+            </Button>
             <Button variant="outline" className="gap-2" onClick={syncBatchStats} disabled={syncing}>
               <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Syncing…" : "Sync Batch Stats"}
             </Button>
