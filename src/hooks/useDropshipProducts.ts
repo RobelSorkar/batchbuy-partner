@@ -39,7 +39,7 @@ export function useDropshipProducts() {
         const retailPrice = Number(batch.retail_price);
         const dropshipPrice = wholesalePrice; // dropshippers pay wholesale
         const sellerProfit = retailPrice - dropshipPrice;
-        const stock = inv ? inv.total_stock - inv.sold_units - inv.allocated_stock : batch.remaining_units;
+        const stock = inv ? inv.total_stock - inv.sold_units : batch.remaining_units;
 
         return {
           id: batch.id,
@@ -51,7 +51,7 @@ export function useDropshipProducts() {
           sellerProfit,
           stock: Math.max(0, stock),
           description: batch.description || "",
-          rating: 0, // No reviews system yet
+          rating: 0,
           totalSold: inv?.sold_units || batch.funded_units - batch.remaining_units,
           batchId: batch.id,
         } as DropshipProduct;

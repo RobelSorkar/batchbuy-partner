@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Search, Star, TrendingUp, ShoppingCart, Share2, Copy, Check, Loader2 } from "lucide-react";
+import { Search, TrendingUp, ShoppingCart, Share2, Copy, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -135,9 +135,9 @@ const DropshipperProducts = () => {
               <div className="p-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">{product.category}</span>
-                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Star className="w-3 h-3 fill-primary text-primary" /> {product.rating.toFixed(1)}
-                  </span>
+                  {product.totalSold > 0 && (
+                    <span className="text-xs text-muted-foreground">{product.totalSold} sold</span>
+                  )}
                 </div>
                 <h3 className="font-display font-semibold text-sm line-clamp-1">{product.name}</h3>
                 <p className="text-xs text-muted-foreground line-clamp-2">{product.description}</p>
@@ -148,7 +148,7 @@ const DropshipperProducts = () => {
                     <div className="text-xs font-semibold">৳{product.retailPrice}</div>
                   </div>
                   <div className="bg-muted/50 rounded-lg py-2">
-                    <div className="text-[10px] text-muted-foreground">Your Cost</div>
+                    <div className="text-[10px] text-muted-foreground">Wholesale</div>
                     <div className="text-xs font-semibold">৳{product.dropshipPrice}</div>
                   </div>
                   <div className="bg-primary/10 rounded-lg py-2">
@@ -172,7 +172,7 @@ const DropshipperProducts = () => {
                   <Button size="sm" variant="outline" onClick={() => handleCopyLink(product)}>
                     {linkCopied === product.id ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   </Button>
-                  <Button size="sm" variant="outline"><Share2 className="w-3.5 h-3.5" /></Button>
+                  <Button size="sm" variant="outline" onClick={() => handleCopyLink(product)}><Share2 className="w-3.5 h-3.5" /></Button>
                 </div>
               </div>
             </div>

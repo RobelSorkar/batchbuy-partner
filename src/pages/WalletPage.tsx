@@ -33,6 +33,7 @@ const categoryFilters = [
   { label: "All", value: "all" },
   { label: "Profits", value: "profit" },
   { label: "Investments", value: "investment" },
+  { label: "Deposits", value: "deposit" },
   { label: "Withdrawals", value: "withdrawal" },
   { label: "Commissions", value: "commission" },
 ];
