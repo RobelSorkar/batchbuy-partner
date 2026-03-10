@@ -506,7 +506,7 @@ const AdminDashboard = () => {
                           <td className="px-5 py-4 text-sm text-muted-foreground">{o.customer_name}</td>
                           <td className="px-5 py-4 text-xs text-muted-foreground">{(o.order_items || []).map((i: any) => i.product_name).join(", ") || "—"}</td>
                           <td className="px-5 py-4 text-sm font-semibold">৳{Number(o.total_amount).toLocaleString()}</td>
-                          <td className="px-5 py-4"><span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-muted text-muted-foreground capitalize">{o.channel}</span></td>
+                          <td className="px-5 py-4"><span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-muted text-muted-foreground capitalize">{{ dropshipper: "Sales Partner", dropship: "Sales Partner", platform: "Platform", retail: "Retail", distributor: "Distributor" }[o.channel] || o.channel}</span></td>
                           <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${orderStatusColors[o.status] || ""}`}>{o.status}</span></td>
                           <td className="px-5 py-4 text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString()}</td>
                           <td className="px-5 py-4">
