@@ -87,7 +87,7 @@ export const PRICING_RULES = [
   {
     id: "PR-02",
     name: "Channel Price Hierarchy",
-    description: "Platform ≥ Retail ≥ Dropship > Distributor. Lower tiers must never exceed higher-tier pricing.",
+    description: "Platform ≥ Retail ≥ Sales Partner > Distributor. Lower tiers must never exceed higher-tier pricing.",
     severity: "critical" as const,
   },
   {
