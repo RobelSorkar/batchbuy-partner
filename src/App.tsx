@@ -29,6 +29,7 @@ import ResetPassword from "./pages/ResetPassword";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ProfilePage from "./pages/ProfilePage";
+import TransparencyDashboard from "./pages/TransparencyDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
