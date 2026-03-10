@@ -99,7 +99,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
       switchTargets.push({ role: "partner", label: "Partner", href: "/partner" });
     }
     if (role !== "dropshipper" && userRoles.includes("dropshipper")) {
-      switchTargets.push({ role: "dropshipper", label: "Dropshipper", href: "/dropshipper" });
+      switchTargets.push({ role: "dropshipper", label: "Sales Partner", href: "/sales-partner" });
     }
   }
 
