@@ -13,7 +13,7 @@ const channels = [
   },
   {
     icon: ShoppingBag,
-    title: "Dropshippers",
+    title: "Sales Partners",
     desc: "Zero inventory sellers. They take orders, we ship directly to customers.",
   },
   {
