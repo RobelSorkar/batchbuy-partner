@@ -42,6 +42,13 @@ const CustomerOrderForm = ({
   const totalAmount = retailPrice * quantity;
 
   const handleSubmit = async () => {
+    // Client-side rate limit: 5 seconds between submissions
+    const now = Date.now();
+    if (now - lastSubmitTime < 5000) {
+      toast({ title: "অনুগ্রহ করে অপেক্ষা করুন", description: "দ্রুত অর্ডার করা যাচ্ছে না", variant: "destructive" });
+      return;
+    }
+
     const result = orderSchema.safeParse({ customerName, customerPhone, customerAddress });
     if (!result.success) {
       const errors: Record<string, string> = {};
@@ -51,8 +58,15 @@ const CustomerOrderForm = ({
       setFieldErrors(errors);
       return;
     }
+
+    if (quantity > 10) {
+      toast({ title: "সর্বোচ্চ ১০টি", description: "একবারে সর্বোচ্চ ১০টি পণ্য অর্ডার করা যায়", variant: "destructive" });
+      return;
+    }
+
     setFieldErrors({});
     setSubmitting(true);
+    setLastSubmitTime(now);
 
     try {
       const { data, error } = await supabase.functions.invoke("create-public-order", {
