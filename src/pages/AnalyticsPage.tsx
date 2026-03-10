@@ -246,7 +246,60 @@ const AnalyticsPage = () => {
           </div>
         </div>
 
-        {/* Top Partners */}
+        {/* Monthly Revenue Trend + Order Channel Breakdown */}
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
+            <h2 className="font-display font-semibold text-lg mb-4">Monthly Revenue Trend</h2>
+            {monthlyRevenue.some((m) => m.revenue > 0) ? (
+              <ResponsiveContainer width="100%" height={260}>
+                <AreaChart data={monthlyRevenue}>
+                  <defs>
+                    <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                  <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => v > 1000 ? `৳${(v / 1000).toFixed(0)}K` : `৳${v}`} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area type="monotone" dataKey="revenue" name="Revenue" stroke="hsl(var(--primary))" fill="url(#revGrad)" strokeWidth={2} />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="text-center text-muted-foreground py-10 text-sm">No revenue data yet</div>
+            )}
+          </div>
+
+          <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
+            <h2 className="font-display font-semibold text-lg mb-4">Order Channel Breakdown</h2>
+            {channelData.length > 0 ? (
+              <>
+                <ResponsiveContainer width="100%" height={200}>
+                  <PieChart>
+                    <Pie data={channelData} cx="50%" cy="50%" outerRadius={80} dataKey="value" label={({ name, value }) => `${name} (${value})`}>
+                      {channelData.map((entry, i) => (
+                        <Cell key={i} fill={entry.fill} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="flex justify-center gap-4 mt-2 flex-wrap">
+                  {channelData.map((item) => (
+                    <div key={item.name} className="flex items-center gap-1.5 text-xs">
+                      <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.fill }} />
+                      <span className="text-muted-foreground">{item.name}</span>
+                      <span className="font-semibold">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-center text-muted-foreground py-10 text-sm">No orders yet</div>
+            )}
+          </div>
+        </div>
         <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
           <h2 className="font-display font-semibold text-lg mb-4">Top Partners by Investment</h2>
           {topPartners.length > 0 ? (
