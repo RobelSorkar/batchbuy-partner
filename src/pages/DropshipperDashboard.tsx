@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useDropshipProducts } from "@/hooks/useDropshipProducts";
 import { useOrders } from "@/hooks/useOrders";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 const statusColors: Record<string, string> = {
   pending: "bg-secondary text-secondary-foreground",

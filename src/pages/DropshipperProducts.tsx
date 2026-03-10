@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useDropshipProducts, DropshipProduct } from "@/hooks/useDropshipProducts";
 import { useCreateOrder } from "@/hooks/useOrders";
+import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 
 const orderFormSchema = z.object({
