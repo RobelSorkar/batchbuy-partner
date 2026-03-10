@@ -135,9 +135,9 @@ const DropshipperProducts = () => {
               <div className="p-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">{product.category}</span>
-                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Star className="w-3 h-3 fill-primary text-primary" /> {product.rating.toFixed(1)}
-                  </span>
+                  {product.totalSold > 0 && (
+                    <span className="text-xs text-muted-foreground">{product.totalSold} sold</span>
+                  )}
                 </div>
                 <h3 className="font-display font-semibold text-sm line-clamp-1">{product.name}</h3>
                 <p className="text-xs text-muted-foreground line-clamp-2">{product.description}</p>
