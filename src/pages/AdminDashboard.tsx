@@ -797,7 +797,7 @@ const AdminDashboard = () => {
                           onClick={() => setEditingRole(r)}
                           disabled={r === userDetail.role}
                         >
-                          {r}
+                          {r === "dropshipper" ? "Sales Partner" : r}
                         </Button>
                       ))}
                     </div>
