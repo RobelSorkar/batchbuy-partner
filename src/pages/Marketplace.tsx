@@ -83,6 +83,7 @@ const Marketplace = () => {
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filtered.map((batch) => {
+                  const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
                   const logisticsPerUnit = Number((batch as any).logistics_cost_per_unit) || 0;
                   const revenue = batch.retail_price;
                   const marketingCost = Math.round(revenue * 0.10);
