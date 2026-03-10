@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const links = [
   { label: "About", href: "#" },
   { label: "How it works", href: "#how-it-works" },
+  { label: "Transparency", href: "/transparency", isRoute: true },
   { label: "Contact", href: "#" },
   { label: "Terms", href: "/terms", isRoute: true },
   { label: "Privacy", href: "/privacy", isRoute: true },
