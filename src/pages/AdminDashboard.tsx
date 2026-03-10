@@ -519,8 +519,7 @@ const AdminDashboard = () => {
                                     try {
                                       await supabase.from("orders").update({ status: nextStatus }).eq("id", o.id);
                                       toast({ title: `Order ${o.order_number} → ${nextStatus}` });
-                                      // Refresh
-                                      window.location.reload();
+                                      queryClient.invalidateQueries({ queryKey: ["orders"] });
                                     } catch (e: any) {
                                       toast({ title: "Error", description: e.message, variant: "destructive" });
                                     }
