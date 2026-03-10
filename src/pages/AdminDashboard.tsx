@@ -6,8 +6,9 @@ import {
   Users, Layers, TrendingUp, ShoppingCart, ArrowUpRight, ArrowDownRight,
   AlertTriangle, CheckCircle, Clock, Wallet, Package, Eye,
   Ban, DollarSign, BarChart3, PieChart,
-  Search, XCircle, RefreshCw, Loader2
+  Search, XCircle, RefreshCw, Loader2, Pencil
 } from "lucide-react";
+import EditBatchDialog from "@/components/EditBatchDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
