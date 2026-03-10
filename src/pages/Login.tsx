@@ -23,13 +23,13 @@ const Login = () => {
     if (error) {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
     } else {
-      // Redirect based on role
+      // Redirect based on role (admin takes highest priority)
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user?.id);
-      const role = roles?.[0]?.role;
-      if (role === "admin") navigate("/admin");
-      else if (role === "dropshipper") navigate("/sales-partner");
-      else if (role === "warehouse") navigate("/warehouse");
-      else if (role === "distributor") navigate("/distributor");
+      const roleList = (roles || []).map((r) => r.role);
+      if (roleList.includes("admin")) navigate("/admin");
+      else if (roleList.includes("warehouse")) navigate("/warehouse");
+      else if (roleList.includes("distributor")) navigate("/distributor");
+      else if (roleList.includes("dropshipper")) navigate("/sales-partner");
       else navigate("/partner");
     }
   };
