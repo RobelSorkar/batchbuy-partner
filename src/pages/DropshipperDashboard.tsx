@@ -67,7 +67,7 @@ const DropshipperDashboard = () => {
             <h1 className="text-2xl font-display font-bold">Sales Partner Dashboard</h1>
             <p className="text-muted-foreground text-sm mt-1">Promote products, generate orders, earn commission</p>
           </div>
-          <Link to="/dropshipper/products">
+          <Link to="/sales-partner/products">
             <Button className="gap-2"><ExternalLink className="w-4 h-4" /> Browse Products</Button>
           </Link>
         </div>
