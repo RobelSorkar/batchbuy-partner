@@ -148,7 +148,7 @@ const DropshipperProducts = () => {
                     <div className="text-xs font-semibold">৳{product.retailPrice}</div>
                   </div>
                   <div className="bg-muted/50 rounded-lg py-2">
-                    <div className="text-[10px] text-muted-foreground">Your Cost</div>
+                    <div className="text-[10px] text-muted-foreground">Wholesale</div>
                     <div className="text-xs font-semibold">৳{product.dropshipPrice}</div>
                   </div>
                   <div className="bg-primary/10 rounded-lg py-2">

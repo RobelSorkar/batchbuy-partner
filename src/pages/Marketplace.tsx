@@ -83,9 +83,11 @@ const Marketplace = () => {
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filtered.map((batch) => {
-                  const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
-                  const grossProfitPerUnit = batch.retail_price - batch.production_cost_per_unit;
-                  const netProfitPerUnit = Math.round(grossProfitPerUnit * 0.85);
+                  const logisticsPerUnit = Number((batch as any).logistics_cost_per_unit) || 0;
+                  const revenue = batch.retail_price;
+                  const marketingCost = Math.round(revenue * 0.10);
+                  const grossProfit = revenue - batch.production_cost_per_unit - logisticsPerUnit - marketingCost;
+                  const netProfitPerUnit = Math.round(grossProfit > 0 ? grossProfit * 0.85 : grossProfit);
                   const returnPct = ((netProfitPerUnit / batch.production_cost_per_unit) * 100).toFixed(0);
 
                   return (
