@@ -117,6 +117,43 @@ const AnalyticsPage = () => {
     .sort((a, b) => b.invested - a.invested)
     .slice(0, 5);
 
+  // Monthly revenue trend (last 6 months)
+  const monthlyRevenue = (() => {
+    const now = new Date();
+    const months: { label: string; revenue: number; orders: number }[] = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const label = d.toLocaleString("en", { month: "short", year: "2-digit" });
+      const monthOrders = orders.filter((o: any) => {
+        const od = new Date(o.created_at);
+        return od.getMonth() === d.getMonth() && od.getFullYear() === d.getFullYear();
+      });
+      months.push({
+        label,
+        revenue: monthOrders.reduce((s: number, o: any) => s + Number(o.total_amount), 0),
+        orders: monthOrders.length,
+      });
+    }
+    return months;
+  })();
+
+  // Order channel breakdown
+  const channelColors: Record<string, string> = {
+    platform: "hsl(var(--primary))",
+    dropshipper: "hsl(var(--accent))",
+    retail: "hsl(var(--secondary))",
+    distributor: "hsl(160, 60%, 45%)",
+  };
+  const channelCounts = orders.reduce((acc: any, o: any) => {
+    acc[o.channel] = (acc[o.channel] || 0) + 1;
+    return acc;
+  }, {});
+  const channelData = Object.entries(channelCounts).map(([name, value]) => ({
+    name: name.charAt(0).toUpperCase() + name.slice(1),
+    value: value as number,
+    fill: channelColors[name] || "hsl(var(--muted))",
+  }));
+
   if (isLoading) {
     return (
       <DashboardLayout role="admin">
