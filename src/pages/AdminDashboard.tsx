@@ -888,6 +888,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
             )}
           </DialogContent>
         </Dialog>
+        <EditBatchDialog batch={editingBatch} open={!!editingBatch} onOpenChange={(o) => !o && setEditingBatch(null)} />
       </div>
     </DashboardLayout>
   );
