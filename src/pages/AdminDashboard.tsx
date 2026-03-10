@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Link } from "react-router-dom";
 import {
@@ -53,6 +54,7 @@ const orderStatusColors: Record<string, string> = {
 // ── Component ─────────────────────────────────────────
 
 const AdminDashboard = () => {
+  const queryClient = useQueryClient();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
   const [syncing, setSyncing] = useState(false);
@@ -517,8 +519,7 @@ const AdminDashboard = () => {
                                     try {
                                       await supabase.from("orders").update({ status: nextStatus }).eq("id", o.id);
                                       toast({ title: `Order ${o.order_number} → ${nextStatus}` });
-                                      // Refresh
-                                      window.location.reload();
+                                      queryClient.invalidateQueries({ queryKey: ["orders"] });
                                     } catch (e: any) {
                                       toast({ title: "Error", description: e.message, variant: "destructive" });
                                     }
@@ -532,7 +533,7 @@ const AdminDashboard = () => {
                                     try {
                                       await supabase.from("orders").update({ status: "cancelled" }).eq("id", o.id);
                                       toast({ title: `Order ${o.order_number} cancelled`, variant: "destructive" });
-                                      window.location.reload();
+                                      queryClient.invalidateQueries({ queryKey: ["orders"] });
                                     } catch (e: any) {
                                       toast({ title: "Error", description: e.message, variant: "destructive" });
                                     }
