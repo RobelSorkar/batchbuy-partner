@@ -679,7 +679,7 @@ const AdminDashboard = () => {
                   <div className="space-y-3">
                     {[
                       { label: "Production Partners", count: users.filter((u) => u.role === "partner").length, color: "bg-primary" },
-                      { label: "Dropshippers", count: users.filter((u) => u.role === "dropshipper").length, color: "bg-accent" },
+                      { label: "Sales Partners", count: users.filter((u) => u.role === "dropshipper").length, color: "bg-accent" },
                       { label: "Distributors", count: users.filter((u) => u.role === "distributor").length, color: "bg-secondary" },
                       { label: "Warehouse", count: users.filter((u) => u.role === "warehouse").length, color: "bg-muted" },
                     ].map((item) => (
