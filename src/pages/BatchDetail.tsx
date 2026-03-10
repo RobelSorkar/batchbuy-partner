@@ -33,10 +33,14 @@ const statusLabels: Record<string, string> = {
 const BatchDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { data: batch, isLoading } = useBatchDetail(id);
   const { data: participations } = useBatchParticipations(id);
   const [joinOpen, setJoinOpen] = useState(false);
+
+  const referrerId = searchParams.get("ref");
+  const isCustomerView = referrerId && referrerId !== "dropshipper" && referrerId.length > 10;
 
   const handleJoinClick = () => {
     if (!user) {
