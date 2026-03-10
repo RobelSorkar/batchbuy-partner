@@ -15,7 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, useUpdateUserRole, AdminUser } from "@/hooks/useAdminData";
+import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, useUpdateUserRole, useToggleUserRole, AdminUser } from "@/hooks/useAdminData";
 import { useBatches } from "@/hooks/useBatches";
 import { useOrders } from "@/hooks/useOrders";
 import { useInventory } from "@/hooks/useInventory";
