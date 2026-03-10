@@ -347,7 +347,15 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                             </div>
                           </div>
                         </td>
-                        <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${roleColors[user.role] || ""}`}>{user.role}</span></td>
+                        <td className="px-5 py-4">
+                          <div className="flex flex-wrap gap-1">
+                            {user.roles.map((r) => (
+                              <span key={r} className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${roleColors[r] || ""}`}>
+                                {r === "dropshipper" ? "sales" : r}
+                              </span>
+                            ))}
+                          </div>
+                        </td>
                         <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${userStatusColors[user.status]}`}>{user.status}</span></td>
                         <td className="px-5 py-4 text-sm text-muted-foreground">{user.joined}</td>
                         <td className="px-5 py-4 text-sm font-medium">৳{user.walletBalance.toLocaleString()}</td>
