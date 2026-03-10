@@ -38,8 +38,11 @@ const DropshipperProducts = () => {
     return matchSearch && matchCat;
   });
 
+  const { user } = useAuth();
+
   const handleCopyLink = (product: DropshipProduct) => {
-    navigator.clipboard.writeText(`${window.location.origin}/batch/${product.id}?ref=dropshipper`);
+    const refId = user?.id || "dropshipper";
+    navigator.clipboard.writeText(`${window.location.origin}/batch/${product.id}?ref=${refId}`);
     setLinkCopied(product.id);
     toast({ title: "Link Copied!", description: "Share this link to earn commission on every sale." });
     setTimeout(() => setLinkCopied(null), 2000);
