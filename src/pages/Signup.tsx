@@ -10,8 +10,6 @@ import { useToast } from "@/hooks/use-toast";
 const roles = [
   { value: "partner", label: "Production Partner", desc: "Finance batches & own units" },
   { value: "dropshipper", label: "Sales Partner", desc: "Sell products without inventory & earn commission" },
-  { value: "distributor", label: "Distributor", desc: "Handle distribution & bulk orders" },
-  { value: "warehouse", label: "Warehouse Manager", desc: "Manage inventory & fulfill orders" },
 ];
 
 const Signup = () => {
