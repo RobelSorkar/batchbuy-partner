@@ -394,7 +394,11 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                         <tr key={b.id} className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors">
                           <td className="px-5 py-4">
                             <div className="flex items-center gap-2">
-                              <span className="text-xl">{b.image || "📦"}</span>
+                              {b.image && b.image.startsWith("http") ? (
+                                <img src={b.image} alt={b.product_name} className="w-8 h-8 rounded object-cover" />
+                              ) : (
+                                <span className="text-xl">{b.image || "📦"}</span>
+                              )}
                               <span className="text-sm font-medium">{b.product_name}</span>
                             </div>
                           </td>

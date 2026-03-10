@@ -55,7 +55,9 @@ const BatchesPreview = () => {
                   <div className="rounded-xl border border-border bg-card shadow-card hover:shadow-card-hover transition-all duration-300 overflow-hidden">
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-4">
-                        {getProductImage(batch.product_name) ? (
+                        {(batch.image && batch.image.startsWith("http")) ? (
+                          <img src={batch.image} alt={batch.product_name} className="w-12 h-12 object-cover rounded-lg" />
+                        ) : getProductImage(batch.product_name) ? (
                           <img src={getProductImage(batch.product_name)!} alt={batch.product_name} className="w-12 h-12 object-cover rounded-lg" />
                         ) : (
                           <span className="text-3xl">{batch.image || "📦"}</span>

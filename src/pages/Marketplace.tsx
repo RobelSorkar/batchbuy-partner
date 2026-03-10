@@ -94,7 +94,9 @@ const Marketplace = () => {
                   return (
                     <Link key={batch.id} to={`/batch/${batch.id}`} className="group bg-card rounded-xl shadow-card hover:shadow-card-hover border border-border/50 transition-all duration-300 overflow-hidden">
                       <div className="h-40 bg-muted/50 flex items-center justify-center overflow-hidden">
-                        {getProductImage(batch.product_name) ? (
+                        {(batch.image && batch.image.startsWith("http")) ? (
+                          <img src={batch.image} alt={batch.product_name} className="w-full h-full object-cover" />
+                        ) : getProductImage(batch.product_name) ? (
                           <img src={getProductImage(batch.product_name)!} alt={batch.product_name} className="w-full h-full object-cover" />
                         ) : (
                           <span className="text-5xl">{batch.image || "📦"}</span>
