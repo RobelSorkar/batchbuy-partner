@@ -180,7 +180,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
           <div className="flex items-center gap-3">
             <NotificationDropdown />
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
-              {role === "admin" ? "A" : role === "partner" ? "P" : role === "warehouse" ? "W" : "D"}
+              {role === "admin" ? "A" : role === "partner" ? "P" : role === "warehouse" ? "W" : role === "dropshipper" ? "S" : "D"}
             </div>
           </div>
         </header>
