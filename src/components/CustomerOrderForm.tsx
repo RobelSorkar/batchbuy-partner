@@ -35,6 +35,7 @@ const CustomerOrderForm = ({
   const [quantity, setQuantity] = useState(1);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
   const [orderSuccess, setOrderSuccess] = useState<{ orderNumber: string; totalAmount: number } | null>(null);
   const { toast } = useToast();
 
