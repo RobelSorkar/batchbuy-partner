@@ -53,6 +53,7 @@ const App = () => (
             <Route path="/batch/:id" element={<BatchDetail />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/transparency" element={<TransparencyDashboard />} />
 
             {/* Partner routes */}
             <Route path="/partner" element={<ProtectedRoute requiredRole="partner"><PartnerDashboard /></ProtectedRoute>} />
