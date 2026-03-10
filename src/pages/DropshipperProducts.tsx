@@ -186,7 +186,7 @@ const DropshipperProducts = () => {
         <Dialog open={orderOpen} onOpenChange={setOrderOpen}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Create Dropship Order</DialogTitle>
+              <DialogTitle>Create Sales Order</DialogTitle>
               <DialogDescription>
                 {selectedProduct && `${selectedProduct.name} — ৳${selectedProduct.retailPrice} retail`}
               </DialogDescription>

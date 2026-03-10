@@ -93,7 +93,7 @@ export const PRICING_RULES = [
   {
     id: "PR-03",
     name: "Maximum Discount Cap",
-    description: "Each channel has a maximum discount from retail: Platform 5%, Retail 10%, Distributor 20%, Dropshipper 0% (fixed).",
+    description: "Each channel has a maximum discount from retail: Platform 5%, Retail 10%, Distributor 20%, Sales Partner 0% (fixed).",
     severity: "warning" as const,
   },
   {

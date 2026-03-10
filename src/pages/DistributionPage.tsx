@@ -224,7 +224,7 @@ const DistributionPage = () => {
     const dist = Number(editPrices.distributor);
 
     if (r > p || d > r || dist > d) {
-      toast({ title: "Price Hierarchy Violation", description: "Platform ≥ Retail ≥ Dropship > Distributor", variant: "destructive" });
+      toast({ title: "Price Hierarchy Violation", description: "Platform ≥ Retail ≥ Sales Partner > Distributor", variant: "destructive" });
       return;
     }
 
