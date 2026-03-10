@@ -67,17 +67,23 @@ export function useAdminUsers() {
         }
       });
 
-      return (profiles || []).map((p: any) => ({
-        id: p.user_id,
-        name: p.full_name || "Unknown",
-        email: "", // email from auth not accessible from client
-        role: roleMap.get(p.user_id) || "partner",
-        joined: new Date(p.created_at).toLocaleDateString(),
-        status: "active",
-        walletBalance: walletMap.get(p.user_id) || 0,
-        totalInvested: investedMap.get(p.user_id) || 0,
-        totalEarned: earnedMap.get(p.user_id) || 0,
-      })) as AdminUser[];
+      const rolePriority = ["admin", "warehouse", "distributor", "dropshipper", "partner"];
+      return (profiles || []).map((p: any) => {
+        const userRoles = roleMap.get(p.user_id) || ["partner"];
+        const primaryRole = rolePriority.find(r => userRoles.includes(r)) || userRoles[0];
+        return {
+          id: p.user_id,
+          name: p.full_name || "Unknown",
+          email: "",
+          roles: userRoles,
+          role: primaryRole,
+          joined: new Date(p.created_at).toLocaleDateString(),
+          status: "active",
+          walletBalance: walletMap.get(p.user_id) || 0,
+          totalInvested: investedMap.get(p.user_id) || 0,
+          totalEarned: earnedMap.get(p.user_id) || 0,
+        };
+      }) as AdminUser[];
     },
     enabled: !!user,
   });
