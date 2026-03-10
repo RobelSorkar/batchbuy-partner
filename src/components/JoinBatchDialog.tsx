@@ -31,7 +31,6 @@ const PRESETS = [10000, 20000, 50000, 100000];
 const SCENARIOS = [
   { label: "Best", rate: 100, color: "text-primary", bg: "bg-primary/5 border-primary/20" },
   { label: "Expected", rate: 80, color: "text-accent-foreground", bg: "bg-accent/50 border-accent-foreground/15" },
-  { label: "Conservative", rate: 60, color: "text-destructive", bg: "bg-destructive/5 border-destructive/10" },
 ] as const;
 
 // ─── Step indicator ───────────────────────────────────────────────────────────
@@ -408,7 +407,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                       <span className="font-medium text-foreground">Platform Sale Scenarios</span>
                       <span className="ml-auto text-[10px] bg-muted px-1.5 py-0.5 rounded">15% commission</span>
                     </div>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                       {SCENARIOS.map((s) => {
                         const sc = calcInvestmentEstimate(investmentAmount, batch.productionCostPerUnit, batch.wholesalePrice, batch.retailPrice, logisticsCost, s.rate);
                         const unitsSold = Math.round(sc.unitsFinanced * (s.rate / 100));
