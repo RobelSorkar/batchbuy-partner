@@ -111,7 +111,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   // Filtered data
   const filteredUsers = users.filter((u) => {
     const matchSearch = u.name.toLowerCase().includes(userSearch.toLowerCase());
-    const matchRole = userRoleFilter === "all" || u.role === userRoleFilter;
+    const matchRole = userRoleFilter === "all" || u.roles.includes(userRoleFilter);
     return matchSearch && matchRole;
   });
 
