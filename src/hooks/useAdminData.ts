@@ -46,8 +46,12 @@ export function useAdminUsers() {
         .select("*");
       if (tErr) throw tErr;
 
-      const roleMap = new Map<string, string>();
-      (roles || []).forEach((r: any) => roleMap.set(r.user_id, r.role));
+      const roleMap = new Map<string, string[]>();
+      (roles || []).forEach((r: any) => {
+        const existing = roleMap.get(r.user_id) || [];
+        existing.push(r.role);
+        roleMap.set(r.user_id, existing);
+      });
 
       const walletMap = new Map<string, number>();
       (wallets || []).forEach((w: any) => walletMap.set(w.user_id, Number(w.balance)));
