@@ -168,7 +168,11 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
                   <span className="font-semibold text-accent-foreground">৳{indie?.potentialProfit.toLocaleString()}</span>
                 </div>
               </div>
-              <p className="text-[10px] text-muted-foreground pt-1">✔ Estimate only · ✔ Not guaranteed</p>
+              <div className="text-[10px] text-muted-foreground pt-2 space-y-0.5">
+                <p>✔ এটি কোনো বিনিয়োগ নয়।</p>
+                <p>✔ আপনি নির্দিষ্ট প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
+                <p>✔ বিক্রি না হলে আপনার প্রোডাক্ট অবিকৃত অবস্থায় সংগ্রহ করতে পারবেন।</p>
+              </div>
             </div>
             <Button onClick={handleClose} className="w-full">Done</Button>
           </div>
