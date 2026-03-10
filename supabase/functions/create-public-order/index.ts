@@ -24,10 +24,10 @@ Deno.serve(async (req) => {
       customerAddress,
       batchId,
       quantity,
-      referrerId, // dropshipper user ID
+      referrerId,
     } = body;
 
-    // Validate inputs
+    // === Input Validation ===
     if (!customerName || customerName.trim().length < 2) {
       return new Response(JSON.stringify({ error: "নাম কমপক্ষে ২ অক্ষর হতে হবে" }), {
         status: 400,
@@ -54,14 +54,34 @@ Deno.serve(async (req) => {
       });
     }
     const qty = parseInt(quantity) || 1;
-    if (qty < 1 || qty > 100) {
-      return new Response(JSON.stringify({ error: "পরিমাণ ১-১০০ এর মধ্যে হতে হবে" }), {
+    if (qty < 1 || qty > 10) {
+      return new Response(JSON.stringify({ error: "পরিমাণ ১-১০ এর মধ্যে হতে হবে" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Fetch batch
+    // === Fraud Detection ===
+    const { data: fraudCheck, error: fraudError } = await supabase.rpc("check_order_fraud", {
+      p_customer_phone: customerPhone.trim(),
+      p_customer_name: customerName.trim(),
+      p_customer_address: customerAddress.trim(),
+      p_batch_id: batchId,
+      p_quantity: qty,
+    });
+
+    if (fraudError) {
+      console.error("Fraud check error:", fraudError);
+      // Don't block on fraud check failure, log and continue
+    } else if (fraudCheck?.blocked) {
+      console.warn("Order blocked by fraud detection:", fraudCheck.reason);
+      return new Response(JSON.stringify({ error: fraudCheck.message }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // === Fetch Batch ===
     const { data: batch, error: batchError } = await supabase
       .from("batches")
       .select("*")
@@ -76,7 +96,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Check inventory stock
+    // === Stock Check ===
     const { data: inventory } = await supabase
       .from("inventory")
       .select("*")

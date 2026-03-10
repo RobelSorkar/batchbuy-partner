@@ -35,12 +35,20 @@ const CustomerOrderForm = ({
   const [quantity, setQuantity] = useState(1);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
   const [orderSuccess, setOrderSuccess] = useState<{ orderNumber: string; totalAmount: number } | null>(null);
   const { toast } = useToast();
 
   const totalAmount = retailPrice * quantity;
 
   const handleSubmit = async () => {
+    // Client-side rate limit: 5 seconds between submissions
+    const now = Date.now();
+    if (now - lastSubmitTime < 5000) {
+      toast({ title: "অনুগ্রহ করে অপেক্ষা করুন", description: "দ্রুত অর্ডার করা যাচ্ছে না", variant: "destructive" });
+      return;
+    }
+
     const result = orderSchema.safeParse({ customerName, customerPhone, customerAddress });
     if (!result.success) {
       const errors: Record<string, string> = {};
@@ -50,8 +58,15 @@ const CustomerOrderForm = ({
       setFieldErrors(errors);
       return;
     }
+
+    if (quantity > 10) {
+      toast({ title: "সর্বোচ্চ ১০টি", description: "একবারে সর্বোচ্চ ১০টি পণ্য অর্ডার করা যায়", variant: "destructive" });
+      return;
+    }
+
     setFieldErrors({});
     setSubmitting(true);
+    setLastSubmitTime(now);
 
     try {
       const { data, error } = await supabase.functions.invoke("create-public-order", {
@@ -134,7 +149,7 @@ const CustomerOrderForm = ({
           <Input
             type="number"
             min={1}
-            max={stock || 100}
+            max={Math.min(stock || 10, 10)}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
           />
