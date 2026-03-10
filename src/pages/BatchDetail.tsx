@@ -173,9 +173,10 @@ const BatchDetail = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 mt-3 text-[10px] text-muted-foreground">
-                  <span>✔ Profit estimate only</span>
-                  <span>✔ Not guaranteed return</span>
+                <div className="mt-3 text-[10px] text-muted-foreground space-y-0.5">
+                  <p>✔ এটি কোনো বিনিয়োগ নয়।</p>
+                  <p>✔ আপনি নির্দিষ্ট প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
+                  <p>✔ বিক্রি না হলে আপনার প্রোডাক্ট অবিকৃত অবস্থায় সংগ্রহ করতে পারবেন।</p>
                 </div>
               </div>
 
