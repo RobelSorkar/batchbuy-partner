@@ -140,7 +140,11 @@ const AnalyticsPage = () => {
         {/* KPI Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="bg-card rounded-xl p-4 shadow-card border border-border/50">
+            <div
+              key={stat.label}
+              onClick={() => navigate(stat.link)}
+              className="bg-card rounded-xl p-4 shadow-card border border-border/50 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all"
+            >
               <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center mb-2">
                 <stat.icon className="w-4 h-4 text-accent-foreground" />
               </div>
