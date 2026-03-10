@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Clock, TrendingUp, Users, MapPin, Calendar, Shield, Calculator, Loader2, Megaphone } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { MARKETING_COST_RATE } from "@/lib/calculations";
@@ -10,6 +10,7 @@ import JoinBatchDialog from "@/components/JoinBatchDialog";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import ProductImageZoom from "@/components/ProductImageZoom";
 import BatchCountdown from "@/components/BatchCountdown";
+import CustomerOrderForm from "@/components/CustomerOrderForm";
 import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
 import {
   MINIMUM_PARTICIPATION_BDT,
@@ -32,10 +33,14 @@ const statusLabels: Record<string, string> = {
 const BatchDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { data: batch, isLoading } = useBatchDetail(id);
   const { data: participations } = useBatchParticipations(id);
   const [joinOpen, setJoinOpen] = useState(false);
+
+  const referrerId = searchParams.get("ref");
+  const isCustomerView = referrerId && referrerId !== "dropshipper" && referrerId.length > 10;
 
   const handleJoinClick = () => {
     if (!user) {
@@ -240,106 +245,122 @@ const BatchDetail = () => {
             </div>
 
             <div className="lg:col-span-1">
-              <div className="sticky top-24 bg-card rounded-xl shadow-card border border-border/50 p-6 space-y-5">
-                <div>
-                  <div className="text-sm text-muted-foreground mb-1">Production Cost / Unit</div>
-                  <div className="text-3xl font-display font-bold">৳{batch.production_cost_per_unit}</div>
-                </div>
+              <div className="sticky top-24 space-y-6">
+                {/* Customer Order Form - shown when accessed via referral link */}
+                {isCustomerView && (batch.status === "production" || batch.status === "completed") && (
+                  <CustomerOrderForm
+                    batchId={batch.id}
+                    productName={batch.product_name}
+                    retailPrice={batch.retail_price}
+                    referrerId={referrerId}
+                    image={batch.image || undefined}
+                  />
+                )}
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <div className="text-xs text-muted-foreground">Min Financing</div>
-                    <div className="text-sm font-semibold">৳{batch.min_participation.toLocaleString()}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs text-muted-foreground">Retail Return</div>
-                    <div className="text-sm font-semibold text-primary flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3" /> {returnPct}%
+                {/* Partner/Investor sidebar - hidden in customer view */}
+                {!isCustomerView && (
+                  <div className="bg-card rounded-xl shadow-card border border-border/50 p-6 space-y-5">
+                    <div>
+                      <div className="text-sm text-muted-foreground mb-1">Production Cost / Unit</div>
+                      <div className="text-3xl font-display font-bold">৳{batch.production_cost_per_unit}</div>
                     </div>
-                  </div>
-                </div>
 
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="text-muted-foreground">{batch.funded_units}/{batch.total_quantity} funded</span>
-                    <span className="font-semibold">{progress}%</span>
-                  </div>
-                  <div className="h-3 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-primary rounded-full" style={{ width: `${progress}%` }} />
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">{batch.remaining_units} units remaining</p>
-                </div>
-
-                <div className="bg-accent/50 rounded-lg p-4 border border-primary/10 space-y-2">
-                  <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 financing</p>
-                  {(() => {
-                    const ex = calcInvestmentEstimate(MINIMUM_PARTICIPATION_BDT, batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price, logisticsCost);
-                    const indie = calcIndependentEstimate(MINIMUM_PARTICIPATION_BDT, batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price);
-                    return (
-                      <div className="text-sm space-y-1">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Product Units</span>
-                          <span className="font-semibold">{ex.unitsFinanced}</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span className="text-muted-foreground">Inventory Cost</span>
-                          <span>৳{ex.inventoryCost.toLocaleString()}</span>
-                        </div>
-
-                        <div className="border-t border-border/30 pt-2 mt-2 space-y-1.5">
-                          <div className="text-[10px] font-bold uppercase tracking-wide text-primary">Option A: Platform Sale</div>
-                          <div className="flex justify-between text-xs">
-                            <span className="text-muted-foreground">Est. Net Profit</span>
-                            <span className="font-semibold text-primary">৳{ex.retailNetProfit.toLocaleString()}</span>
-                          </div>
-                          <div className="text-[10px] text-muted-foreground">After logistics + marketing + 15% fee</div>
-                        </div>
-
-                        <div className="border-t border-border/30 pt-2 mt-1 space-y-1.5">
-                          <div className="text-[10px] font-bold uppercase tracking-wide text-accent-foreground">Option B: Take Delivery</div>
-                          <div className="flex justify-between text-xs">
-                            <span className="text-muted-foreground">Potential Profit</span>
-                            <span className="font-semibold text-accent-foreground">৳{indie.potentialProfit.toLocaleString()}</span>
-                          </div>
-                          <div className="text-[10px] text-muted-foreground">No logistics, marketing, or commission</div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-xs text-muted-foreground">Min Financing</div>
+                        <div className="text-sm font-semibold">৳{batch.min_participation.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-muted-foreground">Retail Return</div>
+                        <div className="text-sm font-semibold text-primary flex items-center gap-1">
+                          <TrendingUp className="w-3 h-3" /> {returnPct}%
                         </div>
                       </div>
-                    );
-                  })()}
-                  <div className="text-[10px] text-muted-foreground mt-1 space-y-0.5">
-                    <p>✔ এটি কোনো বিনিয়োগ নয়।</p>
-                    <p>✔ আপনি নির্দিষ্ট প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
-                    <p>✔ বিক্রি না হলে আপনার প্রোডাক্ট অবিকৃত অবস্থায় সংগ্রহ করতে পারবেন।</p>
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-muted-foreground">{batch.funded_units}/{batch.total_quantity} funded</span>
+                        <span className="font-semibold">{progress}%</span>
+                      </div>
+                      <div className="h-3 bg-muted rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full" style={{ width: `${progress}%` }} />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">{batch.remaining_units} units remaining</p>
+                    </div>
+
+                    <div className="bg-accent/50 rounded-lg p-4 border border-primary/10 space-y-2">
+                      <p className="text-xs font-medium text-accent-foreground">Example: ৳10,000 financing</p>
+                      {(() => {
+                        const ex = calcInvestmentEstimate(MINIMUM_PARTICIPATION_BDT, batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price, logisticsCost);
+                        const indie = calcIndependentEstimate(MINIMUM_PARTICIPATION_BDT, batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price);
+                        return (
+                          <div className="text-sm space-y-1">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Product Units</span>
+                              <span className="font-semibold">{ex.unitsFinanced}</span>
+                            </div>
+                            <div className="flex justify-between text-xs">
+                              <span className="text-muted-foreground">Inventory Cost</span>
+                              <span>৳{ex.inventoryCost.toLocaleString()}</span>
+                            </div>
+
+                            <div className="border-t border-border/30 pt-2 mt-2 space-y-1.5">
+                              <div className="text-[10px] font-bold uppercase tracking-wide text-primary">Option A: Platform Sale</div>
+                              <div className="flex justify-between text-xs">
+                                <span className="text-muted-foreground">Est. Net Profit</span>
+                                <span className="font-semibold text-primary">৳{ex.retailNetProfit.toLocaleString()}</span>
+                              </div>
+                              <div className="text-[10px] text-muted-foreground">After logistics + marketing + 15% fee</div>
+                            </div>
+
+                            <div className="border-t border-border/30 pt-2 mt-1 space-y-1.5">
+                              <div className="text-[10px] font-bold uppercase tracking-wide text-accent-foreground">Option B: Take Delivery</div>
+                              <div className="flex justify-between text-xs">
+                                <span className="text-muted-foreground">Potential Profit</span>
+                                <span className="font-semibold text-accent-foreground">৳{indie.potentialProfit.toLocaleString()}</span>
+                              </div>
+                              <div className="text-[10px] text-muted-foreground">No logistics, marketing, or commission</div>
+                            </div>
+                          </div>
+                        );
+                      })()}
+                      <div className="text-[10px] text-muted-foreground mt-1 space-y-0.5">
+                        <p>✔ এটি কোনো বিনিয়োগ নয়।</p>
+                        <p>✔ আপনি নির্দিষ্ট প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
+                        <p>✔ বিক্রি না হলে আপনার প্রোডাক্ট অবিকৃত অবস্থায় সংগ্রহ করতে পারবেন।</p>
+                      </div>
+                    </div>
+
+                    <BatchCountdown deadline={batch.deadline} status={batch.status} />
+
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="w-4 h-4" />
+                      <span>Production: {batch.production_time_days || 30} days</span>
+                    </div>
+
+                    <div className="space-y-3 pt-2">
+                      {canJoin ? (
+                        <Button className="w-full" size="lg" onClick={handleJoinClick}>
+                          Join This Batch
+                        </Button>
+                      ) : (
+                        <Button className="w-full" size="lg" disabled>
+                          {batch.status === "completed" ? "Batch Completed" : batch.remaining_units === 0 ? "Fully Funded" : "Not Available"}
+                        </Button>
+                      )}
+                      <Link to="/marketplace">
+                        <Button variant="outline" className="w-full" size="lg">
+                          Browse More Batches
+                        </Button>
+                      </Link>
+                    </div>
+
+                    <p className="text-xs text-muted-foreground text-center">
+                      Min ৳{batch.min_participation.toLocaleString()} BDT · {batch.partners_joined} partners joined
+                    </p>
                   </div>
-                </div>
-
-                <BatchCountdown deadline={batch.deadline} status={batch.status} />
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="w-4 h-4" />
-                  <span>Production: {batch.production_time_days || 30} days</span>
-                </div>
-
-                <div className="space-y-3 pt-2">
-                  {canJoin ? (
-                    <Button className="w-full" size="lg" onClick={handleJoinClick}>
-                      Join This Batch
-                    </Button>
-                  ) : (
-                    <Button className="w-full" size="lg" disabled>
-                      {batch.status === "completed" ? "Batch Completed" : batch.remaining_units === 0 ? "Fully Funded" : "Not Available"}
-                    </Button>
-                  )}
-                  <Link to="/marketplace">
-                    <Button variant="outline" className="w-full" size="lg">
-                      Browse More Batches
-                    </Button>
-                  </Link>
-                </div>
-
-                <p className="text-xs text-muted-foreground text-center">
-                  Min ৳{batch.min_participation.toLocaleString()} BDT · {batch.partners_joined} partners joined
-                </p>
+                )}
               </div>
             </div>
           </div>

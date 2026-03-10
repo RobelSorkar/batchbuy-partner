@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useDropshipProducts, DropshipProduct } from "@/hooks/useDropshipProducts";
 import { useCreateOrder } from "@/hooks/useOrders";
+import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 
 const orderFormSchema = z.object({
@@ -38,8 +39,11 @@ const DropshipperProducts = () => {
     return matchSearch && matchCat;
   });
 
+  const { user } = useAuth();
+
   const handleCopyLink = (product: DropshipProduct) => {
-    navigator.clipboard.writeText(`${window.location.origin}/batch/${product.id}?ref=dropshipper`);
+    const refId = user?.id || "dropshipper";
+    navigator.clipboard.writeText(`${window.location.origin}/batch/${product.id}?ref=${refId}`);
     setLinkCopied(product.id);
     toast({ title: "Link Copied!", description: "Share this link to earn commission on every sale." });
     setTimeout(() => setLinkCopied(null), 2000);

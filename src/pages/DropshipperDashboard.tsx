@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useDropshipProducts } from "@/hooks/useDropshipProducts";
 import { useOrders } from "@/hooks/useOrders";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 const statusColors: Record<string, string> = {
   pending: "bg-secondary text-secondary-foreground",
@@ -38,8 +39,11 @@ const DropshipperDashboard = () => {
     { label: "Pending Commission", value: `৳${pendingCommission.toLocaleString()}`, icon: DollarSign },
   ];
 
+  const { user } = useAuth();
+
   const handleCopyLink = (productId: string) => {
-    navigator.clipboard.writeText(`${window.location.origin}/batch/${productId}?ref=dropshipper`);
+    const refId = user?.id || "dropshipper";
+    navigator.clipboard.writeText(`${window.location.origin}/batch/${productId}?ref=${refId}`);
     setLinkCopied(productId);
     toast({ title: "Link Copied!", description: "Share this referral link to earn commission." });
     setTimeout(() => setLinkCopied(null), 2000);
