@@ -272,7 +272,7 @@ const WarehousePage = () => {
                     <SelectTrigger className="h-8 text-xs w-32"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Channels</SelectItem>
-                      <SelectItem value="dropship">Dropship</SelectItem>
+                      <SelectItem value="dropship">Sales Partner</SelectItem>
                       <SelectItem value="distribution">Distribution</SelectItem>
                       <SelectItem value="direct">Direct</SelectItem>
                     </SelectContent>

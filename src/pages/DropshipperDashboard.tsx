@@ -64,10 +64,10 @@ const DropshipperDashboard = () => {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-display font-bold">Dropshipper Dashboard</h1>
+            <h1 className="text-2xl font-display font-bold">Sales Partner Dashboard</h1>
             <p className="text-muted-foreground text-sm mt-1">Promote products, generate orders, earn commission</p>
           </div>
-          <Link to="/dropshipper/products">
+          <Link to="/sales-partner/products">
             <Button className="gap-2"><ExternalLink className="w-4 h-4" /> Browse Products</Button>
           </Link>
         </div>
@@ -101,7 +101,7 @@ const DropshipperDashboard = () => {
           <div className="bg-card rounded-xl shadow-card border border-border/50">
             <div className="flex items-center justify-between p-5 border-b border-border/50">
               <h2 className="font-display font-semibold text-lg">Top Products</h2>
-              <Link to="/dropshipper/products"><Button variant="ghost" size="sm">View All</Button></Link>
+              <Link to="/sales-partner/products"><Button variant="ghost" size="sm">View All</Button></Link>
             </div>
             <div className="divide-y divide-border/30">
               {topProducts.length === 0 && <div className="p-8 text-center text-muted-foreground">No products available yet.</div>}
@@ -134,7 +134,7 @@ const DropshipperDashboard = () => {
           <div className="bg-card rounded-xl shadow-card border border-border/50">
             <div className="flex items-center justify-between p-5 border-b border-border/50">
               <h2 className="font-display font-semibold text-lg">Recent Orders</h2>
-              <Link to="/dropshipper/orders"><Button variant="ghost" size="sm">View All</Button></Link>
+              <Link to="/sales-partner/orders"><Button variant="ghost" size="sm">View All</Button></Link>
             </div>
             <div className="divide-y divide-border/30">
               {(orders || []).length === 0 && <div className="p-8 text-center text-muted-foreground">No orders yet.</div>}

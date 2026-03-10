@@ -178,9 +178,9 @@ const DistributionPage = () => {
     if (platform && retail && retail.enabled && retail.price > platform.price)
       conflicts.push("Retail price exceeds platform price");
     if (retail && dropship && dropship.enabled && dropship.price > retail.price)
-      conflicts.push("Dropship price exceeds retail price");
+      conflicts.push("Sales Partner price exceeds retail price");
     if (dropship && distributor && distributor.enabled && distributor.price > dropship.price)
-      conflicts.push("Distributor price exceeds dropship price");
+      conflicts.push("Distributor price exceeds Sales Partner price");
 
     ch.forEach((c) => {
       if (c.enabled && c.price < c.minPrice)
@@ -224,7 +224,7 @@ const DistributionPage = () => {
     const dist = Number(editPrices.distributor);
 
     if (r > p || d > r || dist > d) {
-      toast({ title: "Price Hierarchy Violation", description: "Platform ≥ Retail ≥ Dropship > Distributor", variant: "destructive" });
+      toast({ title: "Price Hierarchy Violation", description: "Platform ≥ Retail ≥ Sales Partner > Distributor", variant: "destructive" });
       return;
     }
 

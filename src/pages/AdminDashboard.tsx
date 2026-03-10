@@ -293,7 +293,7 @@ const AdminDashboard = () => {
                     <SelectContent>
                       <SelectItem value="all">All Roles</SelectItem>
                       <SelectItem value="partner">Partners</SelectItem>
-                      <SelectItem value="dropshipper">Dropshippers</SelectItem>
+                      <SelectItem value="dropshipper">Sales Partners</SelectItem>
                       <SelectItem value="distributor">Distributors</SelectItem>
                       <SelectItem value="admin">Admins</SelectItem>
                     </SelectContent>
@@ -679,7 +679,7 @@ const AdminDashboard = () => {
                   <div className="space-y-3">
                     {[
                       { label: "Production Partners", count: users.filter((u) => u.role === "partner").length, color: "bg-primary" },
-                      { label: "Dropshippers", count: users.filter((u) => u.role === "dropshipper").length, color: "bg-accent" },
+                      { label: "Sales Partners", count: users.filter((u) => u.role === "dropshipper").length, color: "bg-accent" },
                       { label: "Distributors", count: users.filter((u) => u.role === "distributor").length, color: "bg-secondary" },
                       { label: "Warehouse", count: users.filter((u) => u.role === "warehouse").length, color: "bg-muted" },
                     ].map((item) => (
@@ -797,7 +797,7 @@ const AdminDashboard = () => {
                           onClick={() => setEditingRole(r)}
                           disabled={r === userDetail.role}
                         >
-                          {r}
+                          {r === "dropshipper" ? "Sales Partner" : r}
                         </Button>
                       ))}
                     </div>

@@ -41,7 +41,7 @@ const DropshipperOrders = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-display font-bold">My Orders</h1>
-          <p className="text-muted-foreground text-sm mt-1">Track your dropship orders and commissions</p>
+          <p className="text-muted-foreground text-sm mt-1">Track your sales orders and commissions</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

@@ -66,8 +66,8 @@ export const CHANNEL_CONFIG: Record<DistributionChannel, ChannelPricingRule> = {
   },
   dropshipper: {
     channel: "dropshipper",
-    label: "Dropshippers",
-    description: "No-inventory model. Dropshippers promote at retail and earn the margin above dropship price.",
+    label: "Sales Partners",
+    description: "No-inventory model. Sales Partners promote at retail and earn the margin above wholesale price.",
     icon: "📱",
     marginPct: 40,
     minPrice: 0,
@@ -87,13 +87,13 @@ export const PRICING_RULES = [
   {
     id: "PR-02",
     name: "Channel Price Hierarchy",
-    description: "Platform ≥ Retail ≥ Dropship > Distributor. Lower tiers must never exceed higher-tier pricing.",
+    description: "Platform ≥ Retail ≥ Sales Partner > Distributor. Lower tiers must never exceed higher-tier pricing.",
     severity: "critical" as const,
   },
   {
     id: "PR-03",
     name: "Maximum Discount Cap",
-    description: "Each channel has a maximum discount from retail: Platform 5%, Retail 10%, Distributor 20%, Dropshipper 0% (fixed).",
+    description: "Each channel has a maximum discount from retail: Platform 5%, Retail 10%, Distributor 20%, Sales Partner 0% (fixed).",
     severity: "warning" as const,
   },
   {

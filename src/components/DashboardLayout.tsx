@@ -20,9 +20,9 @@ const partnerNav = [
 ];
 
 const dropshipperNav = [
-  { icon: LayoutDashboard, label: "Overview", href: "/dropshipper" },
-  { icon: Store, label: "Products", href: "/dropshipper/products" },
-  { icon: ShoppingCart, label: "My Orders", href: "/dropshipper/orders" },
+  { icon: LayoutDashboard, label: "Overview", href: "/sales-partner" },
+  { icon: Store, label: "Products", href: "/sales-partner/products" },
+  { icon: ShoppingCart, label: "My Orders", href: "/sales-partner/orders" },
   { icon: Wallet, label: "Wallet", href: "/wallet" },
   { icon: UserCircle, label: "Profile", href: "/profile" },
 ];
@@ -56,7 +56,7 @@ const navMap = {
 
 const roleLabels = {
   partner: "Production Partner",
-  dropshipper: "Dropshipper",
+  dropshipper: "Sales Partner",
   admin: "Admin",
   warehouse: "Warehouse Manager",
   distributor: "Distributor",
@@ -99,7 +99,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
       switchTargets.push({ role: "partner", label: "Partner", href: "/partner" });
     }
     if (role !== "dropshipper" && userRoles.includes("dropshipper")) {
-      switchTargets.push({ role: "dropshipper", label: "Dropshipper", href: "/dropshipper" });
+      switchTargets.push({ role: "dropshipper", label: "Sales Partner", href: "/sales-partner" });
     }
   }
 
@@ -180,7 +180,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
           <div className="flex items-center gap-3">
             <NotificationDropdown />
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
-              {role === "admin" ? "A" : role === "partner" ? "P" : role === "warehouse" ? "W" : "D"}
+              {role === "admin" ? "A" : role === "partner" ? "P" : role === "warehouse" ? "W" : role === "dropshipper" ? "S" : "D"}
             </div>
           </div>
         </header>

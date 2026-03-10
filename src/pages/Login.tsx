@@ -27,7 +27,7 @@ const Login = () => {
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user?.id);
       const role = roles?.[0]?.role;
       if (role === "admin") navigate("/admin");
-      else if (role === "dropshipper") navigate("/dropshipper");
+      else if (role === "dropshipper") navigate("/sales-partner");
       else if (role === "warehouse") navigate("/warehouse");
       else if (role === "distributor") navigate("/distributor");
       else navigate("/partner");

@@ -25,8 +25,8 @@ const statusIcons: Record<OrderStatus, typeof Clock> = {
 };
 
 const sourceLabels: Record<string, string> = {
-  dropshipper: "Dropshipper",
-  dropship: "Dropship",
+  dropshipper: "Sales Partner",
+  dropship: "Sales Partner",
   distributor: "Distributor",
   distribution: "Distribution",
   direct: "Direct",
@@ -212,7 +212,7 @@ const OrderManagement = ({ role = "admin" }: OrderManagementProps) => {
             <Input placeholder="Search by order ID, customer..." className="pl-10" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
           <div className="flex gap-2">
-            {["all", "dropship", "distribution", "direct"].map((s) => (
+             {["all", "dropship", "distribution", "direct"].map((s) => (
               <Button key={s} variant={sourceFilter === s ? "default" : "outline"} size="sm" onClick={() => setSourceFilter(s)} className="capitalize">
                 {s === "all" ? "All Sources" : sourceLabels[s] || s}
               </Button>

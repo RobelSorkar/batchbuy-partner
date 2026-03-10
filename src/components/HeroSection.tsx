@@ -7,7 +7,7 @@ const flowSteps = [
   { icon: Users, label: "Partners Pool", desc: "Co-finance production together" },
   { icon: Factory, label: "Factory Production", desc: "Manufacturing begins" },
   { icon: Package, label: "Product Units", desc: "You own real units" },
-  { icon: Store, label: "Sellers / Shops / Dropship", desc: "Multi-channel sales" },
+  { icon: Store, label: "Sales Partners / Shops", desc: "Multi-channel sales" },
   { icon: TrendingUp, label: "Profit", desc: "Earnings & withdrawals" },
 ];
 
@@ -44,7 +44,7 @@ const HeroSection = () => {
               className="text-lg text-primary-foreground/60 mb-8 max-w-lg leading-relaxed animate-fade-in"
               style={{ animationDelay: "200ms" }}
             >
-              Join production batches with other partners, own real product units, and sell through dropshippers, shops, or distributors. This is inventory financing — not investment.
+              Join production batches with other partners, own real product units, and sell through sales partners, shops, or distributors. This is inventory financing — not investment.
             </p>
 
             <div

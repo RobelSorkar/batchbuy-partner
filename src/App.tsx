@@ -60,7 +60,11 @@ const App = () => (
             <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
-            {/* Dropshipper routes */}
+            {/* Sales Partner routes */}
+            <Route path="/sales-partner" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperDashboard /></ProtectedRoute>} />
+            <Route path="/sales-partner/products" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperProducts /></ProtectedRoute>} />
+            <Route path="/sales-partner/orders" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperOrders /></ProtectedRoute>} />
+            {/* Legacy dropshipper routes redirect */}
             <Route path="/dropshipper" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperDashboard /></ProtectedRoute>} />
             <Route path="/dropshipper/products" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperProducts /></ProtectedRoute>} />
             <Route path="/dropshipper/orders" element={<ProtectedRoute requiredRole="dropshipper"><DropshipperOrders /></ProtectedRoute>} />

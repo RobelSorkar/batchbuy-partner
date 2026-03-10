@@ -9,7 +9,7 @@ const features = [
   {
     icon: Users,
     title: "Partner Network",
-    description: "Connect with production partners, dropshippers, and distributors in a unified marketplace ecosystem.",
+    description: "Connect with production partners, sales partners, and distributors in a unified marketplace ecosystem.",
   },
   {
     icon: Truck,
