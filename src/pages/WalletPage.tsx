@@ -120,9 +120,9 @@ const WalletPage = () => {
 
   const handleDeposit = async () => {
     const amt = Number(depositAmount);
-    if (amt < 500 || !depositAccount) return;
+    if (amt < 500) return;
     try {
-      await deposit.mutateAsync({ amount: amt, method: depositMethod, account: depositAccount });
+      await deposit.mutateAsync({ amount: amt, method: "direct", account: "wallet" });
       setDepositSuccess(true);
     } catch (e: any) {
       toast({ title: "Deposit failed", description: e.message, variant: "destructive" });
@@ -131,7 +131,7 @@ const WalletPage = () => {
 
   const closeDeposit = () => {
     setDepositOpen(false);
-    setTimeout(() => { setDepositSuccess(false); setDepositAmount(""); setDepositAccount(""); }, 300);
+    setTimeout(() => { setDepositSuccess(false); setDepositAmount(""); }, 300);
   };
 
   if (walletLoading || txnLoading) {
