@@ -13,7 +13,7 @@ const roles = [
   },
   {
     icon: Store,
-    title: "Dropshipper / Seller",
+    title: "Sales Partner",
     description: "Sell products without holding inventory. Access warehouse-fulfilled products and earn commission on every order.",
     badge: "Seller",
     earnings: "৳50-200 per sale",
