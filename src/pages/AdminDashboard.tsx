@@ -279,8 +279,12 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                           <div className="text-xs text-muted-foreground">{user.joined}</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${roleColors[user.role] || ""}`}>{user.role}</span>
+                      <div className="flex items-center gap-1">
+                        {user.roles.map((r) => (
+                          <span key={r} className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${roleColors[r] || ""}`}>
+                            {r === "dropshipper" ? "sales" : r}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   ))}
