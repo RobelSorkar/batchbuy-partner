@@ -133,12 +133,12 @@ const AdminDashboard = () => {
   };
 
   const platformStats = [
-    { label: "Total Users", value: users.length.toString(), change: `${users.filter(u => u.role === "partner").length} partners`, up: true, icon: Users },
-    { label: "Active Batches", value: (batches as any[]).length.toString(), change: `${batchStatusCounts.funding} in funding`, up: true, icon: Layers },
-    { label: "Total Orders", value: (orders as any[]).length.toString(), change: `${(orders as any[]).filter((o: any) => o.status === "delivered").length} delivered`, up: true, icon: ShoppingCart },
-    { label: "Platform Revenue", value: `৳${(orders as any[]).reduce((s: number, o: any) => s + Number(o.total_amount), 0).toLocaleString()}`, change: "From all orders", up: true, icon: TrendingUp },
-    { label: "Total Wallets", value: `৳${totalWalletBalance.toLocaleString()}`, change: "Across all users", up: true, icon: Wallet },
-    { label: "Pending Withdrawals", value: pendingWithdrawals.length.toString(), change: `৳${pendingWithdrawalTotal.toLocaleString()} total`, up: false, icon: DollarSign },
+    { label: "Total Users", value: users.length.toString(), change: `${users.filter(u => u.role === "partner").length} partners`, up: true, icon: Users, tab: "users" },
+    { label: "Active Batches", value: (batches as any[]).length.toString(), change: `${batchStatusCounts.funding} in funding`, up: true, icon: Layers, tab: "batches" },
+    { label: "Total Orders", value: (orders as any[]).length.toString(), change: `${(orders as any[]).filter((o: any) => o.status === "delivered").length} delivered`, up: true, icon: ShoppingCart, tab: "orders" },
+    { label: "Platform Revenue", value: `৳${(orders as any[]).reduce((s: number, o: any) => s + Number(o.total_amount), 0).toLocaleString()}`, change: "From all orders", up: true, icon: TrendingUp, tab: "orders" },
+    { label: "Total Wallets", value: `৳${totalWalletBalance.toLocaleString()}`, change: "Across all users", up: true, icon: Wallet, tab: "wallets" },
+    { label: "Pending Withdrawals", value: pendingWithdrawals.length.toString(), change: `৳${pendingWithdrawalTotal.toLocaleString()} total`, up: false, icon: DollarSign, tab: "withdrawals" },
   ];
 
   if (isLoading) {
