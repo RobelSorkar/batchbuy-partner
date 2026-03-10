@@ -183,18 +183,8 @@ const ProfitCalculator = () => {
               </div>
             </div>
 
-            {/* Financial Breakdown */}
-            <FinancialBreakdown
-              show={showBreakdown}
-              onToggle={() => setShowBreakdown(!showBreakdown)}
-              investment={investment}
-              costPerUnit={costPerUnit}
-              wholesalePrice={wholesalePrice}
-              retailPrice={retailPrice}
-              logisticsCostPerUnit={logisticsCostPerUnit}
-              sellThrough={sellThrough}
-              main={mainForBreakdown}
-            />
+
+
 
             {/* Scenario Simulation */}
             <div>
