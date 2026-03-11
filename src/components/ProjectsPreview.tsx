@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader2, Factory, Clock, TrendingUp } from "lucide-react";
-import { useBatches } from "@/hooks/useBatches";
+import { useProjects } from "@/hooks/useProjects";
 import { Progress } from "@/components/ui/progress";
 import { getProductImage } from "@/utils/productImages";
 
