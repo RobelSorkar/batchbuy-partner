@@ -271,7 +271,7 @@ const TransparencyDashboard = () => {
                 </div>
                 <div>
                   <div className="text-3xl font-display font-bold">{totalBatches > 0 ? Math.round(totalPartnersJoined / totalBatches) : 0}</div>
-                  <div className="text-sm opacity-80 mt-1">Avg Partners Per Batch</div>
+                  <div className="text-sm opacity-80 mt-1">Avg Partners Per Project</div>
                 </div>
               </div>
             </div>
