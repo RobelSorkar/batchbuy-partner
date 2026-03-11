@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Bell, Check, CheckCheck, Package, ShoppingCart, Wallet, Info } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ function timeAgo(dateStr: string) {
 
 const NotificationDropdown = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const { data: notifications = [], isLoading } = useNotifications();
   const unreadCount = useUnreadCount();
   const markAsRead = useMarkAsRead();
@@ -86,6 +88,18 @@ const NotificationDropdown = () => {
                     }`}
                     onClick={() => {
                       if (!n.read) markAsRead.mutate(n.id);
+                      if (n.reference_id) {
+                        if (n.type === "product" || n.type === "batch") {
+                          navigate(`/batch/${n.reference_id}`);
+                        } else if (n.type === "order") {
+                          navigate(`/sales-partner/orders`);
+                        } else if (n.type === "wallet") {
+                          navigate(`/wallet`);
+                        } else if (n.type === "inventory") {
+                          navigate(`/batch/${n.reference_id}`);
+                        }
+                      }
+                      setOpen(false);
                     }}
                   >
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${color}`}>
