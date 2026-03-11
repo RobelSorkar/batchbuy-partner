@@ -189,7 +189,7 @@ const ProfilePage = () => {
                 type="file"
                 accept="image/*"
                 className="hidden"
-                onChange={handleAvatarUpload}
+                onChange={handleFileSelect}
               />
               <div className="flex flex-col items-center gap-3 p-4 rounded-lg bg-muted/50 mb-2">
                 <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
