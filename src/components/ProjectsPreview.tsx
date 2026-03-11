@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader2, Factory, Clock, TrendingUp } from "lucide-react";
-import { useBatches } from "@/hooks/useBatches";
+import { useProjects } from "@/hooks/useProjects";
 import { Progress } from "@/components/ui/progress";
 import { getProductImage } from "@/utils/productImages";
 
@@ -11,9 +11,9 @@ const statusColors: Record<string, string> = {
   completed: "bg-muted text-muted-foreground",
 };
 
-const BatchesPreview = () => {
-  const { data: batches, isLoading } = useBatches();
-  const fundingBatches = (batches || []).filter((b) => b.status === "funding").slice(0, 3);
+const ProjectsPreview = () => {
+  const { data: batches, isLoading } = useProjects();
+  const fundingProjects = (batches || []).filter((b) => b.status === "funding").slice(0, 3);
 
   return (
     <section className="py-14 sm:py-20 md:py-28 px-4 sm:px-6 bg-muted/30">
@@ -39,13 +39,13 @@ const BatchesPreview = () => {
           <div className="flex justify-center py-16">
             <Loader2 className="w-6 h-6 animate-spin text-primary" />
           </div>
-        ) : fundingBatches.length === 0 ? (
+        ) : fundingProjects.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground text-sm">
             No active projects right now. Check back soon.
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {fundingBatches.map((batch) => {
+            {fundingProjects.map((batch) => {
               const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
               const returnPct = Math.round(((batch.retail_price - batch.production_cost_per_unit) / batch.production_cost_per_unit) * 100);
               const imgSrc = (batch.image && batch.image.startsWith("http")) ? batch.image : getProductImage(batch.product_name);
@@ -129,4 +129,4 @@ const BatchesPreview = () => {
   );
 };
 
-export default BatchesPreview;
+export default ProjectsPreview;

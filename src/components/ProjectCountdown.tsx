@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Clock, AlertTriangle } from "lucide-react";
 
-interface BatchCountdownProps {
+interface ProjectCountdownProps {
   deadline: string | null;
   status: string;
 }
@@ -26,7 +26,7 @@ function calcTimeLeft(deadline: string): TimeLeft {
   };
 }
 
-const BatchCountdown = ({ deadline, status }: BatchCountdownProps) => {
+const ProjectCountdown = ({ deadline, status }: ProjectCountdownProps) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(
     deadline ? calcTimeLeft(deadline) : null
   );
@@ -81,4 +81,4 @@ const BatchCountdown = ({ deadline, status }: BatchCountdownProps) => {
   );
 };
 
-export default BatchCountdown;
+export default ProjectCountdown;

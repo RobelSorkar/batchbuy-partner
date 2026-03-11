@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useMyParticipations } from "@/hooks/useBatches";
+import { useMyParticipations } from "@/hooks/useProjects";
 import { useInventory } from "@/hooks/useInventory";
 
 interface InventoryItem {
@@ -20,7 +20,7 @@ interface InventoryItem {
   inventoryValue: number;
   warehouseLocation: string;
   shelfLocation: string;
-  batchAgeDays: number;
+  projectAgeDays: number;
   status: string;
 }
 
@@ -52,7 +52,7 @@ const PartnerInventory = () => {
       const shelfLocation = inv?.shelf_location || "—";
 
       const createdAt = new Date(p.joined_at);
-      const batchAgeDays = Math.max(0, Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24)));
+      const projectAgeDays = Math.max(0, Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24)));
 
       return {
         participationId: p.id,
@@ -66,7 +66,7 @@ const PartnerInventory = () => {
         inventoryValue,
         warehouseLocation,
         shelfLocation,
-        batchAgeDays,
+        projectAgeDays,
         status: batch.status === "completed" ? "Completed" : batch.status === "production" ? "Production" : "Active",
       } as InventoryItem;
     }).filter(Boolean) as InventoryItem[];
@@ -180,7 +180,7 @@ const PartnerInventory = () => {
                           <TableCell className="text-center">
                             <div className="flex items-center justify-center gap-1 text-xs">
                               <Calendar className="w-3 h-3 text-muted-foreground" />
-                              {item.batchAgeDays}
+                              {item.projectAgeDays}
                             </div>
                           </TableCell>
                           <TableCell className="text-right font-semibold text-primary">

@@ -6,12 +6,12 @@ import { MARKETING_COST_RATE } from "@/lib/calculations";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import JoinBatchDialog from "@/components/JoinBatchDialog";
+import JoinProjectDialog from "@/components/JoinProjectDialog";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import ProductImageZoom from "@/components/ProductImageZoom";
-import BatchCountdown from "@/components/BatchCountdown";
+import ProjectCountdown from "@/components/ProjectCountdown";
 import CustomerOrderForm from "@/components/CustomerOrderForm";
-import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
+import { useProjectDetail, useProjectParticipations } from "@/hooks/useProjects";
 import {
   MINIMUM_PARTICIPATION_BDT,
   calcPerUnitProfit,
@@ -30,13 +30,13 @@ const statusLabels: Record<string, string> = {
   funding: "Funding", production: "In Production", completed: "Completed", shipping: "Shipping",
 };
 
-const BatchDetail = () => {
+const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
-  const { data: batch, isLoading } = useBatchDetail(id);
-  const { data: participations } = useBatchParticipations(id);
+  const { data: batch, isLoading } = useProjectDetail(id);
+  const { data: participations } = useProjectParticipations(id);
   const [joinOpen, setJoinOpen] = useState(false);
 
   const referrerId = searchParams.get("ref");
@@ -88,8 +88,8 @@ const BatchDetail = () => {
   const wholesaleReturnPct = perUnit.wholesaleReturnPct.toFixed(1);
   const canJoin = batch.status === "funding" && batch.remaining_units > 0;
 
-  // Map DB batch to the shape JoinBatchDialog expects
-  const batchForDialog = {
+  // Map DB row to the shape JoinProjectDialog expects
+  const projectForDialog = {
     id: batch.id,
     productName: batch.product_name,
     batchName: batch.batch_name,
@@ -332,7 +332,7 @@ const BatchDetail = () => {
                       </div>
                     </div>
 
-                    <BatchCountdown deadline={batch.deadline} status={batch.status} />
+                    <ProjectCountdown deadline={batch.deadline} status={batch.status} />
 
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Clock className="w-4 h-4" />
@@ -369,9 +369,9 @@ const BatchDetail = () => {
 
       <Footer />
 
-      <JoinBatchDialog batch={batchForDialog} open={joinOpen} onOpenChange={setJoinOpen} />
+      <JoinProjectDialog batch={projectForDialog} open={joinOpen} onOpenChange={setJoinOpen} />
     </div>
   );
 };
 
-export default BatchDetail;
+export default ProjectDetail;

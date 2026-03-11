@@ -8,20 +8,20 @@ import {
   CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet,
   Store, PackageCheck, ChevronRight, Coins, ArrowRight, CreditCard, X,
 } from "lucide-react";
-import { ProductionBatch } from "@/types/batch";
+import { ProductionProject } from "@/types/batch";
 import {
   MINIMUM_PARTICIPATION_BDT,
   allocateUnits,
   calcInvestmentEstimate,
   calcIndependentEstimate,
 } from "@/lib/calculations";
-import { useJoinBatch, SellingPreference } from "@/hooks/useJoinBatch";
+import { useJoinProject, SellingPreference } from "@/hooks/useJoinProject";
 import { useAuth } from "@/hooks/useAuth";
 import { useWallet, useDeposit } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
 
-interface JoinBatchDialogProps {
-  batch: ProductionBatch;
+interface JoinProjectDialogProps {
+  batch: ProductionProject;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -48,7 +48,7 @@ const StepIndicator = ({ step, current }: { step: number; current: number }) => 
   );
 };
 
-const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) => {
+const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps) => {
   const [investmentInput, setInvestmentInput] = useState(MINIMUM_PARTICIPATION_BDT.toString());
   const [sellingPreference, setSellingPreference] = useState<SellingPreference>("platform");
   const [submitted, setSubmitted] = useState(false);
@@ -59,7 +59,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const { user } = useAuth();
   const { toast } = useToast();
   const { data: wallet } = useWallet();
-  const joinBatch = useJoinBatch();
+  const joinProject = useJoinProject();
   const deposit = useDeposit();
   const walletBalance = wallet?.balance || 0;
 
@@ -89,7 +89,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
       return;
     }
     try {
-      await joinBatch.mutateAsync({ batchId: batch.id, units, totalInvested: inventoryCost, sellingPreference });
+      await joinProject.mutateAsync({ batchId: batch.id, units, totalInvested: inventoryCost, sellingPreference });
       setSubmitted(true);
     } catch (error: any) {
       toast({ title: "Failed to join project", description: error.message, variant: "destructive" });
@@ -577,11 +577,11 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
           {/* ── Submit ─────────────────────────────────────────────────────── */}
           <Button
             onClick={handleSubmit}
-            disabled={!isValid || joinBatch.isPending}
+            disabled={!isValid || joinProject.isPending}
             className="w-full"
             size="lg"
           >
-            {joinBatch.isPending ? (
+            {joinProject.isPending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : sellingPreference === "platform" ? (
               <Store className="w-4 h-4" />
@@ -602,4 +602,4 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   );
 };
 
-export default JoinBatchDialog;
+export default JoinProjectDialog;

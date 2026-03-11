@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-export interface BatchRow {
+export interface ProjectRow {
   id: string;
   product_name: string;
   batch_name: string;
@@ -26,7 +26,10 @@ export interface BatchRow {
   created_by: string | null;
 }
 
-export function useBatches() {
+/** @deprecated Use ProjectRow */
+export type BatchRow = ProjectRow;
+
+export function useProjects() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -54,12 +57,15 @@ export function useBatches() {
         .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data as BatchRow[];
+      return data as ProjectRow[];
     },
   });
 }
 
-export function useBatchDetail(id: string | undefined) {
+/** @deprecated Use useProjects */
+export const useBatches = useProjects;
+
+export function useProjectDetail(id: string | undefined) {
   return useQuery({
     queryKey: ["batch", id],
     queryFn: async () => {
@@ -70,18 +76,20 @@ export function useBatchDetail(id: string | undefined) {
         .eq("id", id)
         .maybeSingle();
       if (error) throw error;
-      return data as BatchRow;
+      return data as ProjectRow;
     },
     enabled: !!id,
   });
 }
 
-export function useBatchParticipations(batchId: string | undefined) {
+/** @deprecated Use useProjectDetail */
+export const useBatchDetail = useProjectDetail;
+
+export function useProjectParticipations(batchId: string | undefined) {
   return useQuery({
     queryKey: ["batch-participations", batchId],
     queryFn: async () => {
       if (!batchId) return [];
-      // Fetch participations first
       const { data: participations, error } = await supabase
         .from("batch_participations")
         .select("*")
@@ -90,7 +98,6 @@ export function useBatchParticipations(batchId: string | undefined) {
       if (error) throw error;
       if (!participations || participations.length === 0) return [];
 
-      // Fetch profiles for all participant user_ids
       const userIds = [...new Set(participations.map((p) => p.user_id))];
       const { data: profiles } = await supabase
         .from("profiles")
@@ -109,6 +116,9 @@ export function useBatchParticipations(batchId: string | undefined) {
     enabled: !!batchId,
   });
 }
+
+/** @deprecated Use useProjectParticipations */
+export const useBatchParticipations = useProjectParticipations;
 
 export function useMyParticipations() {
   return useQuery({

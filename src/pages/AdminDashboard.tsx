@@ -8,7 +8,7 @@ import {
   Ban, DollarSign, BarChart3, PieChart,
   Search, XCircle, RefreshCw, Loader2, Pencil
 } from "lucide-react";
-import EditBatchDialog from "@/components/EditBatchDialog";
+import EditProjectDialog from "@/components/EditProjectDialog";
 import UserDetailDialog from "@/components/UserDetailDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, useUpdateUserRole, useToggleUserRole, AdminUser } from "@/hooks/useAdminData";
-import { useBatches } from "@/hooks/useBatches";
+import { useProjects } from "@/hooks/useProjects";
 import { useOrders } from "@/hooks/useOrders";
 import { useInventory } from "@/hooks/useInventory";
 import { supabase } from "@/integrations/supabase/client";
@@ -93,14 +93,14 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const [userSearch, setUserSearch] = useState("");
   const [userRoleFilter, setUserRoleFilter] = useState(defaultRoleFilter || "all");
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
-  const [batchSearch, setBatchSearch] = useState("");
+  const [projectSearch, setProjectSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
   const [editingRole, setEditingRole] = useState<string | null>(null);
-  const [editingBatch, setEditingBatch] = useState<any>(null);
+  const [editingProject, setEditingProject] = useState<any>(null);
 
   // Real data hooks
   const { data: users = [], isLoading: loadingUsers } = useAdminUsers();
-  const { data: batches = [], isLoading: loadingBatches } = useBatches();
+  const { data: batches = [], isLoading: loadingBatches } = useProjects();
   const { data: orders = [], isLoading: loadingOrders } = useOrders("admin");
   const { data: inventory = [], isLoading: loadingInventory } = useInventory();
   const { data: withdrawals = [], isLoading: loadingWithdrawals } = useAdminWithdrawals();
@@ -116,8 +116,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
     return matchSearch && matchRole;
   });
 
-  const filteredBatches = (batches as any[]).filter((b) =>
-    batchSearch === "" || b.product_name?.toLowerCase().includes(batchSearch.toLowerCase()) || b.batch_name?.toLowerCase().includes(batchSearch.toLowerCase())
+  const filteredProjects = (batches as any[]).filter((b) =>
+    projectSearch === "" || b.product_name?.toLowerCase().includes(projectSearch.toLowerCase()) || b.batch_name?.toLowerCase().includes(projectSearch.toLowerCase())
   );
 
   const filteredOrders = (orders as any[]).filter((o) =>
@@ -146,7 +146,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const pendingWithdrawals = (withdrawals as any[]).filter((w) => w.status === "pending");
   const pendingWithdrawalTotal = pendingWithdrawals.reduce((s: number, w: any) => s + Number(w.amount), 0);
 
-  const batchStatusCounts = {
+  const projectStatusCounts = {
     funding: (batches as any[]).filter((b) => b.status === "funding").length,
     production: (batches as any[]).filter((b) => b.status === "production").length,
     completed: (batches as any[]).filter((b) => b.status === "completed").length,
@@ -154,7 +154,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
 
   const platformStats = [
     { label: "Total Users", value: users.length.toString(), change: `${users.filter(u => u.role === "partner").length} partners`, up: true, icon: Users, tab: "users" },
-    { label: "Active Projects", value: (batches as any[]).length.toString(), change: `${batchStatusCounts.funding} in funding`, up: true, icon: Layers, tab: "batches" },
+    { label: "Active Projects", value: (batches as any[]).length.toString(), change: `${projectStatusCounts.funding} in funding`, up: true, icon: Layers, tab: "batches" },
     { label: "Total Orders", value: (orders as any[]).length.toString(), change: `${(orders as any[]).filter((o: any) => o.status === "delivered").length} delivered`, up: true, icon: ShoppingCart, tab: "orders" },
     { label: "Platform Revenue", value: `৳${(orders as any[]).reduce((s: number, o: any) => s + Number(o.total_amount), 0).toLocaleString()}`, change: "From all orders", up: true, icon: TrendingUp, tab: "orders" },
     { label: "Total Wallets", value: `৳${totalWalletBalance.toLocaleString()}`, change: "Across all users", up: true, icon: Wallet, tab: "wallets" },
@@ -239,11 +239,11 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                       </div>
                     </div>
                   )}
-                  {batchStatusCounts.funding > 0 && (
+                  {projectStatusCounts.funding > 0 && (
                     <div className="flex items-start gap-3">
                       <AlertTriangle className="w-4 h-4 text-accent-foreground mt-0.5" />
                       <div className="flex-1">
-                        <p className="text-sm">{batchStatusCounts.funding} projects currently in funding</p>
+                        <p className="text-sm">{projectStatusCounts.funding} projects currently in funding</p>
                         <Button variant="link" size="sm" className="px-0 h-auto text-xs" onClick={() => setActiveTab("batches")}>Review →</Button>
                       </div>
                     </div>
@@ -257,7 +257,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                       </div>
                     </div>
                   )}
-                  {pendingWithdrawals.length === 0 && batchStatusCounts.funding === 0 && (
+                  {pendingWithdrawals.length === 0 && projectStatusCounts.funding === 0 && (
                     <p className="text-sm text-muted-foreground">No pending actions.</p>
                   )}
                 </div>
@@ -386,7 +386,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                 <div className="flex gap-2">
                   <div className="relative">
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                    <Input placeholder="Search projects..." className="pl-8 h-8 text-xs w-48" value={batchSearch} onChange={(e) => setBatchSearch(e.target.value)} />
+                    <Input placeholder="Search projects..." className="pl-8 h-8 text-xs w-48" value={projectSearch} onChange={(e) => setProjectSearch(e.target.value)} />
                   </div>
                   <Link to="/create-batch"><Button size="sm">+ New Project</Button></Link>
                 </div>
@@ -401,24 +401,24 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredBatches.map((b: any) => {
+                    {filteredProjects.map((b: any) => {
                       const progress = b.total_quantity > 0 ? Math.round((b.funded_units / b.total_quantity) * 100) : 0;
-                      const batchStatusColors: Record<string, string> = {
+                      const projectStatusColors: Record<string, string> = {
                         funding: "bg-accent text-accent-foreground",
                         production: "bg-secondary text-secondary-foreground",
                         completed: "bg-primary/10 text-primary",
                         cancelled: "bg-destructive/10 text-destructive",
                         shipping: "bg-accent text-accent-foreground",
                       };
-                      const canAdvanceBatch = (status: string) => {
+                      const canAdvanceProject = (status: string) => {
                         return ["funding", "production", "shipping"].includes(status);
                       };
-                      const nextBatchStatus: Record<string, string> = {
+                      const nextProjectStatus: Record<string, string> = {
                         funding: "production",
                         production: "shipping",
                         shipping: "completed",
                       };
-                      const nextBatchLabel: Record<string, string> = {
+                      const nextProjectLabel: Record<string, string> = {
                         funding: "→ Production",
                         production: "→ Shipping",
                         shipping: "→ Completed",
@@ -436,7 +436,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                             </div>
                           </td>
                           <td className="px-5 py-4 text-xs text-muted-foreground">{b.batch_name}</td>
-                          <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${batchStatusColors[b.status] || ""}`}>{b.status}</span></td>
+                          <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${projectStatusColors[b.status] || ""}`}>{b.status}</span></td>
                           <td className="px-5 py-4 text-sm">{b.total_quantity}</td>
                           <td className="px-5 py-4 text-sm">{b.funded_units}/{b.total_quantity}</td>
                           <td className="px-5 py-4">
@@ -452,11 +452,11 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                           <td className="px-5 py-4">
                             <div className="flex gap-1">
                               <Link to={`/batch/${b.id}`}><Button variant="ghost" size="sm"><Eye className="w-3.5 h-3.5" /></Button></Link>
-                              <Button variant="ghost" size="sm" onClick={() => setEditingBatch(b)}><Pencil className="w-3.5 h-3.5" /></Button>
-                              {canAdvanceBatch(b.status) && (
+                              <Button variant="ghost" size="sm" onClick={() => setEditingProject(b)}><Pencil className="w-3.5 h-3.5" /></Button>
+                              {canAdvanceProject(b.status) && (
                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2"
                                   onClick={async () => {
-                                    const next = nextBatchStatus[b.status];
+                                    const next = nextProjectStatus[b.status];
                                     try {
                                       const { error } = await supabase.from("batches").update({ status: next }).eq("id", b.id);
                                       if (error) throw error;
@@ -466,7 +466,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                                       toast({ title: "Error", description: e.message, variant: "destructive" });
                                     }
                                   }}>
-                                  {nextBatchLabel[b.status]}
+                                  {nextProjectLabel[b.status]}
                                 </Button>
                               )}
                               {b.status === "funding" && (
@@ -492,7 +492,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                   </tbody>
                 </table>
               </div>
-              {filteredBatches.length === 0 && <div className="p-8 text-center text-muted-foreground">No projects found.</div>}
+              {filteredProjects.length === 0 && <div className="p-8 text-center text-muted-foreground">No projects found.</div>}
             </div>
           </TabsContent>
 
@@ -790,13 +790,13 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
 
                 <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
                   <h2 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-                    <Layers className="w-5 h-5 text-primary" /> Batch Status
+                    <Layers className="w-5 h-5 text-primary" /> Project Status
                   </h2>
                   <div className="space-y-3">
                     {[
-                      { label: "Funding", count: batchStatusCounts.funding, color: "bg-accent" },
-                      { label: "In Production", count: batchStatusCounts.production, color: "bg-secondary" },
-                      { label: "Completed", count: batchStatusCounts.completed, color: "bg-primary" },
+                      { label: "Funding", count: projectStatusCounts.funding, color: "bg-accent" },
+                      { label: "In Production", count: projectStatusCounts.production, color: "bg-secondary" },
+                      { label: "Completed", count: projectStatusCounts.completed, color: "bg-primary" },
                     ].map((item) => (
                       <div key={item.label} className="flex items-center justify-between bg-muted/30 rounded-lg p-3">
                         <div className="flex items-center gap-2">
@@ -840,7 +840,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
           onOpenChange={(open) => { if (!open) { setUserDetail(null); setEditingRole(null); } }}
           onUserUpdate={(updatedUser) => setUserDetail(updatedUser)}
         />
-        <EditBatchDialog batch={editingBatch} open={!!editingBatch} onOpenChange={(o) => !o && setEditingBatch(null)} />
+        <EditProjectDialog batch={editingProject} open={!!editingProject} onOpenChange={(o) => !o && setEditingProject(null)} />
       </div>
     </DashboardLayout>
   );

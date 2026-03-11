@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useBatches } from "@/hooks/useBatches";
+import { useProjects } from "@/hooks/useProjects";
 import { getProductImage } from "@/utils/productImages";
 
 const statusColors: Record<string, string> = {
@@ -32,7 +32,7 @@ const filterOptions = [
 const Marketplace = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const { data: batches, isLoading } = useBatches();
+  const { data: batches, isLoading } = useProjects();
 
   const filtered = (batches || []).filter((b) => {
     if (b.status === "cancelled" || b.status === "draft") return false;

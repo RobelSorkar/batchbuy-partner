@@ -80,12 +80,12 @@ const AnalyticsPage = () => {
   const totalOrders = orders.length;
   const totalCommission = orders.reduce((s: number, o: any) => s + Number(o.commission || 0), 0);
 
-  const batchStatusCounts = batches.reduce((acc: any, b: any) => {
+  const projectStatusCounts = batches.reduce((acc: any, b: any) => {
     acc[b.status] = (acc[b.status] || 0) + 1;
     return acc;
   }, {});
 
-  const batchStatusData = Object.entries(batchStatusCounts).map(([name, value]) => ({
+  const projectStatusData = Object.entries(projectStatusCounts).map(([name, value]) => ({
     name: name.charAt(0).toUpperCase() + name.slice(1),
     value: value as number,
     fill: name === "funding" ? "hsl(var(--accent))" : name === "production" ? "hsl(var(--secondary))" : name === "completed" ? "hsl(var(--primary))" : "hsl(var(--muted))",
@@ -205,12 +205,12 @@ const AnalyticsPage = () => {
         <div className="grid lg:grid-cols-2 gap-6">
           <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
             <h2 className="font-display font-semibold text-lg mb-4">Project Status Overview</h2>
-            {batchStatusData.length > 0 ? (
+            {projectStatusData.length > 0 ? (
               <>
                 <ResponsiveContainer width="100%" height={200}>
                   <PieChart>
-                    <Pie data={batchStatusData} cx="50%" cy="50%" outerRadius={80} dataKey="value" label={({ name, value }) => `${name} (${value})`}>
-                      {batchStatusData.map((entry, i) => (
+                    <Pie data={projectStatusData} cx="50%" cy="50%" outerRadius={80} dataKey="value" label={({ name, value }) => `${name} (${value})`}>
+                      {projectStatusData.map((entry, i) => (
                         <Cell key={i} fill={entry.fill} />
                       ))}
                     </Pie>
@@ -218,7 +218,7 @@ const AnalyticsPage = () => {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="flex justify-center gap-4 mt-2">
-                  {batchStatusData.map((item) => (
+                  {projectStatusData.map((item) => (
                     <div key={item.name} className="flex items-center gap-1.5 text-xs">
                       <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.fill }} />
                       <span className="text-muted-foreground">{item.name}</span>

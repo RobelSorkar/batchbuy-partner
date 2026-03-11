@@ -11,7 +11,7 @@ import {
   Clock, CheckCircle, RefreshCw, TrendingUp, Layers, Banknote, Repeat, Loader2
 } from "lucide-react";
 import { useWallet, useTransactions, useWithdraw, useReinvest, useDeposit } from "@/hooks/useWallet";
-import { useBatches } from "@/hooks/useBatches";
+import { useProjects } from "@/hooks/useProjects";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -41,7 +41,7 @@ const WalletPage = () => {
   const { user } = useAuth();
   const { data: wallet, isLoading: walletLoading } = useWallet();
   const { data: transactions = [], isLoading: txnLoading } = useTransactions();
-  const { data: batches = [] } = useBatches();
+  const { data: batches = [] } = useProjects();
   const withdraw = useWithdraw();
   const reinvest = useReinvest();
   const deposit = useDeposit();
@@ -64,7 +64,7 @@ const WalletPage = () => {
   const [withdrawSuccess, setWithdrawSuccess] = useState(false);
 
   const [reinvestOpen, setReinvestOpen] = useState(false);
-  const [reinvestBatchId, setReinvestBatchId] = useState("");
+  const [reinvestProjectId, setReinvestProjectId] = useState("");
   const [reinvestAmount, setReinvestAmount] = useState("");
   const [reinvestSuccess, setReinvestSuccess] = useState(false);
 
@@ -79,11 +79,11 @@ const WalletPage = () => {
 
   const filteredTxns = txnFilter === "all" ? transactions : transactions.filter((t: any) => t.type === txnFilter);
 
-  const fundingBatches = batches.filter((b: any) => b.status === "funding" && b.remaining_units > 0);
-  const selectedBatch = fundingBatches.find((b: any) => b.id === reinvestBatchId);
+  const fundingProjects = batches.filter((b: any) => b.status === "funding" && b.remaining_units > 0);
+  const selectedProject = fundingProjects.find((b: any) => b.id === reinvestProjectId);
   const reinvestAmt = Number(reinvestAmount) || 0;
-  const { units: reinvestUnits, inventoryCost: reinvestCost } = selectedBatch
-    ? allocateUnits(reinvestAmt, selectedBatch.production_cost_per_unit)
+  const { units: reinvestUnits, inventoryCost: reinvestCost } = selectedProject
+    ? allocateUnits(reinvestAmt, selectedProject.production_cost_per_unit)
     : { units: 0, inventoryCost: 0 };
 
   const handleWithdraw = async () => {
@@ -103,9 +103,9 @@ const WalletPage = () => {
   };
 
   const handleReinvest = async () => {
-    if (!selectedBatch || reinvestCost < 10000 || reinvestUnits <= 0 || reinvestCost > balance) return;
+    if (!selectedProject || reinvestCost < 10000 || reinvestUnits <= 0 || reinvestCost > balance) return;
     try {
-      await reinvest.mutateAsync({ batchId: selectedBatch.id, batchName: selectedBatch.batch_name, amount: reinvestCost, units: reinvestUnits });
+      await reinvest.mutateAsync({ batchId: selectedProject.id, batchName: selectedProject.batch_name, amount: reinvestCost, units: reinvestUnits });
       setReinvestSuccess(true);
     } catch (e: any) {
       toast({ title: "Reinvestment failed", description: e.message, variant: "destructive" });
@@ -114,7 +114,7 @@ const WalletPage = () => {
 
   const closeReinvest = () => {
     setReinvestOpen(false);
-    setTimeout(() => { setReinvestSuccess(false); setReinvestAmount(""); setReinvestBatchId(""); }, 300);
+    setTimeout(() => { setReinvestSuccess(false); setReinvestAmount(""); setReinvestProjectId(""); }, 300);
   };
 
   const handleDeposit = async () => {
@@ -283,11 +283,11 @@ const WalletPage = () => {
                   <div className="text-2xl font-display font-bold">৳{balance.toLocaleString()}</div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Select Batch</Label>
-                  <Select value={reinvestBatchId} onValueChange={setReinvestBatchId}>
-                    <SelectTrigger><SelectValue placeholder="Choose a batch" /></SelectTrigger>
+                  <Label>Select Project</Label>
+                  <Select value={reinvestProjectId} onValueChange={setReinvestProjectId}>
+                    <SelectTrigger><SelectValue placeholder="Choose a project" /></SelectTrigger>
                     <SelectContent>
-                      {fundingBatches.map((b: any) => (
+                      {fundingProjects.map((b: any) => (
                         <SelectItem key={b.id} value={b.id}>{b.product_name} — {b.batch_name}</SelectItem>
                       ))}
                     </SelectContent>
@@ -297,13 +297,13 @@ const WalletPage = () => {
                   <Label htmlFor="r-amount">Amount (BDT)</Label>
                   <Input id="r-amount" type="number" min="10000" max={balance} value={reinvestAmount} onChange={(e) => setReinvestAmount(e.target.value)} />
                 </div>
-                {selectedBatch && reinvestUnits > 0 && (
+                {selectedProject && reinvestUnits > 0 && (
                   <div className="bg-accent/50 rounded-lg p-3 text-sm border border-primary/10">
-                    <p>You'll get <span className="font-semibold">{reinvestUnits} units</span> at ৳{selectedBatch.production_cost_per_unit}/unit</p>
+                    <p>You'll get <span className="font-semibold">{reinvestUnits} units</span> at ৳{selectedProject.production_cost_per_unit}/unit</p>
                     <p className="text-xs text-muted-foreground">Total: ৳{reinvestCost.toLocaleString()}</p>
                   </div>
                 )}
-                <Button className="w-full" disabled={!selectedBatch || reinvestUnits <= 0 || reinvestAmt > balance || reinvest.isPending} onClick={handleReinvest}>
+                <Button className="w-full" disabled={!selectedProject || reinvestUnits <= 0 || reinvestAmt > balance || reinvest.isPending} onClick={handleReinvest}>
                   {reinvest.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Confirm Reinvestment
                 </Button>
               </div>

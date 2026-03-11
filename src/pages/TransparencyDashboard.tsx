@@ -79,7 +79,7 @@ const TransparencyDashboard = () => {
     funding: "hsl(45, 93%, 47%)", production: "hsl(220, 70%, 55%)",
     completed: "hsl(160, 84%, 39%)", cancelled: "hsl(0, 72%, 51%)",
   };
-  const batchStatusData = Object.entries(statusCounts).map(([key, value]) => ({
+  const projectStatusData = Object.entries(statusCounts).map(([key, value]) => ({
     name: statusLabels[key] || key, value: value as number, fill: statusColors[key] || "hsl(var(--muted))",
   }));
 
@@ -201,12 +201,12 @@ const TransparencyDashboard = () => {
                   <Layers className="w-5 h-5 text-primary" />
                   <h2 className="font-display font-semibold text-lg">Project Status Distribution</h2>
                 </div>
-                {batchStatusData.length > 0 ? (
+                {projectStatusData.length > 0 ? (
                   <>
                     <ResponsiveContainer width="100%" height={220}>
                       <PieChart>
                         <Pie
-                          data={batchStatusData}
+                          data={projectStatusData}
                           cx="50%"
                           cy="50%"
                           innerRadius={50}
@@ -215,7 +215,7 @@ const TransparencyDashboard = () => {
                           label={({ name, value }) => `${name} (${value})`}
                           labelLine={{ stroke: "hsl(var(--muted-foreground))", strokeWidth: 1 }}
                         >
-                          {batchStatusData.map((entry, i) => (
+                          {projectStatusData.map((entry, i) => (
                             <Cell key={i} fill={entry.fill} />
                           ))}
                         </Pie>
@@ -223,7 +223,7 @@ const TransparencyDashboard = () => {
                       </PieChart>
                     </ResponsiveContainer>
                     <div className="flex justify-center gap-4 mt-3 flex-wrap">
-                      {batchStatusData.map((item) => (
+                      {projectStatusData.map((item) => (
                         <div key={item.name} className="flex items-center gap-1.5 text-xs">
                           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.fill }} />
                           <span className="text-muted-foreground">{item.name}</span>

@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { useMyParticipations } from "@/hooks/useBatches";
+import { useMyParticipations } from "@/hooks/useProjects";
 import { useWallet, useTransactions } from "@/hooks/useWallet";
 import { useInventory } from "@/hooks/useInventory";
 import { useToast } from "@/hooks/use-toast";
@@ -53,7 +53,7 @@ const PartnerDashboard = () => {
     const profitPerUnit = retailPrice - costPerUnit - logisticsCostPerUnit;
     const inv = invMap.get(batch.id);
     const joinedAt = new Date(p.joined_at);
-    const batchAgeDays = Math.max(0, Math.floor((Date.now() - joinedAt.getTime()) / (1000 * 60 * 60 * 24)));
+    const projectAgeDays = Math.max(0, Math.floor((Date.now() - joinedAt.getTime()) / (1000 * 60 * 60 * 24)));
 
     return {
       id: p.id,
@@ -68,7 +68,7 @@ const PartnerDashboard = () => {
       retailPrice,
       inventoryValue: remaining * costPerUnit,
       warehouseLocation: inv?.warehouse_location || batch.warehouse || "Main Warehouse",
-      batchAgeDays,
+      batchAgeDays: projectAgeDays,
       mode: (p as any).inventory_mode as InventoryMode || "platform",
       status: batch.status === "completed" ? "Completed" : batch.status === "production" ? "Production" : "Active",
     };
@@ -404,7 +404,7 @@ const PartnerDashboard = () => {
                   <div className="text-sm font-medium">{selectedItem.warehouseLocation}</div>
                 </div>
                 <div className="bg-muted/50 rounded-lg p-3">
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1"><Calendar className="w-3 h-3" /> Batch Age</div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1"><Calendar className="w-3 h-3" /> Project Age</div>
                   <div className="text-sm font-medium">{selectedItem.batchAgeDays} days</div>
                 </div>
               </div>

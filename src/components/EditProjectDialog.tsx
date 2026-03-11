@@ -10,13 +10,13 @@ import { useImageUpload } from "@/hooks/useImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload, X } from "lucide-react";
 
-interface EditBatchDialogProps {
+interface EditProjectDialogProps {
   batch: any;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) => {
+const EditProjectDialog = ({ batch, open, onOpenChange }: EditProjectDialogProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { upload, uploading } = useImageUpload();
@@ -215,4 +215,4 @@ const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) =>
   );
 };
 
-export default EditBatchDialog;
+export default EditProjectDialog;

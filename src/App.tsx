@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VerifyEmail from "./pages/VerifyEmail";
 import Marketplace from "./pages/Marketplace";
-import BatchDetail from "./pages/BatchDetail";
+import ProjectDetail from "./pages/ProjectDetail";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import PartnerInventory from "./pages/PartnerInventory";
 import DistributorDashboard from "./pages/DistributorDashboard";
@@ -19,7 +19,7 @@ import DropshipperProducts from "./pages/DropshipperProducts";
 import DropshipperOrders from "./pages/DropshipperOrders";
 import WalletPage from "./pages/WalletPage";
 import AdminDashboard from "./pages/AdminDashboard";
-import CreateBatch from "./pages/CreateBatch";
+import CreateProject from "./pages/CreateProject";
 import WarehousePage from "./pages/WarehousePage";
 import OrderManagement from "./pages/OrderManagement";
 import DistributionPage from "./pages/DistributionPage";
@@ -50,7 +50,7 @@ const App = () => (
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/batch/:id" element={<BatchDetail />} />
+            <Route path="/batch/:id" element={<ProjectDetail />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/transparency" element={<TransparencyDashboard />} />
@@ -58,7 +58,7 @@ const App = () => (
             {/* Partner routes */}
             <Route path="/partner" element={<ProtectedRoute requiredRole="partner"><PartnerDashboard /></ProtectedRoute>} />
             <Route path="/partner/inventory" element={<ProtectedRoute requiredRole="partner"><PartnerInventory /></ProtectedRoute>} />
-            <Route path="/create-batch" element={<ProtectedRoute requiredRole="admin"><CreateBatch /></ProtectedRoute>} />
+            <Route path="/create-batch" element={<ProtectedRoute requiredRole="admin"><CreateProject /></ProtectedRoute>} />
             <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 

@@ -1,6 +1,8 @@
-export type BatchStatus = "draft" | "funding" | "production" | "shipping" | "completed" | "cancelled";
+export type ProjectStatus = "draft" | "funding" | "production" | "shipping" | "completed" | "cancelled";
+/** @deprecated Use ProjectStatus */
+export type BatchStatus = ProjectStatus;
 
-export interface ProductionBatch {
+export interface ProductionProject {
   id: string;
   productName: string;
   batchName: string;
@@ -10,7 +12,7 @@ export interface ProductionBatch {
   totalQuantity: number;
   remainingUnits: number;
   fundedUnits: number;
-  status: BatchStatus;
+  status: ProjectStatus;
   minParticipation: number; // BDT (default 10000)
   category: string;
   description: string;
@@ -23,8 +25,10 @@ export interface ProductionBatch {
   partnersJoined: number;
   logisticsCostPerUnit: number; // BDT (delivery, packaging, warehouse, returns, damage)
 }
+/** @deprecated Use ProductionProject */
+export type ProductionBatch = ProductionProject;
 
-export interface BatchParticipation {
+export interface ProjectParticipation {
   id: string;
   batchId: string;
   userId: string;
@@ -33,6 +37,8 @@ export interface BatchParticipation {
   totalInvested: number; // units * productionCostPerUnit
   joinedAt: string;
 }
+/** @deprecated Use ProjectParticipation */
+export type BatchParticipation = ProjectParticipation;
 
 // Re-export everything from the global calculation engine so existing
 // imports from "@/types/batch" keep working without changes.
