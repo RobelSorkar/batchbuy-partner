@@ -175,7 +175,7 @@ const PartnerDashboard = () => {
                   <Clock className="w-4.5 h-4.5 text-foreground/70" />
                 </div>
                 {pendingWithdrawals > 0 && (
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-destructive/70 animate-pulse" />
                 )}
               </div>
               <div className="text-2xl font-display font-bold tracking-tight">
