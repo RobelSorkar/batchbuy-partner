@@ -239,11 +239,11 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                       </div>
                     </div>
                   )}
-                  {batchStatusCounts.funding > 0 && (
+                  {projectStatusCounts.funding > 0 && (
                     <div className="flex items-start gap-3">
                       <AlertTriangle className="w-4 h-4 text-accent-foreground mt-0.5" />
                       <div className="flex-1">
-                        <p className="text-sm">{batchStatusCounts.funding} projects currently in funding</p>
+                        <p className="text-sm">{projectStatusCounts.funding} projects currently in funding</p>
                         <Button variant="link" size="sm" className="px-0 h-auto text-xs" onClick={() => setActiveTab("batches")}>Review →</Button>
                       </div>
                     </div>
