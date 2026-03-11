@@ -139,7 +139,7 @@ const PartnerDashboard = () => {
                   <Package className="w-4.5 h-4.5 text-foreground/70" />
                 </div>
                 <Badge variant="secondary" className="text-[10px] font-normal">
-                  {inventory.length} batches
+                  {inventory.length} projects
                 </Badge>
               </div>
               <div className="text-2xl font-display font-bold tracking-tight">{totalOwned}</div>
