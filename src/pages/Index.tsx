@@ -5,7 +5,7 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import BatchesPreview from "@/components/BatchesPreview";
 import SalesChannelsSection from "@/components/SalesChannelsSection";
 import RolesSection from "@/components/RolesSection";
-
+import HomeProfitCalculator from "@/components/HomeProfitCalculator";
 import TransparencySection from "@/components/TransparencySection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
@@ -21,7 +21,7 @@ const Index = () => {
       <BatchesPreview />
       <div id="features"><SalesChannelsSection /></div>
       <div id="roles"><RolesSection /></div>
-      
+      <HomeProfitCalculator />
       <TransparencySection />
       <CTASection />
       <Footer />
