@@ -382,7 +382,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
           <TabsContent value="batches">
             <div className="bg-card rounded-xl shadow-card border border-border/50">
               <div className="flex items-center justify-between p-5 border-b border-border/50">
-                <h2 className="font-display font-semibold text-lg">Production Batches</h2>
+                <h2 className="font-display font-semibold text-lg">Production Projects</h2>
                 <div className="flex gap-2">
                   <div className="relative">
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
