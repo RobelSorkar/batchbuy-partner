@@ -81,9 +81,9 @@ const CreateBatch = () => {
 
     setLoading(false);
     if (error) {
-      toast({ title: "Failed to create batch", description: error.message, variant: "destructive" });
+      toast({ title: "Failed to create project", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Batch created!", description: `${form.batchName} is now live on the marketplace.` });
+      toast({ title: "Project created!", description: `${form.batchName} is now live on the marketplace.` });
       navigate("/partner");
     }
   };
