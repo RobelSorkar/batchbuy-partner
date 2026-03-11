@@ -15,7 +15,7 @@ import { useImageUpload } from "@/hooks/useImageUpload";
 
 const categories = ["Apparel", "Beauty", "Accessories", "Home & Kitchen", "Electronics", "Food & Beverage", "Health", "Sports"];
 
-const CreateBatch = () => {
+const CreateProject = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
