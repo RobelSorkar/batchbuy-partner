@@ -64,7 +64,7 @@ const WalletPage = () => {
   const [withdrawSuccess, setWithdrawSuccess] = useState(false);
 
   const [reinvestOpen, setReinvestOpen] = useState(false);
-  const [reinvestBatchId, setReinvestBatchId] = useState("");
+  const [reinvestProjectId, setReinvestProjectId] = useState("");
   const [reinvestAmount, setReinvestAmount] = useState("");
   const [reinvestSuccess, setReinvestSuccess] = useState(false);
 
