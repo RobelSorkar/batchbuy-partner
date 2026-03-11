@@ -298,8 +298,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
               {[
                 { label: "Manage Orders", icon: ShoppingCart, href: "/admin/orders", desc: `${(orders as any[]).length} total orders` },
                 { label: "Warehouse", icon: Package, href: "/warehouse", desc: `${Math.max(0, totalWarehouseStock)} units in stock` },
-                { label: "Marketplace", icon: Layers, href: "/marketplace", desc: `${(batches as any[]).length} batches` },
-                { label: "Create Batch", icon: Layers, href: "/create-batch", desc: "Launch new production" },
+                { label: "Marketplace", icon: Layers, href: "/marketplace", desc: `${(batches as any[]).length} projects` },
+                { label: "Create Project", icon: Layers, href: "/create-batch", desc: "Launch new production" },
               ].map((link) => (
                 <Link key={link.label} to={link.href} className="bg-card rounded-xl p-5 shadow-card border border-border/50 hover:shadow-card-hover transition-all group">
                   <link.icon className="w-5 h-5 text-primary mb-2" />
