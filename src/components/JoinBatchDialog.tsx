@@ -85,7 +85,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const handleSubmit = async () => {
     if (!isValid) return;
     if (!user) {
-      toast({ title: "Please sign in", description: "You need to be logged in to join a batch.", variant: "destructive" });
+      toast({ title: "Please sign in", description: "You need to be logged in to join a project.", variant: "destructive" });
       return;
     }
     try {
