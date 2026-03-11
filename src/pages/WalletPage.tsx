@@ -283,8 +283,8 @@ const WalletPage = () => {
                   <div className="text-2xl font-display font-bold">৳{balance.toLocaleString()}</div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Select Batch</Label>
-                  <Select value={reinvestBatchId} onValueChange={setReinvestBatchId}>
+                  <Label>Select Project</Label>
+                  <Select value={reinvestProjectId} onValueChange={setReinvestProjectId}>
                     <SelectTrigger><SelectValue placeholder="Choose a project" /></SelectTrigger>
                     <SelectContent>
                       {fundingProjects.map((b: any) => (
