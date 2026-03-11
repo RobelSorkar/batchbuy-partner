@@ -152,7 +152,7 @@ const ProfitCalculator = () => {
 
 
             {/* Main Results */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
                 <Package className="w-5 h-5 text-muted-foreground mb-2" />
                 <div className="text-2xl font-display font-bold text-foreground">{main.unitsFinanced}</div>
