@@ -10,7 +10,7 @@ import { useImageUpload } from "@/hooks/useImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload, X } from "lucide-react";
 
-interface EditBatchDialogProps {
+interface EditProjectDialogProps {
   batch: any;
   open: boolean;
   onOpenChange: (open: boolean) => void;
