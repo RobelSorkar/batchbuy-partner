@@ -6,7 +6,7 @@ import { MARKETING_COST_RATE } from "@/lib/calculations";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import JoinBatchDialog from "@/components/JoinBatchDialog";
+import JoinProjectDialog from "@/components/JoinProjectDialog";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import ProductImageZoom from "@/components/ProductImageZoom";
 import BatchCountdown from "@/components/BatchCountdown";
