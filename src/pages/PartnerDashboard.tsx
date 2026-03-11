@@ -307,9 +307,9 @@ const PartnerDashboard = () => {
               </div>
               <div>
                 <p className="text-sm font-medium mb-1">No inventory yet</p>
-                <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Deposit funds, browse production batches, and finance manufacturing to own product units.
-                </p>
+                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                   Deposit funds, browse production projects, and finance manufacturing to own product units.
+                 </p>
               </div>
               <div className="flex gap-2 justify-center">
                 <Link to="/wallet"><Button variant="outline" size="sm">Deposit Funds</Button></Link>
