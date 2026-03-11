@@ -33,36 +33,36 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled 
-        ? "bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-sm" 
-        : "bg-transparent border-b border-transparent"
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+      scrolled
+        ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-sm"
+        : "bg-transparent"
     }`}>
-      <div className="container max-w-6xl mx-auto flex items-center justify-between h-16 px-6">
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-sm">
-            <Package className="w-4.5 h-4.5 text-primary-foreground" />
+      <div className="container max-w-6xl mx-auto flex items-center justify-between h-14 px-6">
+        <Link to="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+            <Package className="w-4 h-4 text-primary-foreground" />
           </div>
-          <span className="font-display font-bold text-lg tracking-tight">ProdPartner</span>
+          <span className="font-display font-bold text-base tracking-tight">ProdPartner</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-1">
           {[
-            { label: "Features", href: "#features" },
             { label: "How It Works", href: "#how-it-works" },
+            { label: "Batches", href: "#batches" },
             { label: "Roles", href: "#roles" },
           ].map((item) => (
-            <a 
+            <a
               key={item.label}
-              href={item.href} 
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted/50"
+              href={item.href}
+              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md"
             >
               {item.label}
             </a>
           ))}
-          <Link 
-            to="/transparency" 
-            className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted/50"
+          <Link
+            to="/transparency"
+            className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md"
           >
             Transparency
           </Link>
@@ -71,39 +71,39 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-2">
           {user ? (
             <Link to={dashboardPath}>
-              <Button size="sm" className="gap-1.5">
+              <Button size="sm" className="h-8 text-xs gap-1.5">
                 <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
               </Button>
             </Link>
           ) : (
             <>
               <Link to="/login">
-                <Button variant="ghost" size="sm">Log In</Button>
+                <Button variant="ghost" size="sm" className="h-8 text-xs">Log In</Button>
               </Link>
               <Link to="/signup">
-                <Button size="sm">Get Started Free</Button>
+                <Button size="sm" className="h-8 text-xs">Get Started</Button>
               </Link>
             </>
           )}
         </div>
 
-        <button className="md:hidden p-2 rounded-lg hover:bg-muted/50 transition-colors" onClick={() => setMobileOpen(!mobileOpen)}>
+        <button className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl px-6 py-5 space-y-1">
-          <a href="#features" className="block px-3 py-2.5 text-sm font-medium text-muted-foreground rounded-lg hover:bg-muted/50">Features</a>
-          <a href="#how-it-works" className="block px-3 py-2.5 text-sm font-medium text-muted-foreground rounded-lg hover:bg-muted/50">How It Works</a>
-          <a href="#roles" className="block px-3 py-2.5 text-sm font-medium text-muted-foreground rounded-lg hover:bg-muted/50">Roles</a>
-          <Link to="/transparency" className="block px-3 py-2.5 text-sm font-medium text-muted-foreground rounded-lg hover:bg-muted/50" onClick={() => setMobileOpen(false)}>Transparency</Link>
-          <div className="pt-3 border-t border-border/50">
+        <div className="md:hidden border-t border-border bg-background px-6 py-4 space-y-1">
+          <a href="#how-it-works" className="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:bg-muted">How It Works</a>
+          <a href="#batches" className="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:bg-muted">Batches</a>
+          <a href="#roles" className="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:bg-muted">Roles</a>
+          <Link to="/transparency" className="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:bg-muted" onClick={() => setMobileOpen(false)}>Transparency</Link>
+          <div className="pt-2 border-t border-border mt-2">
             {user ? (
               <Link to={dashboardPath}><Button className="w-full" size="sm"><LayoutDashboard className="w-3.5 h-3.5 mr-1.5" /> Dashboard</Button></Link>
             ) : (
               <div className="space-y-2">
-                <Link to="/signup"><Button className="w-full" size="sm">Get Started Free</Button></Link>
+                <Link to="/signup"><Button className="w-full" size="sm">Get Started</Button></Link>
                 <Link to="/login"><Button variant="outline" className="w-full" size="sm">Log In</Button></Link>
               </div>
             )}

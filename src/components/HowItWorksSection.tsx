@@ -3,66 +3,52 @@ import { Factory, Package, TrendingUp, ArrowRight } from "lucide-react";
 const steps = [
   {
     icon: Factory,
-    step: "1",
-    title: "Join Production Batch",
-    description: "Finance a product batch with other partners. Starting from ৳10,000.",
+    step: "01",
+    title: "Join a Production Batch",
+    description: "Choose a product and co-finance manufacturing with other partners. Min ৳10,000.",
   },
   {
     icon: Package,
-    step: "2",
+    step: "02",
     title: "Own Product Units",
-    description: "Receive ownership of real, manufactured product units.",
+    description: "Receive ownership of real manufactured units. Track your inventory in real-time.",
   },
   {
     icon: TrendingUp,
-    step: "3",
+    step: "03",
     title: "Sell & Earn Profit",
-    description: "Sell yourself or through the platform sales network.",
+    description: "Sell through the platform network or collect products yourself. Withdraw profits anytime.",
   },
 ];
 
 const HowItWorksSection = () => {
   return (
-    <section className="section-padding bg-muted/30">
+    <section className="py-20 md:py-28 px-6">
       <div className="container max-w-5xl mx-auto">
-        <div className="section-header">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/8 border border-primary/15 text-primary text-sm font-medium mb-5">
-            How It Works
-          </span>
-          <h2 className="font-display mb-3">
-            3 simple steps to <span className="text-gradient-primary">start earning</span>
+        <div className="text-center mb-16">
+          <p className="text-sm font-medium text-primary mb-3">How It Works</p>
+          <h2 className="text-3xl md:text-4xl font-bold font-display tracking-tight mb-4">
+            Three steps to your first batch
           </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            From financing to profit — a clear and transparent journey.
+          <p className="text-muted-foreground text-base max-w-lg mx-auto">
+            From financing to profit — a clear and transparent process.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 relative">
-          {/* Connector lines (desktop only) */}
-          <div className="hidden md:block absolute top-14 left-[33%] w-[10%] h-px bg-primary/15" />
-          <div className="hidden md:block absolute top-14 right-[33%] w-[10%] h-px bg-primary/15" />
-          <div className="hidden md:block absolute top-[52px] left-[calc(33%-4px)]">
-            <ArrowRight className="w-4 h-4 text-primary/25" />
-          </div>
-          <div className="hidden md:block absolute top-[52px] right-[calc(33%-4px)]">
-            <ArrowRight className="w-4 h-4 text-primary/25" />
-          </div>
+        <div className="grid md:grid-cols-3 gap-8 relative">
+          {/* Connector line */}
+          <div className="hidden md:block absolute top-10 left-[20%] right-[20%] h-px bg-border" />
 
           {steps.map((item) => (
-            <div
-              key={item.step}
-              className="relative bg-card border border-border/50 rounded-2xl p-8 text-center shadow-card hover:shadow-card-hover transition-all duration-300"
-            >
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold font-display shadow-sm">
-                {item.step}
+            <div key={item.step} className="relative text-center">
+              {/* Step circle */}
+              <div className="w-20 h-20 rounded-2xl bg-muted border border-border flex items-center justify-center mx-auto mb-5 relative z-10">
+                <item.icon className="w-8 h-8 text-primary" />
               </div>
 
-              <div className="w-14 h-14 rounded-2xl bg-primary/8 border border-primary/10 flex items-center justify-center mx-auto mt-2 mb-5">
-                <item.icon className="w-7 h-7 text-primary" />
-              </div>
-
-              <h3 className="font-display mb-2">{item.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+              <div className="text-xs font-mono text-muted-foreground mb-2">{item.step}</div>
+              <h3 className="text-lg font-semibold font-display mb-2 tracking-tight">{item.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-[280px] mx-auto">{item.description}</p>
             </div>
           ))}
         </div>

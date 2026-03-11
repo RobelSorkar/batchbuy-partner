@@ -1,41 +1,25 @@
-import { Package, Eye, Truck, Briefcase } from "lucide-react";
+import { Package, Shield, Truck, Factory } from "lucide-react";
 
 const badges = [
-  { icon: Package, label: "Real Products" },
-  { icon: Eye, label: "Transparent Inventory" },
-  { icon: Truck, label: "Nationwide Distribution" },
-  { icon: Briefcase, label: "Real Business" },
-];
-
-const stats = [
-  { value: "500+", label: "Partners" },
-  { value: "৳2.5Cr", label: "Production Value" },
-  { value: "50+", label: "Product Batches" },
+  { icon: Shield, label: "Verified Manufacturers", value: "15+" },
+  { icon: Package, label: "Products Produced", value: "12,000+" },
+  { icon: Factory, label: "Factory Partners", value: "8" },
+  { icon: Truck, label: "Distribution Network", value: "Nationwide" },
 ];
 
 const TrustSection = () => {
   return (
-    <section className="py-14 px-6 bg-card border-y border-border/50">
+    <section className="py-16 px-6">
       <div className="container max-w-5xl mx-auto">
-        {/* Credibility badges */}
-        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {badges.map((b) => (
             <div
               key={b.label}
-              className="flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-muted/60 border border-border/50 text-sm font-medium text-foreground"
+              className="text-center p-5 rounded-xl border border-border bg-card"
             >
-              <b.icon className="w-4 h-4 text-primary" />
-              {b.label}
-            </div>
-          ))}
-        </div>
-
-        {/* Stats */}
-        <div className="flex flex-wrap justify-center gap-12 md:gap-20">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-bold text-foreground">{s.value}</div>
-              <div className="text-sm text-muted-foreground mt-1.5">{s.label}</div>
+              <b.icon className="w-5 h-5 text-primary mx-auto mb-3" />
+              <div className="text-2xl font-bold font-display text-foreground mb-1">{b.value}</div>
+              <div className="text-xs text-muted-foreground">{b.label}</div>
             </div>
           ))}
         </div>

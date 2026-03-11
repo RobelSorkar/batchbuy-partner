@@ -20,7 +20,7 @@ const Index = () => {
       <LiveActivityTicker />
       <TrustSection />
       <div id="how-it-works"><HowItWorksSection /></div>
-      <BatchesPreview />
+      <div id="batches"><BatchesPreview /></div>
       <div id="features"><SalesChannelsSection /></div>
       <div id="roles"><RolesSection /></div>
       <HomeProfitCalculator />
