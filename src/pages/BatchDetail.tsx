@@ -346,7 +346,7 @@ const BatchDetail = () => {
                         </Button>
                       ) : (
                         <Button className="w-full" size="lg" disabled>
-                          {batch.status === "completed" ? "Batch Completed" : batch.remaining_units === 0 ? "Fully Funded" : "Not Available"}
+                          {batch.status === "completed" ? "Project Completed" : batch.remaining_units === 0 ? "Fully Funded" : "Not Available"}
                         </Button>
                       )}
                       <Link to="/marketplace">
