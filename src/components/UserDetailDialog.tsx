@@ -117,6 +117,7 @@ export default function UserDetailDialog({ user, open, onOpenChange, onUserUpdat
   const toggleUserRole = useToggleUserRole();
   const { data: transactions = [], isLoading: loadingTxns } = useUserTransactions(user?.id);
   const { data: orders = [], isLoading: loadingOrders } = useUserOrders(user?.id);
+  const { data: participations = [], isLoading: loadingParts } = useUserParticipations(user?.id);
 
   if (!user) return null;
 
