@@ -13,7 +13,7 @@ const CTASection = () => {
               Start your product business today
             </h2>
             <p className="text-background/60 text-sm sm:text-base mb-6 sm:mb-8 max-w-md mx-auto">
-              Join production batches, own real products, and sell through our network.
+              Join production projects, own real products, and sell through our network.
             </p>
 
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">

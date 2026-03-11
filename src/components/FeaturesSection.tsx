@@ -45,7 +45,7 @@ const FeaturesSection = () => {
             Everything you need to <span className="text-gradient-primary">scale production</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            From batch participation to product fulfillment — manage your entire production partnership in one place.
+            From project participation to product fulfillment — manage your entire production partnership in one place.
           </p>
         </div>
 

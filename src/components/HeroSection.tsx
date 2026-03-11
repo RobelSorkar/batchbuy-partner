@@ -49,7 +49,7 @@ const HeroSection = () => {
             </Link>
             <Link to="/marketplace" className="w-full sm:w-auto">
               <Button variant="outline" size="lg" className="w-full sm:w-auto text-sm sm:text-base h-12 sm:h-11 px-6 sm:px-8">
-                Browse Batches
+                Browse Projects
               </Button>
             </Link>
           </div>

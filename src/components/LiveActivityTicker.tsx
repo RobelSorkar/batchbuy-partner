@@ -65,7 +65,7 @@ const LiveActivityTicker = () => {
 
       tickerItems.push({
         icon: TrendingUp,
-        label: "Active batches",
+        label: "Active projects",
         value: `${activeBatches || 0} running`,
       });
 

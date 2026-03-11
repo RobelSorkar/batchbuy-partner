@@ -41,7 +41,7 @@ const BatchesPreview = () => {
           </div>
         ) : fundingBatches.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground text-sm">
-            No active batches right now. Check back soon.
+            No active projects right now. Check back soon.
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">

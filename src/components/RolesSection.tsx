@@ -6,7 +6,7 @@ const roles = [
   {
     icon: Factory,
     title: "Production Partner",
-    description: "Finance real product batches. Own manufactured units. Earn when they sell.",
+    description: "Finance real production projects. Own manufactured units. Earn when they sell.",
     badge: "Financing",
     earnings: "18-45% margins",
   },

@@ -228,7 +228,7 @@ const AnalyticsPage = () => {
                 </div>
               </>
             ) : (
-              <div className="text-center text-muted-foreground py-10 text-sm">No batches yet</div>
+              <div className="text-center text-muted-foreground py-10 text-sm">No projects yet</div>
             )}
           </div>
 

@@ -351,7 +351,7 @@ const BatchDetail = () => {
                       )}
                       <Link to="/marketplace">
                         <Button variant="outline" className="w-full" size="lg">
-                          Browse More Batches
+                          Browse More Projects
                         </Button>
                       </Link>
                     </div>

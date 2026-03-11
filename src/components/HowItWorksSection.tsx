@@ -28,7 +28,7 @@ const HowItWorksSection = () => {
         <div className="text-center mb-10 sm:mb-14 md:mb-16">
           <p className="text-xs sm:text-sm font-medium text-primary mb-2 sm:mb-3">How It Works</p>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight mb-3 sm:mb-4">
-            Three steps to your first batch
+            Three steps to your first project
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">
             From financing to profit — a clear and transparent process.

@@ -313,7 +313,7 @@ const PartnerDashboard = () => {
               </div>
               <div className="flex gap-2 justify-center">
                 <Link to="/wallet"><Button variant="outline" size="sm">Deposit Funds</Button></Link>
-                <Link to="/marketplace"><Button size="sm">Browse Batches</Button></Link>
+                <Link to="/marketplace"><Button size="sm">Browse Projects</Button></Link>
               </div>
             </div>
           ) : (

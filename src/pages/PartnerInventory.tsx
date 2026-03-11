@@ -277,7 +277,7 @@ const PartnerInventory = () => {
               ৳{totalAssetValue.toLocaleString()}
             </div>
             <p className="text-sm text-muted-foreground">
-              Based on {totalRemaining} unsold units across {items.length} batch{items.length !== 1 ? "es" : ""}
+              Based on {totalRemaining} unsold units across {items.length} project{items.length !== 1 ? "s" : ""}
             </p>
 
             {items.length > 0 && (

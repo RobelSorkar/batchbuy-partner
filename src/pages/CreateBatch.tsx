@@ -215,7 +215,7 @@ const CreateBatch = () => {
               <div className="space-y-2">
                 <Label htmlFor="deadline">Funding Deadline *</Label>
                 <Input id="deadline" type="date" min={new Date().toISOString().split("T")[0]} value={form.deadline} onChange={(e) => update("deadline", e.target.value)} required />
-                <p className="text-xs text-muted-foreground">Batch will auto-close after this date if not fully funded</p>
+                <p className="text-xs text-muted-foreground">Project will auto-close after this date if not fully funded</p>
               </div>
             </div>
 

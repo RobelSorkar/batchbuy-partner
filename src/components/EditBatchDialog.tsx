@@ -92,7 +92,7 @@ const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) =>
       const { error } = await supabase.from("batches").update(updates).eq("id", batch.id);
       if (error) throw error;
 
-      toast({ title: "Batch updated", description: `${form.product_name} has been updated successfully.` });
+      toast({ title: "Project updated", description: `${form.product_name} has been updated successfully.` });
       queryClient.invalidateQueries({ queryKey: ["batches"] });
       queryClient.invalidateQueries({ queryKey: ["batch", batch.id] });
       onOpenChange(false);

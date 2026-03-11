@@ -278,10 +278,10 @@ const TransparencyDashboard = () => {
 
             {/* CTA */}
             <div className="text-center py-6">
-              <p className="text-muted-foreground mb-4">Ready to invest in the next production batch?</p>
+              <p className="text-muted-foreground mb-4">Ready to join the next production project?</p>
               <Link to="/marketplace">
                 <Button size="lg" className="gap-2">
-                  Browse Active Batches <ArrowRight className="w-4 h-4" />
+                  Browse Active Projects <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
             </div>

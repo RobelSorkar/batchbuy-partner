@@ -179,7 +179,7 @@ const Marketplace = () => {
 
               {filtered.length === 0 && (
                 <div className="text-center py-16">
-                  <p className="text-muted-foreground">No batches found matching your criteria.</p>
+                  <p className="text-muted-foreground">No projects found matching your criteria.</p>
                 </div>
               )}
             </>
