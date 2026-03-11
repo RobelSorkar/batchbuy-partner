@@ -180,7 +180,7 @@ const PartnerInventory = () => {
                           <TableCell className="text-center">
                             <div className="flex items-center justify-center gap-1 text-xs">
                               <Calendar className="w-3 h-3 text-muted-foreground" />
-                              {item.batchAgeDays}
+                              {item.projectAgeDays}
                             </div>
                           </TableCell>
                           <TableCell className="text-right font-semibold text-primary">

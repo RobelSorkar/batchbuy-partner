@@ -404,7 +404,7 @@ const PartnerDashboard = () => {
                   <div className="text-sm font-medium">{selectedItem.warehouseLocation}</div>
                 </div>
                 <div className="bg-muted/50 rounded-lg p-3">
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1"><Calendar className="w-3 h-3" /> Batch Age</div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1"><Calendar className="w-3 h-3" /> Project Age</div>
                   <div className="text-sm font-medium">{selectedItem.batchAgeDays} days</div>
                 </div>
               </div>
