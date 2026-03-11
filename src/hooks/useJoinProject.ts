@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export type SellingPreference = "platform" | "collect";
 
-export function useJoinBatch() {
+export function useJoinProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -37,3 +37,6 @@ export function useJoinBatch() {
     },
   });
 }
+
+/** @deprecated Use useJoinProject */
+export const useJoinBatch = useJoinProject;
