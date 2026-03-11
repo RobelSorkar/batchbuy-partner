@@ -127,4 +127,13 @@
   .glow-primary {
     box-shadow: var(--glow-primary);
   }
+
+  /* Hide scrollbar for overflow-x-auto elements */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
