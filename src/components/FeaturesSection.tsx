@@ -3,8 +3,8 @@ import { Package, Users, Truck, Wallet, ArrowRight, ShieldCheck, BarChart3, Glob
 const features = [
   {
     icon: Package,
-    title: "Production Batches",
-    description: "Join limited production runs with a minimum of ৳10,000 BDT. Own real product units from verified manufacturers.",
+    title: "Production Projects",
+    description: "Join limited production projects with a minimum of ৳10,000 BDT. Own real product units from verified manufacturers.",
   },
   {
     icon: Users,
