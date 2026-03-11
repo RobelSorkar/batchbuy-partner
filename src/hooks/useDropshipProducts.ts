@@ -24,8 +24,7 @@ export function useDropshipProducts() {
       // combined with inventory data
       const { data: batches, error } = await supabase
         .from("batches")
-        .select("*")
-        .in("status", ["production", "completed"]);
+        .select("*");
       if (error) throw error;
 
       // Also get inventory for stock info
