@@ -201,7 +201,7 @@ const HomeProfitCalculator = () => {
 
             {/* Tip for negative profit */}
             {!isPositive && (
-              <div className="rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 p-3 mb-6 text-xs text-amber-800 dark:text-amber-200">
+              <div className="rounded-lg bg-accent/50 border border-accent p-3 mb-6 text-xs text-accent-foreground">
                 💡 <strong>টিপ:</strong> কম ইউনিটে লজিস্টিক্স ও মার্কেটিং খরচ বেশি পড়ে। সাধারণত <strong>৩০+ ইউনিট</strong> থেকে লাভ শুরু হয়। স্লাইডার ডানে টানুন!
               </div>
             )}
