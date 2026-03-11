@@ -106,7 +106,7 @@ const HomeProfitCalculator = () => {
               />
               <div className="flex justify-between text-[11px] text-muted-foreground mt-1.5">
                 <span>{minUnits} ইউনিট (৳{MIN_INVESTMENT.toLocaleString()})</span>
-                <span>২০০ ইউনিট</span>
+                <span>৫,০০০ ইউনিট</span>
               </div>
             </div>
 
