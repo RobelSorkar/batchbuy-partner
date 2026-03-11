@@ -231,7 +231,7 @@ const CreateBatch = () => {
             <div className="sticky top-24 bg-card rounded-xl shadow-card border border-border/50 p-6 space-y-5">
               <div className="flex items-center gap-2">
                 <Calculator className="w-5 h-5 text-primary" />
-                <h3 className="font-display font-semibold">Batch Summary</h3>
+                <h3 className="font-display font-semibold">Project Summary</h3>
               </div>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">Total Production Cost</span><span className="font-semibold">৳{totalProductionCost.toLocaleString()}</span></div>
