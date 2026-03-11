@@ -3,7 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import LiveActivityTicker from "@/components/LiveActivityTicker";
 import TrustSection from "@/components/TrustSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
-import BatchesPreview from "@/components/BatchesPreview";
+import ProjectsPreview from "@/components/ProjectsPreview";
 import SalesChannelsSection from "@/components/SalesChannelsSection";
 import RolesSection from "@/components/RolesSection";
 import HomeProfitCalculator from "@/components/HomeProfitCalculator";
