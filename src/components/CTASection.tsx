@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Banknote, Factory, Package } from "lucide-react";
 import { Link } from "react-router-dom";
+
+const objections = [
+  { icon: Banknote, text: "Start with only ৳10,000" },
+  { icon: Factory, text: "No factory needed" },
+  { icon: Package, text: "No inventory headache" },
+];
 
 const CTASection = () => {
   return (
@@ -12,9 +18,25 @@ const CTASection = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4 font-display">
               Start Your Product Business Today
             </h2>
-            <p className="text-primary-foreground/70 text-lg mb-8 max-w-xl mx-auto">
-              Join production batches, own real products, and sell through our nationwide network. Start with as little as ৳10,000.
+            <p className="text-primary-foreground/70 text-lg mb-6 max-w-xl mx-auto">
+              Join production batches, own real products, and sell through our nationwide network.
             </p>
+
+            {/* Objection busters */}
+            <div className="flex flex-wrap justify-center gap-3 md:gap-5 mb-8">
+              {objections.map((item) => (
+                <div
+                  key={item.text}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 backdrop-blur-sm"
+                >
+                  <item.icon className="w-4 h-4 text-primary shrink-0" />
+                  <span className="text-sm font-semibold text-primary-foreground whitespace-nowrap">
+                    {item.text}
+                  </span>
+                </div>
+              ))}
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/signup">
                 <Button variant="hero" size="lg">
