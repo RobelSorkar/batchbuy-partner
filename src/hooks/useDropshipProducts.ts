@@ -54,6 +54,7 @@ export function useDropshipProducts() {
           rating: 0,
           totalSold: inv?.sold_units || batch.funded_units - batch.remaining_units,
           batchId: batch.id,
+          status: batch.status,
         } as DropshipProduct;
       });
     },
