@@ -67,7 +67,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
     try {
       const { error } = await supabase.rpc("admin_sync_batch_stats");
       if (error) throw error;
-      toast({ title: "Batch stats synced", description: "funded_units and partners_joined recalculated from source records." });
+      toast({ title: "Project stats synced", description: "funded_units and partners_joined recalculated from source records." });
     } catch (e: any) {
       toast({ title: "Sync failed", description: e.message, variant: "destructive" });
     } finally {
