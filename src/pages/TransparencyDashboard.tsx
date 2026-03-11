@@ -115,7 +115,7 @@ const TransparencyDashboard = () => {
     .slice(0, 8);
 
   const statCards = [
-    { label: "Total Batches", value: totalBatches, icon: Layers, color: "from-primary/20 to-primary/5", iconColor: "text-primary" },
+    { label: "Total Projects", value: totalBatches, icon: Layers, color: "from-primary/20 to-primary/5", iconColor: "text-primary" },
     { label: "Units Produced", value: totalUnitsProduced.toLocaleString(), icon: Package, color: "from-blue-500/20 to-blue-500/5", iconColor: "text-blue-500" },
     { label: "Units Sold", value: totalUnitsSold.toLocaleString(), icon: TrendingUp, color: "from-emerald-500/20 to-emerald-500/5", iconColor: "text-emerald-500" },
     { label: "Partners Joined", value: totalPartnersJoined, icon: Users, color: "from-violet-500/20 to-violet-500/5", iconColor: "text-violet-500" },
