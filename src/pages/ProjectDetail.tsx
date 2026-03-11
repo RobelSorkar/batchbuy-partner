@@ -369,7 +369,7 @@ const ProjectDetail = () => {
 
       <Footer />
 
-      <JoinBatchDialog batch={batchForDialog} open={joinOpen} onOpenChange={setJoinOpen} />
+      <JoinProjectDialog batch={batchForDialog} open={joinOpen} onOpenChange={setJoinOpen} />
     </div>
   );
 };
