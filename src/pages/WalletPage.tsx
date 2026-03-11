@@ -114,7 +114,7 @@ const WalletPage = () => {
 
   const closeReinvest = () => {
     setReinvestOpen(false);
-    setTimeout(() => { setReinvestSuccess(false); setReinvestAmount(""); setReinvestBatchId(""); }, 300);
+    setTimeout(() => { setReinvestSuccess(false); setReinvestAmount(""); setReinvestProjectId(""); }, 300);
   };
 
   const handleDeposit = async () => {
