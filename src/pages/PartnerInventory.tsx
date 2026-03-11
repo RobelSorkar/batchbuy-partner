@@ -135,7 +135,7 @@ const PartnerInventory = () => {
         {/* Batch Inventory Table */}
         <Card className="border-border/50 shadow-card">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-display">Batch Inventory Details</CardTitle>
+            <CardTitle className="text-lg font-display">Project Inventory Details</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {items.length === 0 ? (
