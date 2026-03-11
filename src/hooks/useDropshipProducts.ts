@@ -14,6 +14,7 @@ export interface DropshipProduct {
   rating: number;
   totalSold: number;
   batchId: string;
+  status: string;
 }
 
 export function useDropshipProducts() {
@@ -24,8 +25,7 @@ export function useDropshipProducts() {
       // combined with inventory data
       const { data: batches, error } = await supabase
         .from("batches")
-        .select("*")
-        .in("status", ["production", "completed"]);
+        .select("*");
       if (error) throw error;
 
       // Also get inventory for stock info
@@ -54,6 +54,7 @@ export function useDropshipProducts() {
           rating: 0,
           totalSold: inv?.sold_units || batch.funded_units - batch.remaining_units,
           batchId: batch.id,
+          status: batch.status,
         } as DropshipProduct;
       });
     },
