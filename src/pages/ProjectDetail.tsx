@@ -35,8 +35,8 @@ const ProjectDetail = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
-  const { data: batch, isLoading } = useBatchDetail(id);
-  const { data: participations } = useBatchParticipations(id);
+  const { data: batch, isLoading } = useProjectDetail(id);
+  const { data: participations } = useProjectParticipations(id);
   const [joinOpen, setJoinOpen] = useState(false);
 
   const referrerId = searchParams.get("ref");
