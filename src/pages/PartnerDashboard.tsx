@@ -196,7 +196,7 @@ const PartnerDashboard = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold">Join Production</div>
-                  <div className="text-[11px] text-muted-foreground">Browse & finance batches</div>
+                  <div className="text-[11px] text-muted-foreground">Browse & finance projects</div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </CardContent>
