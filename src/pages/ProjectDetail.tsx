@@ -11,7 +11,7 @@ import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import ProductImageZoom from "@/components/ProductImageZoom";
 import ProjectCountdown from "@/components/ProjectCountdown";
 import CustomerOrderForm from "@/components/CustomerOrderForm";
-import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
+import { useProjectDetail, useProjectParticipations } from "@/hooks/useProjects";
 import {
   MINIMUM_PARTICIPATION_BDT,
   calcPerUnitProfit,
