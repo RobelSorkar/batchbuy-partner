@@ -93,7 +93,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const [userSearch, setUserSearch] = useState("");
   const [userRoleFilter, setUserRoleFilter] = useState(defaultRoleFilter || "all");
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
-  const [batchSearch, setBatchSearch] = useState("");
+  const [projectSearch, setProjectSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
   const [editingRole, setEditingRole] = useState<string | null>(null);
   const [editingProject, setEditingProject] = useState<any>(null);
