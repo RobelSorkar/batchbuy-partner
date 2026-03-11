@@ -13,7 +13,7 @@ const statusColors: Record<string, string> = {
 
 const ProjectsPreview = () => {
   const { data: batches, isLoading } = useProjects();
-  const fundingBatches = (batches || []).filter((b) => b.status === "funding").slice(0, 3);
+  const fundingProjects = (batches || []).filter((b) => b.status === "funding").slice(0, 3);
 
   return (
     <section className="py-14 sm:py-20 md:py-28 px-4 sm:px-6 bg-muted/30">
