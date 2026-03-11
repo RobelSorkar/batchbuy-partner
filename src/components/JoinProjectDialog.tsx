@@ -48,7 +48,7 @@ const StepIndicator = ({ step, current }: { step: number; current: number }) => 
   );
 };
 
-const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) => {
+const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps) => {
   const [investmentInput, setInvestmentInput] = useState(MINIMUM_PARTICIPATION_BDT.toString());
   const [sellingPreference, setSellingPreference] = useState<SellingPreference>("platform");
   const [submitted, setSubmitted] = useState(false);
