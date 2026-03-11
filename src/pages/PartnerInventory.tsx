@@ -66,7 +66,7 @@ const PartnerInventory = () => {
         inventoryValue,
         warehouseLocation,
         shelfLocation,
-        batchAgeDays,
+        projectAgeDays,
         status: batch.status === "completed" ? "Completed" : batch.status === "production" ? "Production" : "Active",
       } as InventoryItem;
     }).filter(Boolean) as InventoryItem[];
