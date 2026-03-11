@@ -68,7 +68,7 @@ const PartnerDashboard = () => {
       retailPrice,
       inventoryValue: remaining * costPerUnit,
       warehouseLocation: inv?.warehouse_location || batch.warehouse || "Main Warehouse",
-      batchAgeDays,
+      batchAgeDays: projectAgeDays,
       mode: (p as any).inventory_mode as InventoryMode || "platform",
       status: batch.status === "completed" ? "Completed" : batch.status === "production" ? "Production" : "Active",
     };
