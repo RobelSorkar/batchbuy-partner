@@ -6,21 +6,25 @@ import { Link } from "react-router-dom";
 import { calcInvestmentEstimate } from "@/lib/calculations";
 
 const EXAMPLE_PRODUCT = {
-  name: "Premium Cotton T-Shirt",
-  category: "Garments",
-  costPerUnit: 420,
-  wholesalePrice: 520,
-  retailPrice: 650,
+  name: "চামড়ার ক্যাজুয়াল জুতা",
+  nameEn: "Leather Casual Shoe",
+  category: "Footwear",
+  costPerUnit: 400,
+  wholesalePrice: 550,
+  retailPrice: 750,
   logisticsPerUnit: 100,
 };
 
 const SELL_THROUGH = 80;
+const MIN_INVESTMENT = 10_000;
 
 const HomeProfitCalculator = () => {
-  const [units, setUnits] = useState(50);
+  const { costPerUnit } = EXAMPLE_PRODUCT;
+  const minUnits = Math.ceil(MIN_INVESTMENT / costPerUnit);
+  const [units, setUnits] = useState(minUnits);
   const [showBreakdown, setShowBreakdown] = useState(false);
 
-  const { costPerUnit, wholesalePrice, retailPrice, logisticsPerUnit } = EXAMPLE_PRODUCT;
+  const { wholesalePrice, retailPrice, logisticsPerUnit } = EXAMPLE_PRODUCT;
 
   const investmentAmount = units * costPerUnit;
   const est = calcInvestmentEstimate(
@@ -60,8 +64,8 @@ const HomeProfitCalculator = () => {
                   <ShoppingBag className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm">{EXAMPLE_PRODUCT.name}</p>
-                  <p className="text-xs text-muted-foreground">{EXAMPLE_PRODUCT.category} • উদাহরণ প্রোডাক্ট</p>
+                  <p className="font-semibold text-sm">{EXAMPLE_PRODUCT.nameEn}</p>
+                  <p className="text-xs text-muted-foreground">{EXAMPLE_PRODUCT.category} • {EXAMPLE_PRODUCT.name}</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 text-xs">
@@ -94,14 +98,14 @@ const HomeProfitCalculator = () => {
                 </div>
               </div>
               <Slider
-                min={10}
+                min={minUnits}
                 max={200}
                 step={5}
                 value={[units]}
                 onValueChange={([v]) => setUnits(v)}
               />
               <div className="flex justify-between text-[11px] text-muted-foreground mt-1.5">
-                <span>১০ ইউনিট</span>
+                <span>{minUnits} ইউনিট (৳{MIN_INVESTMENT.toLocaleString()})</span>
                 <span>২০০ ইউনিট</span>
               </div>
             </div>
