@@ -6,7 +6,7 @@ import {
   Users, Layers, TrendingUp, ShoppingCart, ArrowUpRight, ArrowDownRight,
   AlertTriangle, CheckCircle, Clock, Wallet, Package, Eye,
   Ban, DollarSign, BarChart3, PieChart,
-  Search, XCircle, RefreshCw, Loader2, Pencil
+  Search, XCircle, RefreshCw, Loader2, Pencil, Phone, MapPin
 } from "lucide-react";
 import EditBatchDialog from "@/components/EditBatchDialog";
 import { Button } from "@/components/ui/button";
@@ -838,10 +838,39 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
             {userDetail && (
               <>
                 <DialogHeader>
-                  <DialogTitle>{userDetail.name}</DialogTitle>
-                  <DialogDescription>Manage user details and role</DialogDescription>
+                  <div className="flex items-center gap-3">
+                    {userDetail.avatarUrl ? (
+                      <img src={userDetail.avatarUrl} alt={userDetail.name} className="w-12 h-12 rounded-full object-cover border-2 border-primary/20" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
+                        {userDetail.name.charAt(0).toLowerCase()}
+                      </div>
+                    )}
+                    <div>
+                      <DialogTitle>{userDetail.name}</DialogTitle>
+                      <DialogDescription>Manage user details and role</DialogDescription>
+                    </div>
+                  </div>
                 </DialogHeader>
                 <div className="space-y-4">
+                  {/* Contact Info */}
+                  {(userDetail.phone || userDetail.address) && (
+                    <div className="bg-muted/50 rounded-lg p-3 space-y-2">
+                      {userDetail.phone && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Phone className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span>{userDetail.phone}</span>
+                        </div>
+                      )}
+                      {userDetail.address && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <MapPin className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span>{userDetail.address}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-muted/50 rounded-lg p-3">
                       <div className="text-[10px] text-muted-foreground uppercase">Roles</div>
