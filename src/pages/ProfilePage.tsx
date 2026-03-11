@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { User, Phone, MapPin, Loader2, Save, ArrowLeft, Camera } from "lucide-react";
+import AvatarCropDialog from "@/components/AvatarCropDialog";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
