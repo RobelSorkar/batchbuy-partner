@@ -14,6 +14,7 @@ export interface DropshipProduct {
   rating: number;
   totalSold: number;
   batchId: string;
+  status: string;
 }
 
 export function useDropshipProducts() {
