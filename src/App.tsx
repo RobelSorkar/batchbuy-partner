@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VerifyEmail from "./pages/VerifyEmail";
 import Marketplace from "./pages/Marketplace";
-import BatchDetail from "./pages/BatchDetail";
+import ProjectDetail from "./pages/ProjectDetail";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import PartnerInventory from "./pages/PartnerInventory";
 import DistributorDashboard from "./pages/DistributorDashboard";
