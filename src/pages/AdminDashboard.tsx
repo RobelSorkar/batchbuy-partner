@@ -6,9 +6,10 @@ import {
   Users, Layers, TrendingUp, ShoppingCart, ArrowUpRight, ArrowDownRight,
   AlertTriangle, CheckCircle, Clock, Wallet, Package, Eye,
   Ban, DollarSign, BarChart3, PieChart,
-  Search, XCircle, RefreshCw, Loader2, Pencil, Phone, MapPin
+  Search, XCircle, RefreshCw, Loader2, Pencil
 } from "lucide-react";
 import EditBatchDialog from "@/components/EditBatchDialog";
+import UserDetailDialog from "@/components/UserDetailDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -833,134 +834,12 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
         </Tabs>
 
         {/* User Detail Dialog */}
-        <Dialog open={!!userDetail} onOpenChange={(open) => { if (!open) { setUserDetail(null); setEditingRole(null); } }}>
-          <DialogContent className="max-w-md">
-            {userDetail && (
-              <>
-                <DialogHeader>
-                  <div className="flex items-center gap-3">
-                    {userDetail.avatarUrl ? (
-                      <img src={userDetail.avatarUrl} alt={userDetail.name} className="w-12 h-12 rounded-full object-cover border-2 border-primary/20" />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
-                        {userDetail.name.charAt(0).toLowerCase()}
-                      </div>
-                    )}
-                    <div>
-                      <DialogTitle>{userDetail.name}</DialogTitle>
-                      <DialogDescription>Manage user details and role</DialogDescription>
-                    </div>
-                  </div>
-                </DialogHeader>
-                <div className="space-y-4">
-                  {/* Contact Info */}
-                  {(userDetail.phone || userDetail.address) && (
-                    <div className="bg-muted/50 rounded-lg p-3 space-y-2">
-                      {userDetail.phone && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <Phone className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span>{userDetail.phone}</span>
-                        </div>
-                      )}
-                      {userDetail.address && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <MapPin className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span>{userDetail.address}</span>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-muted/50 rounded-lg p-3">
-                      <div className="text-[10px] text-muted-foreground uppercase">Roles</div>
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {userDetail.roles.map((r) => (
-                          <span key={r} className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${roleColors[r] || ""}`}>
-                            {r === "dropshipper" ? "sales partner" : r}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="bg-muted/50 rounded-lg p-3">
-                      <div className="text-[10px] text-muted-foreground uppercase">Status</div>
-                      <div className="mt-1"><span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${userStatusColors[userDetail.status]}`}>{userDetail.status}</span></div>
-                    </div>
-                    <div className="bg-muted/50 rounded-lg p-3">
-                      <div className="text-[10px] text-muted-foreground uppercase">Wallet</div>
-                      <div className="text-sm font-bold mt-1">৳{userDetail.walletBalance.toLocaleString()}</div>
-                    </div>
-                    <div className="bg-muted/50 rounded-lg p-3">
-                      <div className="text-[10px] text-muted-foreground uppercase">Joined</div>
-                      <div className="text-sm font-medium mt-1">{userDetail.joined}</div>
-                    </div>
-                  </div>
-                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Total Invested</span>
-                      <span className="font-semibold">৳{userDetail.totalInvested.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Total Earned</span>
-                      <span className="font-bold text-primary">৳{userDetail.totalEarned.toLocaleString()}</span>
-                    </div>
-                  </div>
-
-                  {/* Multi-Role Management */}
-                  <div className="border border-border/50 rounded-lg p-4 space-y-3">
-                    <div className="text-xs font-semibold uppercase text-muted-foreground">Manage Roles</div>
-                    <p className="text-[11px] text-muted-foreground">Toggle roles on/off. Users must have at least one role.</p>
-                    <div className="space-y-2">
-                      {(["partner", "dropshipper", "distributor", "warehouse", "admin"] as const).map((r) => {
-                        const hasRole = userDetail.roles.includes(r);
-                        const isOnlyRole = hasRole && userDetail.roles.length === 1;
-                        const displayName = r === "dropshipper" ? "Sales Partner" : r === "partner" ? "Production Partner" : r === "warehouse" ? "Warehouse Manager" : r.charAt(0).toUpperCase() + r.slice(1);
-                        return (
-                          <div key={r} className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-muted/30 transition-colors">
-                            <div className="flex items-center gap-2">
-                              <span className={`w-2 h-2 rounded-full ${hasRole ? "bg-primary" : "bg-muted-foreground/30"}`} />
-                              <span className="text-sm font-medium">{displayName}</span>
-                            </div>
-                            <Button
-                              variant={hasRole ? "default" : "outline"}
-                              size="sm"
-                              className="h-7 text-xs px-3"
-                              disabled={toggleUserRole.isPending || isOnlyRole}
-                              onClick={async () => {
-                                try {
-                                  await toggleUserRole.mutateAsync({
-                                    userId: userDetail.id,
-                                    role: r,
-                                    action: hasRole ? "remove" : "add",
-                                  });
-                                  const newRoles = hasRole
-                                    ? userDetail.roles.filter((x) => x !== r)
-                                    : [...userDetail.roles, r];
-                                  setUserDetail({ ...userDetail, roles: newRoles, role: newRoles[0] });
-                                  toast({
-                                    title: hasRole ? "Role Removed" : "Role Added",
-                                    description: `${displayName} ${hasRole ? "removed from" : "added to"} ${userDetail.name}`,
-                                  });
-                                } catch (e: any) {
-                                  toast({ title: "Failed", description: e.message, variant: "destructive" });
-                                }
-                              }}
-                            >
-                              {toggleUserRole.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : hasRole ? "Remove" : "Add"}
-                            </Button>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => { setUserDetail(null); setEditingRole(null); }}>Close</Button>
-                </DialogFooter>
-              </>
-            )}
-          </DialogContent>
-        </Dialog>
+        <UserDetailDialog
+          user={userDetail}
+          open={!!userDetail}
+          onOpenChange={(open) => { if (!open) { setUserDetail(null); setEditingRole(null); } }}
+          onUserUpdate={(updatedUser) => setUserDetail(updatedUser)}
+        />
         <EditBatchDialog batch={editingBatch} open={!!editingBatch} onOpenChange={(o) => !o && setEditingBatch(null)} />
       </div>
     </DashboardLayout>
