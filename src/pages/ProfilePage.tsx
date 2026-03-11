@@ -60,22 +60,35 @@ const ProfilePage = () => {
     }
   }, [profile]);
 
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !user) return;
+    if (!file) return;
+    if (fileInputRef.current) fileInputRef.current.value = "";
 
     if (!file.type.startsWith("image/")) {
       toast({ title: "Invalid file", description: "Please select an image file.", variant: "destructive" });
       return;
     }
-    if (file.size > 2 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Max size is 2MB.", variant: "destructive" });
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Max size is 5MB.", variant: "destructive" });
       return;
     }
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropSrc(reader.result as string);
+      setCropDialogOpen(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCropComplete = async (blob: Blob) => {
+    if (!user) return;
     setUploadingAvatar(true);
-    const ext = file.name.split(".").pop();
+
+    const ext = "jpg";
     const path = `avatars/${user.id}.${ext}`;
+    const file = new File([blob], `avatar.${ext}`, { type: "image/jpeg" });
 
     const { error: uploadError } = await supabase.storage
       .from("product-images")
@@ -103,6 +116,8 @@ const ProfilePage = () => {
       toast({ title: "Avatar updated" });
     }
     setUploadingAvatar(false);
+    setCropDialogOpen(false);
+    setCropSrc(null);
   };
 
   const updateProfile = useMutation({
