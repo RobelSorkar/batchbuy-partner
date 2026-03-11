@@ -332,7 +332,7 @@ const ProjectDetail = () => {
                       </div>
                     </div>
 
-                    <BatchCountdown deadline={batch.deadline} status={batch.status} />
+                    <ProjectCountdown deadline={batch.deadline} status={batch.status} />
 
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Clock className="w-4 h-4" />
