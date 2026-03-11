@@ -8,7 +8,7 @@ import {
   Ban, DollarSign, BarChart3, PieChart,
   Search, XCircle, RefreshCw, Loader2, Pencil
 } from "lucide-react";
-import EditBatchDialog from "@/components/EditBatchDialog";
+import EditProjectDialog from "@/components/EditProjectDialog";
 import UserDetailDialog from "@/components/UserDetailDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
