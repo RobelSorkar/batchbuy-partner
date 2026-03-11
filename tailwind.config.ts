@@ -99,6 +99,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out forwards",
         "slide-in-left": "slide-in-left 0.4s ease-out forwards",
         "count-up": "count-up 0.4s ease-out forwards",
+        "scroll-x": "scroll-x 20s linear infinite",
       },
     },
   },
