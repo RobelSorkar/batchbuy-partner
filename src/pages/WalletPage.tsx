@@ -105,7 +105,7 @@ const WalletPage = () => {
   const handleReinvest = async () => {
     if (!selectedProject || reinvestCost < 10000 || reinvestUnits <= 0 || reinvestCost > balance) return;
     try {
-      await reinvest.mutateAsync({ batchId: selectedBatch.id, batchName: selectedBatch.batch_name, amount: reinvestCost, units: reinvestUnits });
+      await reinvest.mutateAsync({ batchId: selectedProject.id, batchName: selectedProject.batch_name, amount: reinvestCost, units: reinvestUnits });
       setReinvestSuccess(true);
     } catch (e: any) {
       toast({ title: "Reinvestment failed", description: e.message, variant: "destructive" });
