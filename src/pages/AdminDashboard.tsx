@@ -96,7 +96,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const [batchSearch, setBatchSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
   const [editingRole, setEditingRole] = useState<string | null>(null);
-  const [editingBatch, setEditingBatch] = useState<any>(null);
+  const [editingProject, setEditingProject] = useState<any>(null);
 
   // Real data hooks
   const { data: users = [], isLoading: loadingUsers } = useAdminUsers();
