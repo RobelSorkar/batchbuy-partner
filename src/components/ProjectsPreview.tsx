@@ -11,8 +11,8 @@ const statusColors: Record<string, string> = {
   completed: "bg-muted text-muted-foreground",
 };
 
-const BatchesPreview = () => {
-  const { data: batches, isLoading } = useBatches();
+const ProjectsPreview = () => {
+  const { data: batches, isLoading } = useProjects();
   const fundingBatches = (batches || []).filter((b) => b.status === "funding").slice(0, 3);
 
   return (
