@@ -401,7 +401,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredBatches.map((b: any) => {
+                    {filteredProjects.map((b: any) => {
                       const progress = b.total_quantity > 0 ? Math.round((b.funded_units / b.total_quantity) * 100) : 0;
                       const projectStatusColors: Record<string, string> = {
                         funding: "bg-accent text-accent-foreground",
