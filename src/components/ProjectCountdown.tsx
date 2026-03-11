@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Clock, AlertTriangle } from "lucide-react";
 
-interface BatchCountdownProps {
+interface ProjectCountdownProps {
   deadline: string | null;
   status: string;
 }
