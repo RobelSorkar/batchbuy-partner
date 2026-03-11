@@ -6,73 +6,63 @@ const roles = [
   {
     icon: Factory,
     title: "Production Partner",
-    description: "Finance real product batches. Own manufactured units and earn profit when they sell through the network.",
-    badge: "Financing Partner",
+    description: "Finance real product batches. Own manufactured units. Earn when they sell.",
+    badge: "Financing",
     earnings: "18-45% margins",
-    link: "/signup",
   },
   {
     icon: Store,
     title: "Sales Partner",
-    description: "Sell products without holding inventory. Access warehouse-fulfilled products and earn commission on every order.",
-    badge: "Seller",
-    earnings: "৳50-200 per sale",
-    link: "/signup",
+    description: "Sell products without inventory. We ship for you. Earn commission per sale.",
+    badge: "Commission",
+    earnings: "৳50-200 / sale",
   },
   {
     icon: Truck,
     title: "Distributor",
-    description: "Manage regional distribution. Buy at wholesale price, handle last-mile delivery, and serve your local market.",
+    description: "Buy wholesale, serve your local market. Handle last-mile delivery.",
     badge: "Wholesale",
     earnings: "15-22% margin",
-    link: "/signup",
   },
   {
     icon: Warehouse,
     title: "Warehouse Partner",
-    description: "Provide storage and fulfillment services. Earn per-order fees for receiving, storing, and shipping products.",
+    description: "Provide storage & fulfillment services. Earn per-order processing fees.",
     badge: "Fulfillment",
     earnings: "Per-order fees",
-    link: "/signup",
   },
 ];
 
 const RolesSection = () => {
   return (
-    <section className="section-padding">
-      <div className="container max-w-6xl mx-auto">
-        <div className="section-header">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/8 border border-primary/15 text-primary text-sm font-medium mb-5">
-            Partner Roles
-          </span>
-          <h2 className="font-display mb-3">
-            Choose your <span className="text-gradient-primary">role</span> in the supply chain
+    <section className="py-20 md:py-28 px-6 bg-muted/30">
+      <div className="container max-w-5xl mx-auto">
+        <div className="text-center mb-14">
+          <p className="text-sm font-medium text-primary mb-3">Partner Roles</p>
+          <h2 className="text-3xl md:text-4xl font-bold font-display tracking-tight mb-4">
+            Choose your role in the supply chain
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Whether you want to finance production, sell products, distribute wholesale, or provide warehousing — there's a place for you.
+          <p className="text-muted-foreground max-w-lg mx-auto">
+            Whether you finance, sell, distribute, or warehouse — there's a role for you.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {roles.map((role) => (
             <div
               key={role.title}
-              className="group p-6 rounded-2xl bg-card shadow-card hover:shadow-card-hover border border-border/50 transition-all duration-300 flex flex-col"
+              className="p-5 rounded-xl border border-border bg-card flex flex-col hover:shadow-card-hover transition-all duration-200"
             >
-              <div className="w-12 h-12 rounded-2xl bg-primary/8 border border-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/12 transition-colors">
-                <role.icon className="w-5.5 h-5.5 text-primary" />
+              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center mb-4">
+                <role.icon className="w-5 h-5 text-primary" />
               </div>
-              <span className="inline-block self-start px-2.5 py-0.5 rounded-full bg-primary/8 text-primary text-xs font-medium mb-3 border border-primary/10">
-                {role.badge}
-              </span>
-              <h3 className="font-display font-semibold text-lg mb-2">{role.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1">{role.description}</p>
-              <div className="text-xs font-semibold text-primary bg-primary/8 border border-primary/10 rounded-lg px-3 py-2 text-center mb-4">
-                {role.earnings}
-              </div>
-              <Link to={role.link}>
-                <Button variant="outline" className="w-full gap-1" size="sm">
-                  Get Started <ArrowRight className="w-3.5 h-3.5" />
+              <div className="text-[10px] font-medium text-primary uppercase tracking-wider mb-2">{role.badge}</div>
+              <h3 className="font-semibold text-base mb-1.5 tracking-tight">{role.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">{role.description}</p>
+              <div className="text-sm font-semibold text-primary mb-4">{role.earnings}</div>
+              <Link to="/signup">
+                <Button variant="outline" className="w-full" size="sm">
+                  Get Started <ArrowRight className="w-3 h-3 ml-1" />
                 </Button>
               </Link>
             </div>

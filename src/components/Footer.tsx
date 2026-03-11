@@ -38,41 +38,35 @@ const columns = [
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border/50 pt-16 pb-8 px-6 bg-muted/20">
+    <footer className="border-t border-border pt-12 pb-8 px-6">
       <div className="container max-w-6xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-14">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-sm">
-                <Package className="w-4 h-4 text-primary-foreground" />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
+                <Package className="w-3.5 h-3.5 text-primary-foreground" />
               </div>
-              <span className="font-display font-bold text-lg tracking-tight">ProdPartner</span>
+              <span className="font-display font-bold text-sm">ProdPartner</span>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-[220px]">
+            <p className="text-xs text-muted-foreground leading-relaxed max-w-[200px]">
               Bangladesh's inventory financing platform. Own products, sell anywhere.
             </p>
           </div>
 
           {columns.map((col) => (
             <div key={col.title}>
-              <h4 className="font-display font-semibold text-sm text-foreground mb-4">
+              <h4 className="text-xs font-semibold text-foreground mb-3 uppercase tracking-wider">
                 {col.title}
               </h4>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     {link.isRoute ? (
-                      <Link
-                        to={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
+                      <Link to={link.href} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                         {link.label}
                       </Link>
                     ) : (
-                      <a
-                        href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
+                      <a href={link.href} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                         {link.label}
                       </a>
                     )}
@@ -83,13 +77,9 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="border-t border-border/50 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
-            © 2026 ProdPartner. All rights reserved.
-          </p>
-          <p className="text-xs text-muted-foreground">
-            এটি কোনো বিনিয়োগ প্ল্যাটফর্ম নয়। আপনি সরাসরি প্রোডাক্ট ইউনিটের মালিক হবেন।
-          </p>
+        <div className="border-t border-border pt-5 flex flex-col md:flex-row items-center justify-between gap-3">
+          <p className="text-[11px] text-muted-foreground">© 2026 ProdPartner. All rights reserved.</p>
+          <p className="text-[11px] text-muted-foreground">এটি বিনিয়োগ প্ল্যাটফর্ম নয়। আপনি প্রোডাক্ট ইউনিটের মালিক হবেন।</p>
         </div>
       </div>
     </footer>
