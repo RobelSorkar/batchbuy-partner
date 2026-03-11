@@ -88,8 +88,8 @@ const ProjectDetail = () => {
   const wholesaleReturnPct = perUnit.wholesaleReturnPct.toFixed(1);
   const canJoin = batch.status === "funding" && batch.remaining_units > 0;
 
-  // Map DB batch to the shape JoinBatchDialog expects
-  const batchForDialog = {
+  // Map DB row to the shape JoinProjectDialog expects
+  const projectForDialog = {
     id: batch.id,
     productName: batch.product_name,
     batchName: batch.batch_name,
