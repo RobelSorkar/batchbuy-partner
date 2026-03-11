@@ -172,7 +172,7 @@ const TransparencyDashboard = () => {
               <div className="bg-card rounded-xl shadow-card border border-border/50 p-6">
                 <div className="flex items-center gap-2 mb-5">
                   <BarChart3 className="w-5 h-5 text-primary" />
-                  <h2 className="font-display font-semibold text-lg">Batch Growth Trend</h2>
+                  <h2 className="font-display font-semibold text-lg">Project Growth Trend</h2>
                 </div>
                 {monthlyBatches.some((m) => m.batches > 0) ? (
                   <ResponsiveContainer width="100%" height={280}>
