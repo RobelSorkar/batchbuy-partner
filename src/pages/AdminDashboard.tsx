@@ -100,7 +100,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
 
   // Real data hooks
   const { data: users = [], isLoading: loadingUsers } = useAdminUsers();
-  const { data: batches = [], isLoading: loadingBatches } = useBatches();
+  const { data: batches = [], isLoading: loadingBatches } = useProjects();
   const { data: orders = [], isLoading: loadingOrders } = useOrders("admin");
   const { data: inventory = [], isLoading: loadingInventory } = useInventory();
   const { data: withdrawals = [], isLoading: loadingWithdrawals } = useAdminWithdrawals();
