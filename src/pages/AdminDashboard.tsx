@@ -117,7 +117,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   });
 
   const filteredProjects = (batches as any[]).filter((b) =>
-    batchSearch === "" || b.product_name?.toLowerCase().includes(batchSearch.toLowerCase()) || b.batch_name?.toLowerCase().includes(batchSearch.toLowerCase())
+    projectSearch === "" || b.product_name?.toLowerCase().includes(projectSearch.toLowerCase()) || b.batch_name?.toLowerCase().includes(projectSearch.toLowerCase())
   );
 
   const filteredOrders = (orders as any[]).filter((o) =>
