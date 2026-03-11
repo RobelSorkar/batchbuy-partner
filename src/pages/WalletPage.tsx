@@ -285,9 +285,9 @@ const WalletPage = () => {
                 <div className="space-y-2">
                   <Label>Select Batch</Label>
                   <Select value={reinvestBatchId} onValueChange={setReinvestBatchId}>
-                    <SelectTrigger><SelectValue placeholder="Choose a batch" /></SelectTrigger>
+                    <SelectTrigger><SelectValue placeholder="Choose a project" /></SelectTrigger>
                     <SelectContent>
-                      {fundingBatches.map((b: any) => (
+                      {fundingProjects.map((b: any) => (
                         <SelectItem key={b.id} value={b.id}>{b.product_name} — {b.batch_name}</SelectItem>
                       ))}
                     </SelectContent>
