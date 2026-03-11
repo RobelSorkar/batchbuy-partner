@@ -199,7 +199,7 @@ const TransparencyDashboard = () => {
               <div className="bg-card rounded-xl shadow-card border border-border/50 p-6">
                 <div className="flex items-center gap-2 mb-5">
                   <Layers className="w-5 h-5 text-primary" />
-                  <h2 className="font-display font-semibold text-lg">Batch Status Distribution</h2>
+                  <h2 className="font-display font-semibold text-lg">Project Status Distribution</h2>
                 </div>
                 {batchStatusData.length > 0 ? (
                   <>
