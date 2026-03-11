@@ -103,7 +103,7 @@ const WalletPage = () => {
   };
 
   const handleReinvest = async () => {
-    if (!selectedBatch || reinvestCost < 10000 || reinvestUnits <= 0 || reinvestCost > balance) return;
+    if (!selectedProject || reinvestCost < 10000 || reinvestUnits <= 0 || reinvestCost > balance) return;
     try {
       await reinvest.mutateAsync({ batchId: selectedBatch.id, batchName: selectedBatch.batch_name, amount: reinvestCost, units: reinvestUnits });
       setReinvestSuccess(true);
