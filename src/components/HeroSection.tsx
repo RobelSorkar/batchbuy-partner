@@ -30,7 +30,7 @@ const HeroSection = () => {
 
           {/* Subheadline */}
           <p
-            className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed animate-fade-in"
+            className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-8 sm:mb-10 leading-relaxed animate-fade-in"
             style={{ animationDelay: "160ms" }}
           >
             Co-finance production batches, own real product units, and sell

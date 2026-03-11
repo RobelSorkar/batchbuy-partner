@@ -143,23 +143,23 @@ const BatchDetail = () => {
                 <h3 className="font-display font-semibold mb-4 flex items-center gap-2">
                   <Calculator className="w-5 h-5 text-primary" /> Pricing Breakdown (per unit)
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-xs text-muted-foreground mb-1">Production Cost</div>
-                    <div className="text-xl font-display font-bold">৳{batch.production_cost_per_unit}</div>
-                    <div className="text-xs text-muted-foreground mt-1">Your financing</div>
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="text-center p-3 sm:p-4 bg-muted/50 rounded-lg">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Production Cost</div>
+                    <div className="text-base sm:text-xl font-display font-bold">৳{batch.production_cost_per_unit}</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">Your financing</div>
                   </div>
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-xs text-muted-foreground mb-1">Logistics</div>
-                    <div className="text-xl font-display font-bold">৳{logisticsCost}</div>
-                    <div className="text-xs text-muted-foreground mt-1">Per unit</div>
+                  <div className="text-center p-3 sm:p-4 bg-muted/50 rounded-lg">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Logistics</div>
+                    <div className="text-base sm:text-xl font-display font-bold">৳{logisticsCost}</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">Per unit</div>
                   </div>
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-xs text-muted-foreground mb-1 flex items-center justify-center gap-1">
-                      <Megaphone className="w-3 h-3" /> Marketing (10%)
+                  <div className="text-center p-3 sm:p-4 bg-muted/50 rounded-lg">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mb-1 flex items-center justify-center gap-1">
+                      <Megaphone className="w-3 h-3" /> Marketing
                     </div>
-                    <div className="text-xl font-display font-bold">৳{retailMarketingPerUnit}</div>
-                    <div className="text-xs text-muted-foreground mt-1">Of retail price</div>
+                    <div className="text-base sm:text-xl font-display font-bold">৳{retailMarketingPerUnit}</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">10% of retail</div>
                   </div>
                 </div>
 

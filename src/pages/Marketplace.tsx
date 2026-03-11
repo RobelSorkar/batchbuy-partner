@@ -64,9 +64,9 @@ const Marketplace = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input placeholder="Search by product, batch, or category..." className="pl-10" value={search} onChange={(e) => setSearch(e.target.value)} />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-x-auto pb-1 -mb-1">
               {filterOptions.map((f) => (
-                <Button key={f.value} variant={statusFilter === f.value ? "default" : "outline"} size="sm" onClick={() => setStatusFilter(f.value)}>
+                <Button key={f.value} variant={statusFilter === f.value ? "default" : "outline"} size="sm" className="shrink-0" onClick={() => setStatusFilter(f.value)}>
                   {f.label}
                 </Button>
               ))}

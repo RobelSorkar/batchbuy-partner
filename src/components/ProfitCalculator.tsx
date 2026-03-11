@@ -153,32 +153,32 @@ const ProfitCalculator = () => {
 
             {/* Main Results */}
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
-                <Package className="w-5 h-5 text-muted-foreground mb-2" />
-                <div className="text-2xl font-display font-bold text-foreground">{main.unitsFinanced}</div>
-                <div className="text-xs text-muted-foreground">Product Units</div>
+              <div className="bg-muted/50 rounded-xl p-3 sm:p-4 flex flex-col items-center text-center">
+                <Package className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground mb-1.5 sm:mb-2" />
+                <div className="text-lg sm:text-2xl font-display font-bold text-foreground">{main.unitsFinanced}</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Product Units</div>
               </div>
-              <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center text-center">
-                <Banknote className="w-5 h-5 text-muted-foreground mb-2" />
-                <div className="text-2xl font-display font-bold text-foreground">
+              <div className="bg-muted/50 rounded-xl p-3 sm:p-4 flex flex-col items-center text-center">
+                <Banknote className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground mb-1.5 sm:mb-2" />
+                <div className="text-lg sm:text-2xl font-display font-bold text-foreground break-all">
                   ৳{main.inventoryCost.toLocaleString()}
                 </div>
-                <div className="text-xs text-muted-foreground">Inventory Cost</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Inventory Cost</div>
               </div>
-              <div className="bg-primary/10 rounded-xl p-4 flex flex-col items-center text-center border border-primary/20">
-                <Calculator className="w-5 h-5 text-primary mb-2" />
-                <div className={`text-2xl font-display font-bold ${main.retailNetProfit >= 0 ? "text-primary" : "text-destructive"}`}>
+              <div className="bg-primary/10 rounded-xl p-3 sm:p-4 flex flex-col items-center text-center border border-primary/20">
+                <Calculator className="w-4 h-4 sm:w-5 sm:h-5 text-primary mb-1.5 sm:mb-2" />
+                <div className={`text-lg sm:text-2xl font-display font-bold break-all ${main.retailNetProfit >= 0 ? "text-primary" : "text-destructive"}`}>
                   ৳{main.retailNetProfit.toLocaleString()}
                 </div>
-                <div className="text-xs text-muted-foreground">Platform Sale Profit</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Platform Profit</div>
                 <div className="text-[10px] text-muted-foreground">{main.retailROI.toFixed(0)}% ROI</div>
               </div>
-              <div className="bg-accent/50 rounded-xl p-4 flex flex-col items-center text-center border border-accent-foreground/10">
-                <HandCoins className="w-5 h-5 text-accent-foreground mb-2" />
-                <div className={`text-2xl font-display font-bold ${indie.potentialProfit >= 0 ? "text-accent-foreground" : "text-destructive"}`}>
+              <div className="bg-accent/50 rounded-xl p-3 sm:p-4 flex flex-col items-center text-center border border-accent-foreground/10">
+                <HandCoins className="w-4 h-4 sm:w-5 sm:h-5 text-accent-foreground mb-1.5 sm:mb-2" />
+                <div className={`text-lg sm:text-2xl font-display font-bold break-all ${indie.potentialProfit >= 0 ? "text-accent-foreground" : "text-destructive"}`}>
                   ৳{indie.potentialProfit.toLocaleString()}
                 </div>
-                <div className="text-xs text-muted-foreground">Independent Sale Profit</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Independent Profit</div>
                 <div className="text-[10px] text-muted-foreground">{indie.potentialROI.toFixed(0)}% ROI</div>
               </div>
             </div>
