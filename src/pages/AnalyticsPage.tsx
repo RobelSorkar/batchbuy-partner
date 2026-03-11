@@ -80,12 +80,12 @@ const AnalyticsPage = () => {
   const totalOrders = orders.length;
   const totalCommission = orders.reduce((s: number, o: any) => s + Number(o.commission || 0), 0);
 
-  const batchStatusCounts = batches.reduce((acc: any, b: any) => {
+  const projectStatusCounts = batches.reduce((acc: any, b: any) => {
     acc[b.status] = (acc[b.status] || 0) + 1;
     return acc;
   }, {});
 
-  const batchStatusData = Object.entries(batchStatusCounts).map(([name, value]) => ({
+  const projectStatusData = Object.entries(projectStatusCounts).map(([name, value]) => ({
     name: name.charAt(0).toUpperCase() + name.slice(1),
     value: value as number,
     fill: name === "funding" ? "hsl(var(--accent))" : name === "production" ? "hsl(var(--secondary))" : name === "completed" ? "hsl(var(--primary))" : "hsl(var(--muted))",
