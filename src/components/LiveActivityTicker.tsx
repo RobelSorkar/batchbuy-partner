@@ -25,7 +25,7 @@ const LiveActivityTicker = () => {
       if (latestParticipation) {
         tickerItems.push({
           icon: Package,
-          label: "Latest batch",
+          label: "Latest project",
           value: `+${latestParticipation.funded_units} units in ${latestParticipation.batch_name}`,
         });
       }
