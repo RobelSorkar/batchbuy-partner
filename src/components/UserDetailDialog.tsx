@@ -409,6 +409,42 @@ export default function UserDetailDialog({ user, open, onOpenChange, onUserUpdat
                 </div>
               )}
             </TabsContent>
+
+            {/* Audit Logs Tab */}
+            <TabsContent value="logs" className="mt-0">
+              {loadingLogs ? (
+                <div className="flex justify-center py-8"><Loader2 className="w-5 h-5 animate-spin text-muted-foreground" /></div>
+              ) : auditLogs.length === 0 ? (
+                <div className="text-center py-8 text-sm text-muted-foreground">No activity logs found</div>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground mb-3">Showing last {auditLogs.length} activities</p>
+                  {auditLogs.map((log: any) => (
+                    <div key={log.id} className="rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors p-3 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-3.5 h-3.5 text-muted-foreground" />
+                          <span className="text-xs font-semibold capitalize">{log.action.replace(/_/g, " ")}</span>
+                        </div>
+                        <span className="text-[10px] text-muted-foreground">{new Date(log.created_at).toLocaleString()}</span>
+                      </div>
+                      {log.table_name && (
+                        <div className="text-[10px] text-muted-foreground">
+                          Table: <span className="font-medium text-foreground/70">{log.table_name}</span>
+                        </div>
+                      )}
+                      {log.new_values && (
+                        <div className="text-[10px] bg-primary/5 rounded p-1.5 mt-1 break-all">
+                          {Object.entries(log.new_values as Record<string, any>).map(([k, v]) => (
+                            <div key={k}><span className="text-muted-foreground">{k}:</span> <span className="font-medium">{String(v)}</span></div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
           </Tabs>
         </ScrollArea>
 
