@@ -342,7 +342,7 @@ const BatchDetail = () => {
                     <div className="space-y-3 pt-2">
                       {canJoin ? (
                         <Button className="w-full" size="lg" onClick={handleJoinClick}>
-                          Join This Batch
+                          Join This Project
                         </Button>
                       ) : (
                         <Button className="w-full" size="lg" disabled>
