@@ -188,7 +188,7 @@ const BatchDetail = () => {
               {/* Logistics Breakdown */}
               <LogisticsBreakdown logisticsCostPerUnit={logisticsCost} unitsFinanced={1} />
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
                 {[
                   { icon: MapPin, label: "Manufacturer", value: batch.manufacturer || "—" },
                   { icon: MapPin, label: "Warehouse", value: batch.warehouse || "—" },
