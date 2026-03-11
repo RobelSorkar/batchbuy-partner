@@ -28,7 +28,7 @@ export interface ProductionProject {
 /** @deprecated Use ProductionProject */
 export type ProductionBatch = ProductionProject;
 
-export interface BatchParticipation {
+export interface ProjectParticipation {
   id: string;
   batchId: string;
   userId: string;
@@ -37,6 +37,8 @@ export interface BatchParticipation {
   totalInvested: number; // units * productionCostPerUnit
   joinedAt: string;
 }
+/** @deprecated Use ProjectParticipation */
+export type BatchParticipation = ProjectParticipation;
 
 // Re-export everything from the global calculation engine so existing
 // imports from "@/types/batch" keep working without changes.
