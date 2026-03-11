@@ -111,7 +111,7 @@ const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) =>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-display">Edit Batch — {batch.product_name}</DialogTitle>
+          <DialogTitle className="font-display">Edit Project — {batch.product_name}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-5 py-2">
