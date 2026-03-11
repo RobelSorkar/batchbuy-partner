@@ -257,7 +257,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                       </div>
                     </div>
                   )}
-                  {pendingWithdrawals.length === 0 && batchStatusCounts.funding === 0 && (
+                  {pendingWithdrawals.length === 0 && projectStatusCounts.funding === 0 && (
                     <p className="text-sm text-muted-foreground">No pending actions.</p>
                   )}
                 </div>
