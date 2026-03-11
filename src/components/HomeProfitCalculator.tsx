@@ -100,7 +100,7 @@ const HomeProfitCalculator = () => {
               <Slider
                 min={minUnits}
                 max={5000}
-                step={5}
+                step={10}
                 value={[units]}
                 onValueChange={([v]) => setUnits(v)}
               />
