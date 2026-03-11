@@ -19,7 +19,7 @@ const HeroSection = () => {
 
           {/* Headline */}
           <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight text-foreground mb-6 animate-fade-in"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight text-foreground mb-6 animate-fade-in"
             style={{ animationDelay: "80ms" }}
           >
             Start Your Product{" "}
