@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { useMyParticipations } from "@/hooks/useBatches";
+import { useMyParticipations } from "@/hooks/useProjects";
 import { useWallet, useTransactions } from "@/hooks/useWallet";
 import { useInventory } from "@/hooks/useInventory";
 import { useToast } from "@/hooks/use-toast";

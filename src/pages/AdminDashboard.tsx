@@ -17,7 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, useUpdateUserRole, useToggleUserRole, AdminUser } from "@/hooks/useAdminData";
-import { useBatches } from "@/hooks/useBatches";
+import { useProjects } from "@/hooks/useProjects";
 import { useOrders } from "@/hooks/useOrders";
 import { useInventory } from "@/hooks/useInventory";
 import { supabase } from "@/integrations/supabase/client";

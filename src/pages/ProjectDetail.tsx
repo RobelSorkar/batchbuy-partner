@@ -374,4 +374,4 @@ const ProjectDetail = () => {
   );
 };
 
-export default BatchDetail;
+export default ProjectDetail;

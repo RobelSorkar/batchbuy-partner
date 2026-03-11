@@ -129,4 +129,4 @@ const ProjectsPreview = () => {
   );
 };
 
-export default BatchesPreview;
+export default ProjectsPreview;

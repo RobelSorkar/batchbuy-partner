@@ -58,7 +58,7 @@ const App = () => (
             {/* Partner routes */}
             <Route path="/partner" element={<ProtectedRoute requiredRole="partner"><PartnerDashboard /></ProtectedRoute>} />
             <Route path="/partner/inventory" element={<ProtectedRoute requiredRole="partner"><PartnerInventory /></ProtectedRoute>} />
-            <Route path="/create-batch" element={<ProtectedRoute requiredRole="admin"><CreateBatch /></ProtectedRoute>} />
+            <Route path="/create-batch" element={<ProtectedRoute requiredRole="admin"><CreateProject /></ProtectedRoute>} />
             <Route path="/wallet" element={<ProtectedRoute><WalletPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 

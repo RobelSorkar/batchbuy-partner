@@ -274,4 +274,4 @@ const CreateProject = () => {
   );
 };
 
-export default CreateBatch;
+export default CreateProject;

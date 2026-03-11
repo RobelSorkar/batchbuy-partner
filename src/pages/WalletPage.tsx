@@ -11,7 +11,7 @@ import {
   Clock, CheckCircle, RefreshCw, TrendingUp, Layers, Banknote, Repeat, Loader2
 } from "lucide-react";
 import { useWallet, useTransactions, useWithdraw, useReinvest, useDeposit } from "@/hooks/useWallet";
-import { useBatches } from "@/hooks/useBatches";
+import { useProjects } from "@/hooks/useProjects";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";

@@ -215,4 +215,4 @@ const EditProjectDialog = ({ batch, open, onOpenChange }: EditProjectDialogProps
   );
 };
 
-export default EditBatchDialog;
+export default EditProjectDialog;

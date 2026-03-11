@@ -602,4 +602,4 @@ const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps
   );
 };
 
-export default JoinBatchDialog;
+export default JoinProjectDialog;

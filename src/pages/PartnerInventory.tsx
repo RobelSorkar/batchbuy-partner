@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useMyParticipations } from "@/hooks/useBatches";
+import { useMyParticipations } from "@/hooks/useProjects";
 import { useInventory } from "@/hooks/useInventory";
 
 interface InventoryItem {

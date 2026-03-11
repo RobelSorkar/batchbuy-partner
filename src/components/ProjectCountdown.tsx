@@ -81,4 +81,4 @@ const ProjectCountdown = ({ deadline, status }: ProjectCountdownProps) => {
   );
 };
 
-export default BatchCountdown;
+export default ProjectCountdown;
