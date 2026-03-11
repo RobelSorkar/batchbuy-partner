@@ -96,8 +96,8 @@ const CreateBatch = () => {
         </button>
 
         <div>
-          <h1 className="text-2xl font-display font-bold">Create New Batch</h1>
-          <p className="text-muted-foreground text-sm mt-1">Set up a new production batch for partners to join</p>
+          <h1 className="text-2xl font-display font-bold">Create New Project</h1>
+          <p className="text-muted-foreground text-sm mt-1">Set up a new production project for partners to join</p>
         </div>
 
         <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6">
