@@ -492,7 +492,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                   </tbody>
                 </table>
               </div>
-              {filteredBatches.length === 0 && <div className="p-8 text-center text-muted-foreground">No projects found.</div>}
+              {filteredProjects.length === 0 && <div className="p-8 text-center text-muted-foreground">No projects found.</div>}
             </div>
           </TabsContent>
 
