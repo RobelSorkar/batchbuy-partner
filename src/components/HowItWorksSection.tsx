@@ -4,7 +4,7 @@ const steps = [
   {
     icon: Factory,
     step: "01",
-    title: "Join a Production Batch",
+    title: "Join a Production Project",
     description: "Choose a product and co-finance manufacturing with other partners. Min ৳10,000.",
   },
   {
