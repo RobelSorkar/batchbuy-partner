@@ -253,6 +253,58 @@ export default function UserDetailDialog({ user, open, onOpenChange, onUserUpdat
               </div>
             </TabsContent>
 
+            {/* Batches Tab */}
+            <TabsContent value="batches" className="mt-0">
+              {loadingParts ? (
+                <div className="flex justify-center py-8"><Loader2 className="w-5 h-5 animate-spin text-muted-foreground" /></div>
+              ) : participations.length === 0 ? (
+                <div className="text-center py-8 text-sm text-muted-foreground">No batch participations found</div>
+              ) : (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs text-muted-foreground">{participations.length} batch(es) joined</p>
+                    <p className="text-xs font-semibold text-primary">Total: ৳{participations.reduce((s: number, p: any) => s + Number(p.total_invested), 0).toLocaleString()}</p>
+                  </div>
+                  {participations.map((p: any) => {
+                    const batch = p.batches;
+                    const profitPerUnit = batch ? (batch.retail_price - batch.production_cost_per_unit) : 0;
+                    const estProfit = profitPerUnit * (p.units_owned - p.units_sold);
+                    return (
+                      <div key={p.id} className="rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors p-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Package className="w-3.5 h-3.5 text-muted-foreground" />
+                            <span className="text-xs font-semibold">{batch?.batch_name || "Unknown"}</span>
+                          </div>
+                          <Badge variant="outline" className={`text-[9px] px-1.5 py-0 ${batch?.status === 'completed' ? 'bg-primary/10 text-primary' : batch?.status === 'funding' ? 'bg-accent text-accent-foreground' : 'bg-secondary text-secondary-foreground'}`}>
+                            {batch?.status || "—"}
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 text-[11px]">
+                          <div>
+                            <div className="text-muted-foreground">Invested</div>
+                            <div className="font-bold">৳{Number(p.total_invested).toLocaleString()}</div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Units</div>
+                            <div className="font-bold">{p.units_owned} <span className="text-muted-foreground font-normal">({p.units_sold} sold)</span></div>
+                          </div>
+                          <div>
+                            <div className="text-muted-foreground">Est. Profit</div>
+                            <div className="font-bold text-primary">৳{Math.max(0, estProfit).toLocaleString()}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+                          <span>Mode: {p.inventory_mode}</span>
+                          <span>{new Date(p.joined_at).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </TabsContent>
+
             {/* Transactions Tab */}
             <TabsContent value="transactions" className="mt-0">
               {loadingTxns ? (
