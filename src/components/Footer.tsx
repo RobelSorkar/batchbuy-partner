@@ -38,23 +38,21 @@ const columns = [
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border/50 pt-16 pb-8 px-6">
+    <footer className="border-t border-border/50 pt-16 pb-8 px-6 bg-muted/20">
       <div className="container max-w-6xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-14">
-          {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-sm">
                 <Package className="w-4 h-4 text-primary-foreground" />
               </div>
-              <span className="font-display font-bold text-lg">ProdPartner</span>
+              <span className="font-display font-bold text-lg tracking-tight">ProdPartner</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-[220px]">
               Bangladesh's inventory financing platform. Own products, sell anywhere.
             </p>
           </div>
 
-          {/* Link columns */}
           {columns.map((col) => (
             <div key={col.title}>
               <h4 className="font-display font-semibold text-sm text-foreground mb-4">
@@ -85,7 +83,6 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* Bottom bar */}
         <div className="border-t border-border/50 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
             © 2026 ProdPartner. All rights reserved.

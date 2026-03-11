@@ -55,13 +55,13 @@ const TransparencySection = () => {
   const [activeProof, setActiveProof] = useState(0);
 
   return (
-    <section className="py-24 px-6">
+    <section className="section-padding">
       <div className="container max-w-6xl mx-auto">
-        <div className="text-center mb-14">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-accent text-accent-foreground text-sm font-medium mb-4">
+        <div className="section-header">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/8 border border-primary/15 text-primary text-sm font-medium mb-5">
             Trust & Transparency
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 font-display">
+          <h2 className="font-display mb-3">
             Everything is <span className="text-gradient-primary">trackable</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
@@ -78,7 +78,6 @@ const TransparencySection = () => {
           </div>
 
           <div className="grid md:grid-cols-5 gap-4">
-            {/* Main large image */}
             <div className="md:col-span-3 relative group rounded-2xl overflow-hidden aspect-[4/3] bg-muted">
               <img
                 src={proofGallery[activeProof].image}
@@ -87,23 +86,21 @@ const TransparencySection = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
               
-              {/* Tag badge */}
               <div className="absolute top-4 left-4 flex items-center gap-2">
                 <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                   proofGallery[activeProof].tag === "LIVE" 
-                    ? "bg-green-500/20 text-green-400 border border-green-500/30" 
+                    ? "bg-primary/20 text-primary border border-primary/30" 
                     : proofGallery[activeProof].tag === "VIDEO"
                     ? "bg-primary/20 text-primary border border-primary/30"
-                    : "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                    : "bg-primary/15 text-primary border border-primary/25"
                 }`}>
                   {proofGallery[activeProof].tag === "LIVE" && (
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 mr-1.5 animate-pulse" />
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mr-1.5 animate-pulse" />
                   )}
                   {proofGallery[activeProof].tag}
                 </span>
               </div>
 
-              {/* Play button for video */}
               {proofGallery[activeProof].tag === "VIDEO" && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center shadow-lg cursor-pointer hover:bg-primary transition-colors">
@@ -112,14 +109,12 @@ const TransparencySection = () => {
                 </div>
               )}
 
-              {/* Bottom info */}
               <div className="absolute bottom-4 left-4 right-4">
                 <p className="text-sm font-semibold text-foreground">{proofGallery[activeProof].label}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">{proofGallery[activeProof].desc}</p>
               </div>
             </div>
 
-            {/* Thumbnails */}
             <div className="md:col-span-2 grid grid-cols-3 md:grid-cols-1 gap-3">
               {proofGallery.map((proof, i) => (
                 <button
@@ -128,7 +123,7 @@ const TransparencySection = () => {
                   className={`relative rounded-xl overflow-hidden aspect-[4/3] md:aspect-[16/7] transition-all duration-300 group ${
                     activeProof === i 
                       ? "ring-2 ring-primary ring-offset-2 ring-offset-background" 
-                      : "opacity-70 hover:opacity-100"
+                      : "opacity-60 hover:opacity-100"
                   }`}
                 >
                   <img
@@ -154,10 +149,10 @@ const TransparencySection = () => {
           {items.map((item) => (
             <div
               key={item.title}
-              className="flex gap-4 p-6 rounded-xl bg-card border border-border/50 shadow-card hover:shadow-card-hover transition-all duration-300"
+              className="flex gap-4 p-6 rounded-2xl bg-card border border-border/50 shadow-card hover:shadow-card-hover transition-all duration-300"
             >
-              <div className="w-11 h-11 rounded-xl bg-accent flex items-center justify-center shrink-0">
-                <item.icon className="w-5 h-5 text-accent-foreground" />
+              <div className="w-11 h-11 rounded-xl bg-primary/8 border border-primary/10 flex items-center justify-center shrink-0">
+                <item.icon className="w-5 h-5 text-primary" />
               </div>
               <div>
                 <h3 className="font-display font-semibold mb-1">{item.title}</h3>

@@ -10,24 +10,23 @@ const objections = [
 
 const CTASection = () => {
   return (
-    <section className="py-24 px-6">
+    <section className="section-padding">
       <div className="container max-w-4xl mx-auto">
-        <div className="bg-hero rounded-2xl p-12 md:p-16 text-center relative overflow-hidden">
+        <div className="bg-hero rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,hsl(160_60%_38%/0.12),transparent_60%)]" />
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4 font-display">
+            <h2 className="text-primary-foreground mb-4 font-display">
               Start Your Product Business Today
             </h2>
-            <p className="text-primary-foreground/70 text-lg mb-6 max-w-xl mx-auto">
+            <p className="text-primary-foreground/60 text-lg mb-8 max-w-xl mx-auto">
               Join production batches, own real products, and sell through our nationwide network.
             </p>
 
-            {/* Objection busters */}
-            <div className="flex flex-wrap justify-center gap-3 md:gap-5 mb-8">
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10">
               {objections.map((item) => (
                 <div
                   key={item.text}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 backdrop-blur-sm"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary-foreground/8 border border-primary-foreground/12 backdrop-blur-sm"
                 >
                   <item.icon className="w-4 h-4 text-primary shrink-0" />
                   <span className="text-sm font-semibold text-primary-foreground whitespace-nowrap">

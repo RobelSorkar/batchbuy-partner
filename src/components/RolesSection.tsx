@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Factory, Store, Truck, Warehouse } from "lucide-react";
+import { Factory, Store, Truck, Warehouse, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const roles = [
@@ -39,13 +39,13 @@ const roles = [
 
 const RolesSection = () => {
   return (
-    <section className="py-24 px-6">
+    <section className="section-padding">
       <div className="container max-w-6xl mx-auto">
-        <div className="text-center mb-14">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-accent text-accent-foreground text-sm font-medium mb-4">
+        <div className="section-header">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/8 border border-primary/15 text-primary text-sm font-medium mb-5">
             Partner Roles
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 font-display">
+          <h2 className="font-display mb-3">
             Choose your <span className="text-gradient-primary">role</span> in the supply chain
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -53,26 +53,26 @@ const RolesSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {roles.map((role) => (
             <div
               key={role.title}
-              className="p-6 rounded-xl bg-card shadow-card hover:shadow-card-hover border border-border/50 transition-all duration-300 flex flex-col"
+              className="group p-6 rounded-2xl bg-card shadow-card hover:shadow-card-hover border border-border/50 transition-all duration-300 flex flex-col"
             >
-              <div className="w-11 h-11 rounded-xl bg-accent flex items-center justify-center mb-4">
-                <role.icon className="w-5 h-5 text-accent-foreground" />
+              <div className="w-12 h-12 rounded-2xl bg-primary/8 border border-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/12 transition-colors">
+                <role.icon className="w-5.5 h-5.5 text-primary" />
               </div>
-              <span className="inline-block self-start px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-3">
+              <span className="inline-block self-start px-2.5 py-0.5 rounded-full bg-primary/8 text-primary text-xs font-medium mb-3 border border-primary/10">
                 {role.badge}
               </span>
-              <h3 className="font-display text-lg font-semibold mb-2">{role.title}</h3>
+              <h3 className="font-display font-semibold text-lg mb-2">{role.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1">{role.description}</p>
-              <div className="text-xs font-medium text-accent-foreground bg-accent rounded-lg px-3 py-1.5 text-center mb-4">
+              <div className="text-xs font-semibold text-primary bg-primary/8 border border-primary/10 rounded-lg px-3 py-2 text-center mb-4">
                 {role.earnings}
               </div>
               <Link to={role.link}>
-                <Button variant="outline" className="w-full" size="sm">
-                  Get Started
+                <Button variant="outline" className="w-full gap-1" size="sm">
+                  Get Started <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
               </Link>
             </div>
