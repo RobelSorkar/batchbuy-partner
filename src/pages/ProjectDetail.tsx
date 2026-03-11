@@ -30,7 +30,7 @@ const statusLabels: Record<string, string> = {
   funding: "Funding", production: "In Production", completed: "Completed", shipping: "Shipping",
 };
 
-const BatchDetail = () => {
+const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
