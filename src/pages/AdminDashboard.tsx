@@ -436,7 +436,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                             </div>
                           </td>
                           <td className="px-5 py-4 text-xs text-muted-foreground">{b.batch_name}</td>
-                          <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${batchStatusColors[b.status] || ""}`}>{b.status}</span></td>
+                          <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${projectStatusColors[b.status] || ""}`}>{b.status}</span></td>
                           <td className="px-5 py-4 text-sm">{b.total_quantity}</td>
                           <td className="px-5 py-4 text-sm">{b.funded_units}/{b.total_quantity}</td>
                           <td className="px-5 py-4">
