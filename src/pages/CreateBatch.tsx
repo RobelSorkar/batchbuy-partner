@@ -221,7 +221,7 @@ const CreateBatch = () => {
 
             <div className="flex gap-3">
               <Button type="submit" size="lg" className="gap-2" disabled={loading}>
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Create Batch
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Create Project
               </Button>
               <Button type="button" variant="outline" size="lg" onClick={() => navigate(-1)}>Cancel</Button>
             </div>
