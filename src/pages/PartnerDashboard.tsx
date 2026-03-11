@@ -53,7 +53,7 @@ const PartnerDashboard = () => {
     const profitPerUnit = retailPrice - costPerUnit - logisticsCostPerUnit;
     const inv = invMap.get(batch.id);
     const joinedAt = new Date(p.joined_at);
-    const batchAgeDays = Math.max(0, Math.floor((Date.now() - joinedAt.getTime()) / (1000 * 60 * 60 * 24)));
+    const projectAgeDays = Math.max(0, Math.floor((Date.now() - joinedAt.getTime()) / (1000 * 60 * 60 * 24)));
 
     return {
       id: p.id,
