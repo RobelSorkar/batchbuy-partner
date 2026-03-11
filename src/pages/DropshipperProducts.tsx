@@ -193,7 +193,13 @@ const DropshipperProducts = () => {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-muted-foreground">No products found.</div>
+          <div className="text-center py-16 space-y-3">
+            <Package className="w-12 h-12 mx-auto text-muted-foreground/40" />
+            <h3 className="font-display font-semibold text-lg text-muted-foreground">কোনো প্রোডাক্ট এখনো সেল করার জন্য প্রস্তুত নয়</h3>
+            <p className="text-sm text-muted-foreground/70 max-w-md mx-auto">
+              প্রোডাক্ট ব্যাচ প্রোডাকশনে গেলে এখানে দেখা যাবে। নতুন ব্যাচ আসলে আপনাকে জানানো হবে।
+            </p>
+          </div>
         )}
 
         <Dialog open={orderOpen} onOpenChange={setOrderOpen}>
