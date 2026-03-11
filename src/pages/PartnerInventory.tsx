@@ -20,7 +20,7 @@ interface InventoryItem {
   inventoryValue: number;
   warehouseLocation: string;
   shelfLocation: string;
-  batchAgeDays: number;
+  projectAgeDays: number;
   status: string;
 }
 
