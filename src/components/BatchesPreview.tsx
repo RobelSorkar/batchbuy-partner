@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, Factory, Clock, TrendingUp } from "lucide-react";
 import { useBatches } from "@/hooks/useBatches";
 import { Progress } from "@/components/ui/progress";
 import { getProductImage } from "@/utils/productImages";
@@ -50,53 +50,83 @@ const BatchesPreview = () => {
             {fundingBatches.map((batch) => {
               const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
               const returnPct = Math.round(((batch.retail_price - batch.production_cost_per_unit) / batch.production_cost_per_unit) * 100);
+              const imgSrc = (batch.image && batch.image.startsWith("http")) ? batch.image : getProductImage(batch.product_name);
+
               return (
                 <Link to={`/batch/${batch.id}`} key={batch.id} className="group">
-                  <div className="rounded-xl border border-border bg-card shadow-card hover:shadow-card-hover transition-all duration-300 overflow-hidden">
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        {(batch.image && batch.image.startsWith("http")) ? (
-                          <img src={batch.image} alt={batch.product_name} className="w-12 h-12 object-cover rounded-lg" />
-                        ) : getProductImage(batch.product_name) ? (
-                          <img src={getProductImage(batch.product_name)!} alt={batch.product_name} className="w-12 h-12 object-cover rounded-lg" />
-                        ) : (
-                          <span className="text-3xl">{batch.image || "📦"}</span>
-                        )}
-                        <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${statusColors[batch.status] || "bg-muted text-muted-foreground"}`}>
-                          {batch.status === "funding" ? "Open for Investment" : batch.status}
-                        </span>
-                      </div>
-                      <h3 className="font-display font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
-                        {batch.product_name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-4">{batch.batch_name}</p>
-
-                      <div className="grid grid-cols-3 gap-3 mb-4 text-center">
-                        <div className="bg-muted/50 rounded-lg p-2">
-                          <div className="text-xs text-muted-foreground">Cost/unit</div>
-                          <div className="font-semibold text-sm">৳{batch.production_cost_per_unit}</div>
+                  <div className="rounded-2xl border border-border bg-card shadow-card hover:shadow-card-hover transition-all duration-300 overflow-hidden flex flex-col">
+                    {/* Product Image */}
+                    <div className="relative aspect-[16/10] bg-muted overflow-hidden">
+                      {imgSrc ? (
+                        <img
+                          src={imgSrc}
+                          alt={batch.product_name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-5xl">
+                          {batch.image || "📦"}
                         </div>
-                        <div className="bg-muted/50 rounded-lg p-2">
-                          <div className="text-xs text-muted-foreground">Retail</div>
-                          <div className="font-semibold text-sm">৳{batch.retail_price}</div>
-                        </div>
-                        <div className="bg-accent/50 rounded-lg p-2">
-                          <div className="text-xs text-muted-foreground">Return</div>
-                          <div className="font-semibold text-sm text-accent-foreground">~{returnPct}%</div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs text-muted-foreground">
+                      )}
+                      {/* Status badge */}
+                      <span className={`absolute top-3 right-3 text-[11px] px-2.5 py-1 rounded-full border font-semibold backdrop-blur-sm ${statusColors[batch.status] || "bg-muted text-muted-foreground"}`}>
+                        {batch.status === "funding" ? "Open for Investment" : batch.status}
+                      </span>
+                      {/* Progress overlay at bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/80 to-transparent p-3 pt-8">
+                        <div className="flex justify-between text-[11px] text-foreground/80 mb-1.5 font-medium">
                           <span>{batch.funded_units} / {batch.total_quantity} units funded</span>
                           <span>{progress}%</span>
                         </div>
-                        <Progress value={progress} className="h-2" />
+                        <Progress value={progress} className="h-1.5" />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-5 flex flex-col flex-1">
+                      {/* Title & Factory */}
+                      <h3 className="font-display font-bold text-lg mb-1 group-hover:text-primary transition-colors leading-tight">
+                        {batch.product_name}
+                      </h3>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4">
+                        <Factory className="w-3.5 h-3.5" />
+                        <span>{batch.manufacturer || batch.batch_name}</span>
                       </div>
 
-                      <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{batch.partners_joined} partners joined</span>
-                        <span>Min ৳{batch.min_participation.toLocaleString()}</span>
+                      {/* Key metrics — 3 columns */}
+                      <div className="grid grid-cols-3 gap-2 mb-4">
+                        <div className="bg-muted/50 rounded-xl p-3 text-center">
+                          <div className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1">Per Unit</div>
+                          <div className="font-display font-bold text-foreground">
+                            ৳{batch.production_cost_per_unit.toLocaleString("en-IN")}
+                          </div>
+                        </div>
+                        <div className="bg-primary/5 rounded-xl p-3 text-center border border-primary/10">
+                          <div className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1 flex items-center justify-center gap-1">
+                            <TrendingUp className="w-3 h-3" /> Profit
+                          </div>
+                          <div className="font-display font-bold text-primary">
+                            +{returnPct}%
+                          </div>
+                        </div>
+                        <div className="bg-muted/50 rounded-xl p-3 text-center">
+                          <div className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1 flex items-center justify-center gap-1">
+                            <Clock className="w-3 h-3" /> Cycle
+                          </div>
+                          <div className="font-display font-bold text-foreground">
+                            {batch.production_time_days || 30}d
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Footer: partners + CTA */}
+                      <div className="mt-auto flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">
+                          {batch.partners_joined} partners · Min ৳{batch.min_participation.toLocaleString("en-IN")}
+                        </span>
+                        <span className="text-xs font-semibold text-primary group-hover:underline flex items-center gap-1">
+                          Invest Now <ArrowRight className="w-3 h-3" />
+                        </span>
                       </div>
                     </div>
                   </div>
