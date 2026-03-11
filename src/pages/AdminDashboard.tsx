@@ -146,7 +146,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const pendingWithdrawals = (withdrawals as any[]).filter((w) => w.status === "pending");
   const pendingWithdrawalTotal = pendingWithdrawals.reduce((s: number, w: any) => s + Number(w.amount), 0);
 
-  const batchStatusCounts = {
+  const projectStatusCounts = {
     funding: (batches as any[]).filter((b) => b.status === "funding").length,
     production: (batches as any[]).filter((b) => b.status === "production").length,
     completed: (batches as any[]).filter((b) => b.status === "completed").length,
