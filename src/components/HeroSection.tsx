@@ -85,7 +85,7 @@ const HeroSection = () => {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-0">
+            <div className="grid grid-cols-3 gap-3 md:grid-cols-5 md:gap-0">
               {[
                 { icon: Users, label: "Partners Pool", desc: "Co-finance together" },
                 { icon: Factory, label: "Factory", desc: "Manufacturing begins" },
@@ -93,17 +93,17 @@ const HeroSection = () => {
                 { icon: Store, label: "Sales Channels", desc: "Multi-channel sales" },
                 { icon: TrendingUp, label: "Profit", desc: "Earn & withdraw" },
               ].map((step, i, arr) => (
-                <div key={step.label} className="flex items-center">
-                  <div className="flex-1 text-center px-2">
-                    <div className={`w-10 h-10 rounded-xl mx-auto mb-2 flex items-center justify-center ${
+                <div key={step.label} className={`flex items-center ${i >= 3 ? "col-span-1" : ""} ${i === 3 ? "col-start-1 sm:col-start-auto" : ""}`}>
+                  <div className="flex-1 text-center px-1 md:px-2">
+                    <div className={`w-9 h-9 md:w-10 md:h-10 rounded-xl mx-auto mb-1.5 md:mb-2 flex items-center justify-center ${
                       i === arr.length - 1
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-muted-foreground"
                     }`}>
-                      <step.icon className="w-5 h-5" />
+                      <step.icon className="w-4 h-4 md:w-5 md:h-5" />
                     </div>
-                    <div className="text-sm font-semibold text-foreground">{step.label}</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">{step.desc}</div>
+                    <div className="text-xs md:text-sm font-semibold text-foreground">{step.label}</div>
+                    <div className="text-[10px] md:text-[11px] text-muted-foreground mt-0.5">{step.desc}</div>
                   </div>
                   {i < arr.length - 1 && (
                     <ArrowRight className="w-4 h-4 text-border shrink-0 hidden md:block" />
