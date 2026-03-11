@@ -19,7 +19,7 @@ import DropshipperProducts from "./pages/DropshipperProducts";
 import DropshipperOrders from "./pages/DropshipperOrders";
 import WalletPage from "./pages/WalletPage";
 import AdminDashboard from "./pages/AdminDashboard";
-import CreateBatch from "./pages/CreateBatch";
+import CreateProject from "./pages/CreateProject";
 import WarehousePage from "./pages/WarehousePage";
 import OrderManagement from "./pages/OrderManagement";
 import DistributionPage from "./pages/DistributionPage";
