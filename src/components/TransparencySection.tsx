@@ -21,22 +21,22 @@ const TransparencySection = () => {
   const [activeProof, setActiveProof] = useState(0);
 
   return (
-    <section className="py-20 md:py-28 px-6 bg-muted/30">
+    <section className="py-14 sm:py-20 md:py-28 px-4 sm:px-6 bg-muted/30">
       <div className="container max-w-5xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="text-sm font-medium text-primary mb-3">Trust & Transparency</p>
-          <h2 className="text-3xl md:text-4xl font-bold font-display tracking-tight mb-4">
+        <div className="text-center mb-10 sm:mb-14">
+          <p className="text-xs sm:text-sm font-medium text-primary mb-2 sm:mb-3">Trust & Transparency</p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight mb-3 sm:mb-4">
             Everything is trackable
           </h2>
-          <p className="text-muted-foreground max-w-md mx-auto">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
             No hidden fees. Every taka and every product unit is fully transparent.
           </p>
         </div>
 
         {/* Gallery */}
-        <div className="mb-12">
-          <div className="grid md:grid-cols-5 gap-3">
-            <div className="md:col-span-3 relative group rounded-xl overflow-hidden aspect-[4/3] bg-muted">
+        <div className="mb-8 sm:mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+            <div className="md:col-span-3 relative group rounded-xl overflow-hidden aspect-[4/3] sm:aspect-[4/3] bg-muted">
               <img
                 src={proofGallery[activeProof].image}
                 alt={proofGallery[activeProof].label}
@@ -55,8 +55,8 @@ const TransparencySection = () => {
 
               {proofGallery[activeProof].tag === "VIDEO" && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
-                    <Play className="w-6 h-6 text-primary-foreground ml-0.5" />
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
+                    <Play className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground ml-0.5" />
                   </div>
                 </div>
               )}
@@ -90,15 +90,15 @@ const TransparencySection = () => {
         </div>
 
         {/* Feature grid */}
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {items.map((item) => (
-            <div key={item.title} className="flex gap-3 p-4 rounded-xl border border-border bg-card">
+            <div key={item.title} className="flex gap-3 p-3 sm:p-4 rounded-xl border border-border bg-card">
               <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center shrink-0">
                 <item.icon className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <h3 className="text-sm font-semibold mb-0.5">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                <h3 className="text-xs sm:text-sm font-semibold mb-0.5">{item.title}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}

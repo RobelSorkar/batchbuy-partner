@@ -16,20 +16,20 @@ const BatchesPreview = () => {
   const fundingBatches = (batches || []).filter((b) => b.status === "funding").slice(0, 3);
 
   return (
-    <section className="py-20 md:py-28 px-6 bg-muted/30">
+    <section className="py-14 sm:py-20 md:py-28 px-4 sm:px-6 bg-muted/30">
       <div className="container max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4">
           <div>
-            <p className="text-sm font-medium text-primary mb-3">Live Batches</p>
-            <h2 className="text-3xl md:text-4xl font-bold font-display tracking-tight">
+            <p className="text-xs sm:text-sm font-medium text-primary mb-2 sm:mb-3">Live Batches</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight">
               Open production batches
             </h2>
-            <p className="text-muted-foreground mt-2 max-w-md">
+            <p className="text-sm sm:text-base text-muted-foreground mt-1.5 sm:mt-2 max-w-md">
               Browse real product batches currently accepting financing partners.
             </p>
           </div>
           <Link to="/marketplace">
-            <Button variant="outline" size="sm" className="gap-1.5">
+            <Button variant="outline" size="sm" className="gap-1.5 h-10 sm:h-9">
               View All <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
@@ -44,7 +44,7 @@ const BatchesPreview = () => {
             No active batches right now. Check back soon.
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {fundingBatches.map((batch) => {
               const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
               const returnPct = Math.round(((batch.retail_price - batch.production_cost_per_unit) / batch.production_cost_per_unit) * 100);
@@ -86,31 +86,31 @@ const BatchesPreview = () => {
                           <span>{batch.funded_units}/{batch.total_quantity} units</span>
                           <span>{progress}%</span>
                         </div>
-                        <Progress value={progress} className="h-1" />
+                        <Progress value={progress} className="h-1.5 sm:h-1" />
                       </div>
 
                       {/* Metrics row */}
                       <div className="grid grid-cols-3 gap-2 text-center mb-3">
                         <div>
                           <div className="text-[10px] text-muted-foreground mb-0.5">Cost/Unit</div>
-                          <div className="text-sm font-semibold">৳{batch.production_cost_per_unit.toLocaleString("en-IN")}</div>
+                          <div className="text-xs sm:text-sm font-semibold">৳{batch.production_cost_per_unit.toLocaleString("en-IN")}</div>
                         </div>
                         <div>
                           <div className="text-[10px] text-muted-foreground mb-0.5 flex items-center justify-center gap-0.5">
                             <TrendingUp className="w-2.5 h-2.5" /> Return
                           </div>
-                          <div className="text-sm font-semibold text-primary">+{returnPct}%</div>
+                          <div className="text-xs sm:text-sm font-semibold text-primary">+{returnPct}%</div>
                         </div>
                         <div>
                           <div className="text-[10px] text-muted-foreground mb-0.5 flex items-center justify-center gap-0.5">
                             <Clock className="w-2.5 h-2.5" /> Cycle
                           </div>
-                          <div className="text-sm font-semibold">{batch.production_time_days || 30}d</div>
+                          <div className="text-xs sm:text-sm font-semibold">{batch.production_time_days || 30}d</div>
                         </div>
                       </div>
 
                       <div className="mt-auto pt-3 border-t border-border flex items-center justify-between">
-                        <span className="text-[11px] text-muted-foreground">
+                        <span className="text-[10px] sm:text-[11px] text-muted-foreground">
                           {batch.partners_joined} partners · Min ৳{batch.min_participation.toLocaleString("en-IN")}
                         </span>
                         <span className="text-xs font-semibold text-primary flex items-center gap-0.5 group-hover:gap-1.5 transition-all">
