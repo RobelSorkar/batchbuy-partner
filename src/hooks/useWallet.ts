@@ -93,10 +93,11 @@ export function useReinvest() {
     mutationFn: async ({ batchId, batchName, amount, units }: { batchId: string; batchName: string; amount: number; units: number }) => {
       if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase.rpc("join_batch", {
+      const { data, error } = await supabase.rpc("join_batch" as any, {
         p_batch_id: batchId,
         p_units: units,
         p_total_invested: amount,
+        p_selling_preference: "platform",
       });
       if (error) throw error;
       return data;
