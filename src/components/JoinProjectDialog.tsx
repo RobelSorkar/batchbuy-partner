@@ -581,7 +581,7 @@ const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps
             className="w-full"
             size="lg"
           >
-            {joinBatch.isPending ? (
+            {joinProject.isPending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : sellingPreference === "platform" ? (
               <Store className="w-4 h-4" />
