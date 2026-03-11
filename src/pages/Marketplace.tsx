@@ -32,7 +32,7 @@ const filterOptions = [
 const Marketplace = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const { data: batches, isLoading } = useBatches();
+  const { data: batches, isLoading } = useProjects();
 
   const filtered = (batches || []).filter((b) => {
     if (b.status === "cancelled" || b.status === "draft") return false;

@@ -41,7 +41,7 @@ const WalletPage = () => {
   const { user } = useAuth();
   const { data: wallet, isLoading: walletLoading } = useWallet();
   const { data: transactions = [], isLoading: txnLoading } = useTransactions();
-  const { data: batches = [] } = useBatches();
+  const { data: batches = [] } = useProjects();
   const withdraw = useWithdraw();
   const reinvest = useReinvest();
   const deposit = useDeposit();
