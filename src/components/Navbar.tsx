@@ -48,9 +48,9 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-1">
           {[
-            { label: "How It Works", href: "#how-it-works" },
-            { label: "Batches", href: "#batches" },
-            { label: "Roles", href: "#roles" },
+            { label: "How It Works", href: "/#how-it-works" },
+            { label: "Batches", href: "/#batches" },
+            { label: "Roles", href: "/#roles" },
           ].map((item) => (
             <a
               key={item.label}
@@ -99,9 +99,9 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl px-4 py-3 space-y-1 animate-in slide-in-from-top-2 duration-200">
           {[
-            { label: "How It Works", href: "#how-it-works" },
-            { label: "Batches", href: "#batches" },
-            { label: "Roles", href: "#roles" },
+            { label: "How It Works", href: "/#how-it-works" },
+            { label: "Batches", href: "/#batches" },
+            { label: "Roles", href: "/#roles" },
           ].map((item) => (
             <a
               key={item.label}
