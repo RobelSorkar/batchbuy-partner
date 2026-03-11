@@ -52,7 +52,7 @@ const PartnerInventory = () => {
       const shelfLocation = inv?.shelf_location || "—";
 
       const createdAt = new Date(p.joined_at);
-      const batchAgeDays = Math.max(0, Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24)));
+      const projectAgeDays = Math.max(0, Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24)));
 
       return {
         participationId: p.id,
