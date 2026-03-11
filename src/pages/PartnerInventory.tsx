@@ -140,7 +140,7 @@ const PartnerInventory = () => {
           <CardContent className="p-0">
             {items.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground text-sm">
-                No inventory yet. Finance batches from the marketplace to start tracking.
+                No inventory yet. Finance projects from the marketplace to start tracking.
               </div>
             ) : (
               <div className="overflow-x-auto">
