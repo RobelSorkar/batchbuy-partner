@@ -139,7 +139,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
               <CheckCircle className="w-8 h-8 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-display font-bold">Batch Joined Successfully!</h2>
+              <h2 className="text-xl font-display font-bold">Project Joined Successfully!</h2>
               <p className="text-muted-foreground text-sm mt-1">
                 You financed <span className="font-semibold text-foreground">{units} units</span> of{" "}
                 <span className="font-semibold text-foreground">{batch.productName}</span>
