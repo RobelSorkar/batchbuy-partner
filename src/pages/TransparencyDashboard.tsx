@@ -79,7 +79,7 @@ const TransparencyDashboard = () => {
     funding: "hsl(45, 93%, 47%)", production: "hsl(220, 70%, 55%)",
     completed: "hsl(160, 84%, 39%)", cancelled: "hsl(0, 72%, 51%)",
   };
-  const batchStatusData = Object.entries(statusCounts).map(([key, value]) => ({
+  const projectStatusData = Object.entries(statusCounts).map(([key, value]) => ({
     name: statusLabels[key] || key, value: value as number, fill: statusColors[key] || "hsl(var(--muted))",
   }));
 
