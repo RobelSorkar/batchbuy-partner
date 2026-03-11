@@ -77,7 +77,7 @@ const Marketplace = () => {
             </div>
           ) : (
             <>
-              <p className="text-xs sm:text-sm text-muted-foreground mb-4">{filtered.length} batches found</p>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4">{filtered.length} projects found</p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filtered.map((batch) => {
