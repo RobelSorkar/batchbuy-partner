@@ -790,13 +790,13 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
 
                 <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
                   <h2 className="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-                    <Layers className="w-5 h-5 text-primary" /> Batch Status
+                    <Layers className="w-5 h-5 text-primary" /> Project Status
                   </h2>
                   <div className="space-y-3">
                     {[
-                      { label: "Funding", count: batchStatusCounts.funding, color: "bg-accent" },
-                      { label: "In Production", count: batchStatusCounts.production, color: "bg-secondary" },
-                      { label: "Completed", count: batchStatusCounts.completed, color: "bg-primary" },
+                      { label: "Funding", count: projectStatusCounts.funding, color: "bg-accent" },
+                      { label: "In Production", count: projectStatusCounts.production, color: "bg-secondary" },
+                      { label: "Completed", count: projectStatusCounts.completed, color: "bg-primary" },
                     ].map((item) => (
                       <div key={item.label} className="flex items-center justify-between bg-muted/30 rounded-lg p-3">
                         <div className="flex items-center gap-2">
