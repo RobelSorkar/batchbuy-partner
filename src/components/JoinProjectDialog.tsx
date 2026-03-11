@@ -577,7 +577,7 @@ const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps
           {/* ── Submit ─────────────────────────────────────────────────────── */}
           <Button
             onClick={handleSubmit}
-            disabled={!isValid || joinBatch.isPending}
+            disabled={!isValid || joinProject.isPending}
             className="w-full"
             size="lg"
           >
