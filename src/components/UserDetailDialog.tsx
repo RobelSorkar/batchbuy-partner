@@ -112,6 +112,24 @@ function useUserParticipations(userId: string | undefined) {
   });
 }
 
+function useUserAuditLogs(userId: string | undefined) {
+  return useQuery({
+    queryKey: ["admin-user-audit-logs", userId],
+    queryFn: async () => {
+      if (!userId) return [];
+      const { data, error } = await supabase
+        .from("audit_logs")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(30);
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!userId,
+  });
+}
+
 export default function UserDetailDialog({ user, open, onOpenChange, onUserUpdate }: UserDetailDialogProps) {
   const { toast } = useToast();
   const toggleUserRole = useToggleUserRole();
