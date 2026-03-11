@@ -8,7 +8,7 @@ import {
   CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet,
   Store, PackageCheck, ChevronRight, Coins, ArrowRight, CreditCard, X,
 } from "lucide-react";
-import { ProductionBatch } from "@/types/batch";
+import { ProductionProject } from "@/types/batch";
 import {
   MINIMUM_PARTICIPATION_BDT,
   allocateUnits,
