@@ -25,7 +25,7 @@ const BatchesPreview = () => {
               Open production projects
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground mt-1.5 sm:mt-2 max-w-md">
-              Browse real product batches currently accepting financing partners.
+              Browse real production projects currently accepting financing partners.
             </p>
           </div>
           <Link to="/marketplace">
