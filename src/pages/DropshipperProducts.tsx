@@ -124,14 +124,23 @@ const DropshipperProducts = () => {
         <p className="text-sm text-muted-foreground">{filtered.length} products available</p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((product) => (
-            <div key={product.id} className="bg-card rounded-xl shadow-card border border-border/50 overflow-hidden group">
-              <div className="h-36 bg-muted/50 flex items-center justify-center overflow-hidden">
+          {filtered.map((product) => {
+            const sellable = product.status === "production" || product.status === "completed";
+            const statusLabel = product.status === "funding" ? "Funding" : product.status === "closed" ? "Closed" : product.status === "production" ? "Production" : product.status === "completed" ? "Completed" : product.status;
+            const statusVariant = sellable ? "default" : product.status === "funding" ? "secondary" : "outline";
+
+            return (
+            <div key={product.id} className={`bg-card rounded-xl shadow-card border border-border/50 overflow-hidden group ${!sellable ? "opacity-75" : ""}`}>
+              <div className="relative h-36 bg-muted/50 flex items-center justify-center overflow-hidden">
                 {product.image && product.image.startsWith("http") ? (
                   <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-5xl">{product.image}</span>
                 )}
+                <Badge variant={statusVariant as any} className="absolute top-2 right-2 text-[10px]">
+                  {sellable ? <Package className="w-3 h-3 mr-1" /> : <Clock className="w-3 h-3 mr-1" />}
+                  {statusLabel}
+                </Badge>
               </div>
               <div className="p-5 space-y-3">
                 <div className="flex items-center justify-between">
@@ -167,8 +176,8 @@ const DropshipperProducts = () => {
                 </div>
 
                 <div className="flex gap-2 pt-1">
-                  <Button size="sm" className="flex-1 gap-1.5" onClick={() => { setSelectedProduct(product); setOrderOpen(true); }}>
-                    <ShoppingCart className="w-3.5 h-3.5" /> Create Order
+                  <Button size="sm" className="flex-1 gap-1.5" disabled={!sellable} onClick={() => { setSelectedProduct(product); setOrderOpen(true); }}>
+                    <ShoppingCart className="w-3.5 h-3.5" /> {sellable ? "Create Order" : "Not Available"}
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => handleCopyLink(product)}>
                     {linkCopied === product.id ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -177,7 +186,8 @@ const DropshipperProducts = () => {
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {filtered.length === 0 && (
