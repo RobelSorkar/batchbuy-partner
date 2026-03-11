@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { z } from "zod";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Search, TrendingUp, ShoppingCart, Share2, Copy, Check, Loader2 } from "lucide-react";
+import { Search, TrendingUp, ShoppingCart, Share2, Copy, Check, Loader2, Clock, Package } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
