@@ -16,7 +16,7 @@ interface EditProjectDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) => {
+const EditProjectDialog = ({ batch, open, onOpenChange }: EditProjectDialogProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { upload, uploading } = useImageUpload();
