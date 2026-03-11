@@ -95,6 +95,23 @@ function useUserOrders(userId: string | undefined) {
   });
 }
 
+function useUserParticipations(userId: string | undefined) {
+  return useQuery({
+    queryKey: ["admin-user-participations", userId],
+    queryFn: async () => {
+      if (!userId) return [];
+      const { data, error } = await supabase
+        .from("batch_participations")
+        .select("*, batches(*)")
+        .eq("user_id", userId)
+        .order("joined_at", { ascending: false });
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!userId,
+  });
+}
+
 export default function UserDetailDialog({ user, open, onOpenChange, onUserUpdate }: UserDetailDialogProps) {
   const { toast } = useToast();
   const toggleUserRole = useToggleUserRole();
