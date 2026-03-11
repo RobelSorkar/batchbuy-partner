@@ -66,8 +66,8 @@ const BatchDetail = () => {
       <div className="min-h-screen bg-background">
         <Navbar />
         <div className="pt-24 pb-16 px-6 text-center">
-          <h1 className="text-2xl font-display font-bold mb-2">Batch Not Found</h1>
-          <p className="text-muted-foreground mb-4">The batch you're looking for doesn't exist.</p>
+          <h1 className="text-2xl font-display font-bold mb-2">Project Not Found</h1>
+          <p className="text-muted-foreground mb-4">The project you're looking for doesn't exist.</p>
           <Link to="/marketplace"><Button>Back to Marketplace</Button></Link>
         </div>
         <Footer />
