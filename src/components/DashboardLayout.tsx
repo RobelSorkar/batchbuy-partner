@@ -74,7 +74,6 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
 
   const activeLabel = navItems.find((item) => location.pathname === item.href)?.label || "Dashboard";
 
-  // Fetch user's roles to determine which switch options to show
   useEffect(() => {
     async function fetchRoles() {
       if (!user) return;
@@ -94,7 +93,6 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
     navigate("/login");
   };
 
-  // Determine available switch targets (roles user has that aren't the current one)
   const switchTargets: { role: string; label: string; href: string }[] = [];
   if (role !== "admin" && role !== "warehouse") {
     if (role !== "partner" && userRoles.includes("partner")) {
@@ -113,28 +111,28 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center gap-2 h-16 px-6 border-b border-sidebar-border">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-sidebar-primary flex items-center justify-center">
+        <div className="flex items-center gap-2.5 h-16 px-6 border-b border-sidebar-border">
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-sidebar-primary flex items-center justify-center">
               <Package className="w-4 h-4 text-sidebar-primary-foreground" />
             </div>
-            <span className="font-display font-bold text-sidebar-foreground">ProdPartner</span>
+            <span className="font-display font-bold text-sidebar-foreground tracking-tight">ProdPartner</span>
           </Link>
         </div>
 
-        <div className="px-4 pt-4 pb-2">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-sidebar-foreground/40">
+        <div className="px-4 pt-5 pb-2">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/35">
             {roleLabels[role]}
           </span>
         </div>
 
-        <nav className="px-4 space-y-1">
+        <nav className="px-3 space-y-0.5">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
               to={item.href}
               end
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
               activeClassName="bg-sidebar-accent text-sidebar-primary"
               onClick={() => setSidebarOpen(false)}
             >
@@ -144,12 +142,12 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
           ))}
         </nav>
 
-        <div className="absolute bottom-4 left-4 right-4 space-y-1">
+        <div className="absolute bottom-4 left-3 right-3 space-y-0.5">
           {switchTargets.map((target) => (
             <Link
               key={target.role}
               to={target.href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-sidebar-foreground/45 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
             >
               <Users className="w-4 h-4" />
               Switch to {target.label}
@@ -157,7 +155,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
           ))}
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground/50 hover:text-destructive hover:bg-destructive/10 transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-sidebar-foreground/45 hover:text-destructive hover:bg-destructive/10 transition-colors"
           >
             <LogOut className="w-4 h-4" />
             Sign Out
@@ -167,21 +165,21 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
 
       {/* Mobile Overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-foreground/20 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
       {/* Main Content */}
       <main className="flex-1 lg:ml-64 min-h-screen">
-        <header className="sticky top-0 z-20 h-16 border-b border-border bg-background/80 backdrop-blur-lg flex items-center justify-between px-6">
+        <header className="sticky top-0 z-20 h-16 border-b border-border/60 bg-background/80 backdrop-blur-xl flex items-center justify-between px-6">
           <div className="flex items-center gap-4">
-            <button className="lg:hidden" onClick={() => setSidebarOpen(true)}>
+            <button className="lg:hidden p-2 rounded-lg hover:bg-muted/50 transition-colors" onClick={() => setSidebarOpen(true)}>
               <Menu className="w-5 h-5" />
             </button>
-            <div className="font-display font-semibold text-lg">{activeLabel}</div>
+            <div className="font-display font-semibold text-lg tracking-tight">{activeLabel}</div>
           </div>
           <div className="flex items-center gap-3">
             <NotificationDropdown />
-            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
               {role === "admin" ? "A" : role === "partner" ? "P" : role === "warehouse" ? "W" : role === "dropshipper" ? "S" : "D"}
             </div>
           </div>

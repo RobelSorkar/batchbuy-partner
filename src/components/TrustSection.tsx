@@ -15,27 +15,27 @@ const stats = [
 
 const TrustSection = () => {
   return (
-    <section className="py-16 px-6 bg-card border-y border-border">
+    <section className="py-14 px-6 bg-card border-y border-border/50">
       <div className="container max-w-5xl mx-auto">
         {/* Credibility badges */}
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10">
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10">
           {badges.map((b) => (
             <div
               key={b.label}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-accent/60 border border-border/50 text-sm font-medium text-accent-foreground"
+              className="flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-muted/60 border border-border/50 text-sm font-medium text-foreground"
             >
-              <b.icon className="w-4 h-4" />
+              <b.icon className="w-4 h-4 text-primary" />
               {b.label}
             </div>
           ))}
         </div>
 
         {/* Stats */}
-        <div className="flex flex-wrap justify-center gap-10 md:gap-16">
+        <div className="flex flex-wrap justify-center gap-12 md:gap-20">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-3xl md:text-4xl font-display font-bold text-foreground">{s.value}</div>
-              <div className="text-sm text-muted-foreground mt-1">{s.label}</div>
+              <div className="text-sm text-muted-foreground mt-1.5">{s.label}</div>
             </div>
           ))}
         </div>
