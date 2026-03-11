@@ -7,6 +7,9 @@ export interface AdminUser {
   id: string;
   name: string;
   email: string;
+  phone: string;
+  address: string;
+  avatarUrl: string;
   roles: string[];
   role: string; // primary role for display
   joined: string;
