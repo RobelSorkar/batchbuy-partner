@@ -79,11 +79,11 @@ const WalletPage = () => {
 
   const filteredTxns = txnFilter === "all" ? transactions : transactions.filter((t: any) => t.type === txnFilter);
 
-  const fundingBatches = batches.filter((b: any) => b.status === "funding" && b.remaining_units > 0);
-  const selectedBatch = fundingBatches.find((b: any) => b.id === reinvestBatchId);
+  const fundingProjects = batches.filter((b: any) => b.status === "funding" && b.remaining_units > 0);
+  const selectedProject = fundingProjects.find((b: any) => b.id === reinvestBatchId);
   const reinvestAmt = Number(reinvestAmount) || 0;
-  const { units: reinvestUnits, inventoryCost: reinvestCost } = selectedBatch
-    ? allocateUnits(reinvestAmt, selectedBatch.production_cost_per_unit)
+  const { units: reinvestUnits, inventoryCost: reinvestCost } = selectedProject
+    ? allocateUnits(reinvestAmt, selectedProject.production_cost_per_unit)
     : { units: 0, inventoryCost: 0 };
 
   const handleWithdraw = async () => {
