@@ -840,7 +840,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
           onOpenChange={(open) => { if (!open) { setUserDetail(null); setEditingRole(null); } }}
           onUserUpdate={(updatedUser) => setUserDetail(updatedUser)}
         />
-        <EditProjectDialog batch={editingBatch} open={!!editingBatch} onOpenChange={(o) => !o && setEditingBatch(null)} />
+        <EditProjectDialog batch={editingProject} open={!!editingProject} onOpenChange={(o) => !o && setEditingProject(null)} />
       </div>
     </DashboardLayout>
   );

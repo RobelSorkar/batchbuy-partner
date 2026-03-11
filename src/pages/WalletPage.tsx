@@ -297,13 +297,13 @@ const WalletPage = () => {
                   <Label htmlFor="r-amount">Amount (BDT)</Label>
                   <Input id="r-amount" type="number" min="10000" max={balance} value={reinvestAmount} onChange={(e) => setReinvestAmount(e.target.value)} />
                 </div>
-                {selectedBatch && reinvestUnits > 0 && (
+                {selectedProject && reinvestUnits > 0 && (
                   <div className="bg-accent/50 rounded-lg p-3 text-sm border border-primary/10">
-                    <p>You'll get <span className="font-semibold">{reinvestUnits} units</span> at ৳{selectedBatch.production_cost_per_unit}/unit</p>
+                    <p>You'll get <span className="font-semibold">{reinvestUnits} units</span> at ৳{selectedProject.production_cost_per_unit}/unit</p>
                     <p className="text-xs text-muted-foreground">Total: ৳{reinvestCost.toLocaleString()}</p>
                   </div>
                 )}
-                <Button className="w-full" disabled={!selectedBatch || reinvestUnits <= 0 || reinvestAmt > balance || reinvest.isPending} onClick={handleReinvest}>
+                <Button className="w-full" disabled={!selectedProject || reinvestUnits <= 0 || reinvestAmt > balance || reinvest.isPending} onClick={handleReinvest}>
                   {reinvest.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null} Confirm Reinvestment
                 </Button>
               </div>
