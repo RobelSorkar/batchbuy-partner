@@ -30,6 +30,8 @@ const ProfilePage = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropDialogOpen, setCropDialogOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: profile, isLoading } = useQuery({
