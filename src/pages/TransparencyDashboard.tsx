@@ -191,7 +191,7 @@ const TransparencyDashboard = () => {
                     </AreaChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="text-center text-muted-foreground py-16 text-sm">No batch data yet</div>
+                  <div className="text-center text-muted-foreground py-16 text-sm">No project data yet</div>
                 )}
               </div>
 
