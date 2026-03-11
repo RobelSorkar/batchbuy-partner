@@ -1,4 +1,6 @@
-export type BatchStatus = "draft" | "funding" | "production" | "shipping" | "completed" | "cancelled";
+export type ProjectStatus = "draft" | "funding" | "production" | "shipping" | "completed" | "cancelled";
+/** @deprecated Use ProjectStatus */
+export type BatchStatus = ProjectStatus;
 
 export interface ProductionBatch {
   id: string;
