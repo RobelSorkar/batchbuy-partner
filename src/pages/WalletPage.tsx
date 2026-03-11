@@ -80,7 +80,7 @@ const WalletPage = () => {
   const filteredTxns = txnFilter === "all" ? transactions : transactions.filter((t: any) => t.type === txnFilter);
 
   const fundingProjects = batches.filter((b: any) => b.status === "funding" && b.remaining_units > 0);
-  const selectedProject = fundingProjects.find((b: any) => b.id === reinvestBatchId);
+  const selectedProject = fundingProjects.find((b: any) => b.id === reinvestProjectId);
   const reinvestAmt = Number(reinvestAmount) || 0;
   const { units: reinvestUnits, inventoryCost: reinvestCost } = selectedProject
     ? allocateUnits(reinvestAmt, selectedProject.production_cost_per_unit)
