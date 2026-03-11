@@ -35,6 +35,8 @@ const DropshipperProducts = () => {
   const createOrder = useCreateOrder();
 
   const filtered = (products || []).filter((p) => {
+    const sellable = p.status === "production" || p.status === "completed";
+    if (!sellable) return false;
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
     const matchCat = category === "All" || p.category === category;
     return matchSearch && matchCat;
