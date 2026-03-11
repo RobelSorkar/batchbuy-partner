@@ -182,9 +182,9 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
               <DollarSign className={`w-4 h-4 ${reconciling ? "animate-spin" : ""}`} /> {reconciling ? "Reconciling…" : "Reconcile Wallets"}
             </Button>
             <Button variant="outline" className="gap-2" onClick={syncBatchStats} disabled={syncing}>
-              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Syncing…" : "Sync Batch Stats"}
+              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Syncing…" : "Sync Project Stats"}
             </Button>
-            <Link to="/create-batch"><Button variant="outline" className="gap-2"><Layers className="w-4 h-4" /> Create Batch</Button></Link>
+            <Link to="/create-batch"><Button variant="outline" className="gap-2"><Layers className="w-4 h-4" /> Create Project</Button></Link>
             <Link to="/admin/orders"><Button className="gap-2"><ShoppingCart className="w-4 h-4" /> Manage Orders</Button></Link>
           </div>
         </div>
