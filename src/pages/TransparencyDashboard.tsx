@@ -233,7 +233,7 @@ const TransparencyDashboard = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="text-center text-muted-foreground py-16 text-sm">No batches yet</div>
+                  <div className="text-center text-muted-foreground py-16 text-sm">No projects yet</div>
                 )}
               </div>
             </div>
