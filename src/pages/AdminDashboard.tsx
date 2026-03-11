@@ -9,6 +9,7 @@ import {
   Search, XCircle, RefreshCw, Loader2, Pencil, Phone, MapPin
 } from "lucide-react";
 import EditBatchDialog from "@/components/EditBatchDialog";
+import UserDetailDialog from "@/components/UserDetailDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
