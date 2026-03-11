@@ -1,54 +1,96 @@
 import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Package } from "lucide-react";
+import { ArrowRight, Package, TrendingUp, ShoppingBag, Truck, BarChart3, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { calcInvestmentEstimate } from "@/lib/calculations";
 
-const COST_PER_UNIT = 420;
-const WHOLESALE_PRICE = 520;
-const RETAIL_PRICE = 650;
-const LOGISTICS_PER_UNIT = 100;
+const EXAMPLE_PRODUCT = {
+  name: "Premium Cotton T-Shirt",
+  category: "Garments",
+  costPerUnit: 420,
+  wholesalePrice: 520,
+  retailPrice: 650,
+  logisticsPerUnit: 100,
+};
+
 const SELL_THROUGH = 80;
 
 const HomeProfitCalculator = () => {
   const [units, setUnits] = useState(50);
+  const [showBreakdown, setShowBreakdown] = useState(false);
 
-  const investmentAmount = units * COST_PER_UNIT;
+  const { costPerUnit, wholesalePrice, retailPrice, logisticsPerUnit } = EXAMPLE_PRODUCT;
+
+  const investmentAmount = units * costPerUnit;
   const est = calcInvestmentEstimate(
     investmentAmount,
-    COST_PER_UNIT,
-    WHOLESALE_PRICE,
-    RETAIL_PRICE,
-    LOGISTICS_PER_UNIT,
+    costPerUnit,
+    wholesalePrice,
+    retailPrice,
+    logisticsPerUnit,
     SELL_THROUGH
   );
 
+  const unitsSold = Math.min(Math.round(units * (SELL_THROUGH / 100)), units);
+  const unsoldUnits = units - unitsSold;
   const expectedReturn = est.inventoryCost + est.retailNetProfit;
   const profit = est.retailNetProfit;
+  const isPositive = profit >= 0;
 
   return (
     <section className="py-20 md:py-28 px-6">
-      <div className="container max-w-3xl mx-auto">
+      <div className="container max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <p className="text-sm font-medium text-primary mb-3">Unit Economics</p>
           <h2 className="text-3xl md:text-4xl font-bold font-display tracking-tight mb-4">
-            See your potential returns
+            প্রোডাক্ট থেকে কত লাভ হবে?
           </h2>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            Slide to choose units. Based on 80% sell-through rate.
+          <p className="text-muted-foreground max-w-lg mx-auto">
+            একটি উদাহরণ প্রোডাক্ট দিয়ে দেখুন — ইউনিট সংখ্যা বাড়ান/কমান এবং আপনার সম্ভাব্য রিটার্ন দেখুন।
           </p>
         </div>
 
-        <div className="border border-border rounded-xl bg-card overflow-hidden">
+        <div className="border border-border rounded-2xl bg-card overflow-hidden shadow-sm">
+          {/* Example product header */}
+          <div className="bg-muted/40 border-b border-border px-6 py-4">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <ShoppingBag className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="font-semibold text-sm">{EXAMPLE_PRODUCT.name}</p>
+                  <p className="text-xs text-muted-foreground">{EXAMPLE_PRODUCT.category} • উদাহরণ প্রোডাক্ট</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 text-xs">
+                <div className="text-center">
+                  <span className="text-muted-foreground block">প্রোডাকশন খরচ</span>
+                  <span className="font-bold text-foreground">৳{costPerUnit}</span>
+                </div>
+                <div className="w-px h-8 bg-border" />
+                <div className="text-center">
+                  <span className="text-muted-foreground block">বিক্রয় মূল্য</span>
+                  <span className="font-bold text-primary">৳{retailPrice}</span>
+                </div>
+                <div className="w-px h-8 bg-border" />
+                <div className="text-center">
+                  <span className="text-muted-foreground block">মার্জিন/ইউনিট</span>
+                  <span className="font-bold text-primary">৳{retailPrice - costPerUnit - logisticsPerUnit}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="p-6 md:p-8">
             {/* Slider */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm text-muted-foreground">Product Units</span>
-                <div className="flex items-center gap-1.5 text-sm font-semibold">
+                <span className="text-sm text-muted-foreground">আপনি কতটি ইউনিট নিতে চান?</span>
+                <div className="flex items-center gap-1.5 text-sm font-bold">
                   <Package className="w-4 h-4 text-primary" />
-                  {units} units
+                  {units} ইউনিট
                 </div>
               </div>
               <Slider
@@ -59,52 +101,115 @@ const HomeProfitCalculator = () => {
                 onValueChange={([v]) => setUnits(v)}
               />
               <div className="flex justify-between text-[11px] text-muted-foreground mt-1.5">
-                <span>10</span>
-                <span>200</span>
+                <span>১০ ইউনিট</span>
+                <span>২০০ ইউনিট</span>
               </div>
             </div>
 
-            {/* Results */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="rounded-lg bg-muted/50 p-4 text-center">
-                <div className="text-[11px] text-muted-foreground mb-1">Investment</div>
-                <div className="text-xl md:text-2xl font-bold font-display">
+            {/* Results - 3 cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+              <div className="rounded-xl border border-border bg-muted/30 p-5">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center">
+                    <Package className="w-3.5 h-3.5 text-muted-foreground" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">মোট বিনিয়োগ</span>
+                </div>
+                <div className="text-2xl md:text-3xl font-bold font-display">
                   ৳{est.inventoryCost.toLocaleString("en-IN")}
                 </div>
-                <div className="text-[11px] text-muted-foreground mt-0.5">
-                  {units} × ৳{COST_PER_UNIT}
-                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {units} ইউনিট × ৳{costPerUnit}
+                </p>
               </div>
 
-              <div className="rounded-lg bg-primary/5 border border-primary/10 p-4 text-center">
-                <div className="text-[11px] text-muted-foreground mb-1">Expected Return</div>
-                <div className="text-xl md:text-2xl font-bold font-display text-primary">
+              <div className="rounded-xl border border-primary/20 bg-primary/5 p-5">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <TrendingUp className="w-3.5 h-3.5 text-primary" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">প্রত্যাশিত রিটার্ন</span>
+                </div>
+                <div className="text-2xl md:text-3xl font-bold font-display text-primary">
                   ৳{expectedReturn.toLocaleString("en-IN")}
                 </div>
-                <div className="text-[11px] text-muted-foreground mt-0.5">
-                  80% sell-through
-                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {unitsSold} ইউনিট বিক্রি (80%)
+                  {unsoldUnits > 0 && ` + ${unsoldUnits} অবিক্রিত`}
+                </p>
               </div>
 
-              <div className={`rounded-lg p-4 text-center ${
-                profit >= 0 ? "bg-primary/5 border border-primary/10" : "bg-destructive/5 border border-destructive/10"
+              <div className={`rounded-xl p-5 ${
+                isPositive
+                  ? "border border-primary/20 bg-primary/5"
+                  : "border border-destructive/20 bg-destructive/5"
               }`}>
-                <div className="text-[11px] text-muted-foreground mb-1">Profit</div>
-                <div className={`text-xl md:text-2xl font-bold font-display ${
-                  profit >= 0 ? "text-primary" : "text-destructive"
+                <div className="flex items-center gap-2 mb-2">
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                    isPositive ? "bg-primary/10" : "bg-destructive/10"
+                  }`}>
+                    <BarChart3 className={`w-3.5 h-3.5 ${isPositive ? "text-primary" : "text-destructive"}`} />
+                  </div>
+                  <span className="text-xs text-muted-foreground">নেট লাভ</span>
+                </div>
+                <div className={`text-2xl md:text-3xl font-bold font-display ${
+                  isPositive ? "text-primary" : "text-destructive"
                 }`}>
-                  {profit >= 0 ? "+" : ""}৳{profit.toLocaleString("en-IN")}
+                  {isPositive ? "+" : ""}৳{profit.toLocaleString("en-IN")}
                 </div>
-                <div className="text-[11px] text-muted-foreground mt-0.5">
+                <p className={`text-xs mt-1 font-medium ${isPositive ? "text-primary/70" : "text-destructive/70"}`}>
                   {est.retailROI.toFixed(0)}% ROI
-                </div>
+                  {isPositive ? " ✓ লাভজনক" : " — কম ইউনিটে খরচ বেশি"}
+                </p>
               </div>
             </div>
 
-            <div className="mt-6 text-center">
+            {/* Cost breakdown toggle */}
+            <button
+              onClick={() => setShowBreakdown(!showBreakdown)}
+              className="w-full flex items-center justify-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors py-2 mb-4"
+            >
+              খরচের বিস্তারিত হিসাব দেখুন
+              {showBreakdown ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+
+            {showBreakdown && (
+              <div className="rounded-xl bg-muted/30 border border-border/50 p-5 mb-6 space-y-3 text-sm">
+                <h4 className="font-semibold text-xs text-muted-foreground uppercase tracking-wider mb-3">খরচ ও আয়ের হিসাব</h4>
+                
+                <div className="space-y-2">
+                  <Row label={`ইনভেন্টরি খরচ (${units} × ৳${costPerUnit})`} value={`৳${est.inventoryCost.toLocaleString()}`} />
+                  <Row label={`লজিস্টিক্স খরচ (${units} × ৳${logisticsPerUnit})`} value={`৳${est.logisticsCost.toLocaleString()}`} />
+                  <Row label={`মার্কেটিং খরচ (রিটেইল রেভিনিউ-র ১০%)`} value={`৳${est.retailMarketingCost.toLocaleString()}`} />
+                  
+                  <div className="border-t border-border/40 pt-2" />
+                  <Row label="মোট খরচ" value={`৳${(est.inventoryCost + est.logisticsCost + est.retailMarketingCost).toLocaleString()}`} bold />
+                  
+                  <div className="border-t border-border/40 pt-2" />
+                  <Row label={`বিক্রয় আয় (${unitsSold} × ৳${retailPrice})`} value={`৳${est.retailRevenue.toLocaleString()}`} />
+                  <Row label="গ্রস প্রফিট" value={`৳${est.retailGrossProfit.toLocaleString()}`} highlight={est.retailGrossProfit >= 0} negative={est.retailGrossProfit < 0} />
+                  
+                  {est.retailCommission > 0 && (
+                    <Row label="প্ল্যাটফর্ম কমিশন (গ্রস প্রফিটের ১৫%)" value={`-৳${est.retailCommission.toLocaleString()}`} muted />
+                  )}
+                  
+                  <div className="border-t border-border/40 pt-2" />
+                  <Row label="নেট লাভ" value={`${profit >= 0 ? "+" : ""}৳${profit.toLocaleString()}`} bold highlight={profit >= 0} negative={profit < 0} />
+                </div>
+              </div>
+            )}
+
+            {/* Tip for negative profit */}
+            {!isPositive && (
+              <div className="rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 p-3 mb-6 text-xs text-amber-800 dark:text-amber-200">
+                💡 <strong>টিপ:</strong> কম ইউনিটে লজিস্টিক্স ও মার্কেটিং খরচ বেশি পড়ে। সাধারণত <strong>৩০+ ইউনিট</strong> থেকে লাভ শুরু হয়। স্লাইডার ডানে টানুন!
+              </div>
+            )}
+
+            <div className="text-center">
               <Link to="/signup">
                 <Button size="lg" className="px-8">
-                  Start with ৳{est.inventoryCost.toLocaleString("en-IN")}
+                  প্রোডাকশনে যোগ দিন
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
@@ -121,5 +226,20 @@ const HomeProfitCalculator = () => {
     </section>
   );
 };
+
+function Row({ label, value, bold, muted, highlight, negative }: {
+  label: string; value: string; bold?: boolean; muted?: boolean; highlight?: boolean; negative?: boolean;
+}) {
+  return (
+    <div className="flex justify-between items-center">
+      <span className={muted ? "text-muted-foreground" : "text-foreground text-xs"}>{label}</span>
+      <span className={`font-mono text-xs ${bold ? "font-bold" : "font-medium"} ${
+        highlight ? "text-primary" : negative ? "text-destructive" : muted ? "text-muted-foreground" : "text-foreground"
+      }`}>
+        {value}
+      </span>
+    </div>
+  );
+}
 
 export default HomeProfitCalculator;
