@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { User, Phone, MapPin, Loader2, Save, ArrowLeft, Camera } from "lucide-react";
+import AvatarCropDialog from "@/components/AvatarCropDialog";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +30,8 @@ const ProfilePage = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropDialogOpen, setCropDialogOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: profile, isLoading } = useQuery({
@@ -57,22 +60,35 @@ const ProfilePage = () => {
     }
   }, [profile]);
 
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !user) return;
+    if (!file) return;
+    if (fileInputRef.current) fileInputRef.current.value = "";
 
     if (!file.type.startsWith("image/")) {
       toast({ title: "Invalid file", description: "Please select an image file.", variant: "destructive" });
       return;
     }
-    if (file.size > 2 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Max size is 2MB.", variant: "destructive" });
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Max size is 5MB.", variant: "destructive" });
       return;
     }
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropSrc(reader.result as string);
+      setCropDialogOpen(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCropComplete = async (blob: Blob) => {
+    if (!user) return;
     setUploadingAvatar(true);
-    const ext = file.name.split(".").pop();
+
+    const ext = "jpg";
     const path = `avatars/${user.id}.${ext}`;
+    const file = new File([blob], `avatar.${ext}`, { type: "image/jpeg" });
 
     const { error: uploadError } = await supabase.storage
       .from("product-images")
@@ -100,6 +116,8 @@ const ProfilePage = () => {
       toast({ title: "Avatar updated" });
     }
     setUploadingAvatar(false);
+    setCropDialogOpen(false);
+    setCropSrc(null);
   };
 
   const updateProfile = useMutation({
@@ -171,7 +189,7 @@ const ProfilePage = () => {
                 type="file"
                 accept="image/*"
                 className="hidden"
-                onChange={handleAvatarUpload}
+                onChange={handleFileSelect}
               />
               <div className="flex flex-col items-center gap-3 p-4 rounded-lg bg-muted/50 mb-2">
                 <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
@@ -248,6 +266,14 @@ const ProfilePage = () => {
           </CardContent>
         </Card>
       </div>
+
+      <AvatarCropDialog
+        open={cropDialogOpen}
+        imageSrc={cropSrc}
+        onClose={() => { setCropDialogOpen(false); setCropSrc(null); }}
+        onCropComplete={handleCropComplete}
+        uploading={uploadingAvatar}
+      />
     </div>
   );
 };
