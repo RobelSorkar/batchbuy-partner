@@ -34,10 +34,6 @@ const HeroSection = () => {
               style={{ animationDelay: "100ms" }}>
               
               <span className="text-primary-foreground">Produce Together. Own Products. Sell Anywhere.</span>
-              <br />
-              <span className="text-primary-foreground"></span>
-              <br />
-              <span className="text-primary"></span>
             </h1>
 
             <p
