@@ -6,7 +6,7 @@ import {
   Users, Layers, TrendingUp, ShoppingCart, ArrowUpRight, ArrowDownRight,
   AlertTriangle, CheckCircle, Clock, Wallet, Package, Eye,
   Ban, DollarSign, BarChart3, PieChart,
-  Search, XCircle, RefreshCw, Loader2, Pencil, Phone, MapPin
+  Search, XCircle, RefreshCw, Loader2, Pencil
 } from "lucide-react";
 import EditBatchDialog from "@/components/EditBatchDialog";
 import UserDetailDialog from "@/components/UserDetailDialog";
