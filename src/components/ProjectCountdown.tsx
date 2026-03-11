@@ -26,7 +26,7 @@ function calcTimeLeft(deadline: string): TimeLeft {
   };
 }
 
-const BatchCountdown = ({ deadline, status }: BatchCountdownProps) => {
+const ProjectCountdown = ({ deadline, status }: ProjectCountdownProps) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(
     deadline ? calcTimeLeft(deadline) : null
   );
