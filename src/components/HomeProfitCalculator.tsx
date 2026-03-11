@@ -6,18 +6,22 @@ import { Link } from "react-router-dom";
 import { calcInvestmentEstimate } from "@/lib/calculations";
 
 const EXAMPLE_PRODUCT = {
-  name: "Premium Cotton T-Shirt",
-  category: "Garments",
-  costPerUnit: 420,
-  wholesalePrice: 520,
-  retailPrice: 650,
+  name: "চামড়ার ক্যাজুয়াল জুতা",
+  nameEn: "Leather Casual Shoe",
+  category: "Footwear",
+  costPerUnit: 400,
+  wholesalePrice: 550,
+  retailPrice: 750,
   logisticsPerUnit: 100,
 };
 
 const SELL_THROUGH = 80;
+const MIN_INVESTMENT = 10_000;
 
 const HomeProfitCalculator = () => {
-  const [units, setUnits] = useState(50);
+  const { costPerUnit } = EXAMPLE_PRODUCT;
+  const minUnits = Math.ceil(MIN_INVESTMENT / costPerUnit);
+  const [units, setUnits] = useState(minUnits);
   const [showBreakdown, setShowBreakdown] = useState(false);
 
   const { costPerUnit, wholesalePrice, retailPrice, logisticsPerUnit } = EXAMPLE_PRODUCT;
