@@ -452,7 +452,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                           <td className="px-5 py-4">
                             <div className="flex gap-1">
                               <Link to={`/batch/${b.id}`}><Button variant="ghost" size="sm"><Eye className="w-3.5 h-3.5" /></Button></Link>
-                              <Button variant="ghost" size="sm" onClick={() => setEditingBatch(b)}><Pencil className="w-3.5 h-3.5" /></Button>
+                              <Button variant="ghost" size="sm" onClick={() => setEditingProject(b)}><Pencil className="w-3.5 h-3.5" /></Button>
                               {canAdvanceProject(b.status) && (
                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2"
                                   onClick={async () => {
