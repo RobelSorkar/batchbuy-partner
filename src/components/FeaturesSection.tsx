@@ -29,7 +29,7 @@ const features = [
   {
     icon: BarChart3,
     title: "Sales Analytics",
-    description: "Monitor your sales performance, batch profitability, and distribution metrics with detailed analytics.",
+    description: "Monitor your sales performance, project profitability, and distribution metrics with detailed analytics.",
   },
 ];
 
