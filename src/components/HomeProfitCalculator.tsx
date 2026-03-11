@@ -99,14 +99,14 @@ const HomeProfitCalculator = () => {
               </div>
               <Slider
                 min={minUnits}
-                max={200}
-                step={5}
+                max={5000}
+                step={10}
                 value={[units]}
                 onValueChange={([v]) => setUnits(v)}
               />
               <div className="flex justify-between text-[11px] text-muted-foreground mt-1.5">
                 <span>{minUnits} ইউনিট (৳{MIN_INVESTMENT.toLocaleString()})</span>
-                <span>২০০ ইউনিট</span>
+                <span>৫,০০০ ইউনিট</span>
               </div>
             </div>
 
