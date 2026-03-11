@@ -110,8 +110,8 @@ const CreateBatch = () => {
                   <Input id="productName" placeholder="e.g. Premium Cotton T-Shirt" value={form.productName} onChange={(e) => update("productName", e.target.value)} required />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="batchName">Batch Name *</Label>
-                  <Input id="batchName" placeholder="e.g. Batch #47 — Summer Collection" value={form.batchName} onChange={(e) => update("batchName", e.target.value)} required />
+                   <Label htmlFor="batchName">Project Name *</Label>
+                  <Input id="batchName" placeholder="e.g. Project #47 — Summer Collection" value={form.batchName} onChange={(e) => update("batchName", e.target.value)} required />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">

@@ -186,7 +186,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg max-h-[92vh] overflow-y-auto">
         <DialogHeader className="pb-2">
-          <DialogTitle className="font-display text-xl">Join Production Batch</DialogTitle>
+          <DialogTitle className="font-display text-xl">Join Production Project</DialogTitle>
           <DialogDescription>{batch.batchName}</DialogDescription>
         </DialogHeader>
 

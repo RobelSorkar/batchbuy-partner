@@ -150,7 +150,7 @@ const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) =>
               <Input value={form.product_name} onChange={(e) => update("product_name", e.target.value)} className="mt-1" />
             </div>
             <div>
-              <Label>Batch Name</Label>
+              <Label>Project Name</Label>
               <Input value={form.batch_name} onChange={(e) => update("batch_name", e.target.value)} className="mt-1" />
             </div>
           </div>

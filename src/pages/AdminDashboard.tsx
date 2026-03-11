@@ -395,7 +395,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border/50">
-                      {["Product", "Batch", "Status", "Qty", "Funded", "Progress", "Partners", "Deadline", ""].map((h) => (
+                      {["Product", "Project", "Status", "Qty", "Funded", "Progress", "Partners", "Deadline", ""].map((h) => (
                         <th key={h} className="text-left text-xs font-medium text-muted-foreground px-5 py-3">{h}</th>
                       ))}
                     </tr>

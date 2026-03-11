@@ -147,7 +147,7 @@ const PartnerInventory = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Product / Batch</TableHead>
+                      <TableHead>Product / Project</TableHead>
                       <TableHead className="text-center">Total</TableHead>
                       <TableHead className="text-center">Sold</TableHead>
                       <TableHead className="text-center">Remaining</TableHead>
