@@ -58,29 +58,27 @@ const HomeProfitCalculator = () => {
         <div className="border border-border rounded-2xl bg-card overflow-hidden shadow-sm">
           {/* Example product header */}
           <div className="bg-muted/40 border-b border-border px-6 py-4">
-            <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <ShoppingBag className="w-5 h-5 text-primary" />
                 </div>
-                <div>
-                  <p className="font-semibold text-sm">{EXAMPLE_PRODUCT.nameEn}</p>
+                <div className="min-w-0">
+                  <p className="font-semibold text-sm truncate">{EXAMPLE_PRODUCT.nameEn}</p>
                   <p className="text-xs text-muted-foreground">{EXAMPLE_PRODUCT.category} • {EXAMPLE_PRODUCT.name}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4 text-xs">
-                <div className="text-center">
-                  <span className="text-muted-foreground block">প্রোডাকশন খরচ</span>
+              <div className="grid grid-cols-3 gap-2 text-xs text-center">
+                <div className="bg-background/50 rounded-lg py-2 px-1">
+                  <span className="text-muted-foreground block text-[10px]">প্রোডাকশন খরচ</span>
                   <span className="font-bold text-foreground">৳{costPerUnit}</span>
                 </div>
-                <div className="w-px h-8 bg-border" />
-                <div className="text-center">
-                  <span className="text-muted-foreground block">বিক্রয় মূল্য</span>
+                <div className="bg-background/50 rounded-lg py-2 px-1">
+                  <span className="text-muted-foreground block text-[10px]">বিক্রয় মূল্য</span>
                   <span className="font-bold text-primary">৳{retailPrice}</span>
                 </div>
-                <div className="w-px h-8 bg-border" />
-                <div className="text-center">
-                  <span className="text-muted-foreground block">মার্জিন/ইউনিট</span>
+                <div className="bg-background/50 rounded-lg py-2 px-1">
+                  <span className="text-muted-foreground block text-[10px]">মার্জিন/ইউনিট</span>
                   <span className="font-bold text-primary">৳{retailPrice - costPerUnit - logisticsPerUnit}</span>
                 </div>
               </div>
