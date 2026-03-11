@@ -24,7 +24,7 @@ const HomeProfitCalculator = () => {
   const [units, setUnits] = useState(minUnits);
   const [showBreakdown, setShowBreakdown] = useState(false);
 
-  const { costPerUnit, wholesalePrice, retailPrice, logisticsPerUnit } = EXAMPLE_PRODUCT;
+  const { wholesalePrice, retailPrice, logisticsPerUnit } = EXAMPLE_PRODUCT;
 
   const investmentAmount = units * costPerUnit;
   const est = calcInvestmentEstimate(
