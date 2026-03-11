@@ -15,7 +15,7 @@ import {
   calcInvestmentEstimate,
   calcIndependentEstimate,
 } from "@/lib/calculations";
-import { useJoinBatch, SellingPreference } from "@/hooks/useJoinBatch";
+import { useJoinProject, SellingPreference } from "@/hooks/useJoinProject";
 import { useAuth } from "@/hooks/useAuth";
 import { useWallet, useDeposit } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
