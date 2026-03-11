@@ -204,7 +204,7 @@ const AnalyticsPage = () => {
         {/* Batch Status + Warehouse Stock */}
         <div className="grid lg:grid-cols-2 gap-6">
           <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
-            <h2 className="font-display font-semibold text-lg mb-4">Batch Status Overview</h2>
+            <h2 className="font-display font-semibold text-lg mb-4">Project Status Overview</h2>
             {batchStatusData.length > 0 ? (
               <>
                 <ResponsiveContainer width="100%" height={200}>
