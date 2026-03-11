@@ -67,7 +67,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
     try {
       const { error } = await supabase.rpc("admin_sync_batch_stats");
       if (error) throw error;
-      toast({ title: "Batch stats synced", description: "funded_units and partners_joined recalculated from source records." });
+      toast({ title: "Project stats synced", description: "funded_units and partners_joined recalculated from source records." });
     } catch (e: any) {
       toast({ title: "Sync failed", description: e.message, variant: "destructive" });
     } finally {
@@ -154,7 +154,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
 
   const platformStats = [
     { label: "Total Users", value: users.length.toString(), change: `${users.filter(u => u.role === "partner").length} partners`, up: true, icon: Users, tab: "users" },
-    { label: "Active Batches", value: (batches as any[]).length.toString(), change: `${batchStatusCounts.funding} in funding`, up: true, icon: Layers, tab: "batches" },
+    { label: "Active Projects", value: (batches as any[]).length.toString(), change: `${batchStatusCounts.funding} in funding`, up: true, icon: Layers, tab: "batches" },
     { label: "Total Orders", value: (orders as any[]).length.toString(), change: `${(orders as any[]).filter((o: any) => o.status === "delivered").length} delivered`, up: true, icon: ShoppingCart, tab: "orders" },
     { label: "Platform Revenue", value: `৳${(orders as any[]).reduce((s: number, o: any) => s + Number(o.total_amount), 0).toLocaleString()}`, change: "From all orders", up: true, icon: TrendingUp, tab: "orders" },
     { label: "Total Wallets", value: `৳${totalWalletBalance.toLocaleString()}`, change: "Across all users", up: true, icon: Wallet, tab: "wallets" },
@@ -182,9 +182,9 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
               <DollarSign className={`w-4 h-4 ${reconciling ? "animate-spin" : ""}`} /> {reconciling ? "Reconciling…" : "Reconcile Wallets"}
             </Button>
             <Button variant="outline" className="gap-2" onClick={syncBatchStats} disabled={syncing}>
-              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Syncing…" : "Sync Batch Stats"}
+              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} /> {syncing ? "Syncing…" : "Sync Project Stats"}
             </Button>
-            <Link to="/create-batch"><Button variant="outline" className="gap-2"><Layers className="w-4 h-4" /> Create Batch</Button></Link>
+            <Link to="/create-batch"><Button variant="outline" className="gap-2"><Layers className="w-4 h-4" /> Create Project</Button></Link>
             <Link to="/admin/orders"><Button className="gap-2"><ShoppingCart className="w-4 h-4" /> Manage Orders</Button></Link>
           </div>
         </div>
@@ -214,7 +214,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
           <TabsList className="flex-wrap h-auto gap-1">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="batches">Batches</TabsTrigger>
+            <TabsTrigger value="batches">Projects</TabsTrigger>
             <TabsTrigger value="inventory">Inventory</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="wallets">Wallets</TabsTrigger>
@@ -243,7 +243,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                     <div className="flex items-start gap-3">
                       <AlertTriangle className="w-4 h-4 text-accent-foreground mt-0.5" />
                       <div className="flex-1">
-                        <p className="text-sm">{batchStatusCounts.funding} batches currently in funding</p>
+                        <p className="text-sm">{batchStatusCounts.funding} projects currently in funding</p>
                         <Button variant="link" size="sm" className="px-0 h-auto text-xs" onClick={() => setActiveTab("batches")}>Review →</Button>
                       </div>
                     </div>
@@ -298,8 +298,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
               {[
                 { label: "Manage Orders", icon: ShoppingCart, href: "/admin/orders", desc: `${(orders as any[]).length} total orders` },
                 { label: "Warehouse", icon: Package, href: "/warehouse", desc: `${Math.max(0, totalWarehouseStock)} units in stock` },
-                { label: "Marketplace", icon: Layers, href: "/marketplace", desc: `${(batches as any[]).length} batches` },
-                { label: "Create Batch", icon: Layers, href: "/create-batch", desc: "Launch new production" },
+                { label: "Marketplace", icon: Layers, href: "/marketplace", desc: `${(batches as any[]).length} projects` },
+                { label: "Create Project", icon: Layers, href: "/create-batch", desc: "Launch new production" },
               ].map((link) => (
                 <Link key={link.label} to={link.href} className="bg-card rounded-xl p-5 shadow-card border border-border/50 hover:shadow-card-hover transition-all group">
                   <link.icon className="w-5 h-5 text-primary mb-2" />
@@ -382,20 +382,20 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
           <TabsContent value="batches">
             <div className="bg-card rounded-xl shadow-card border border-border/50">
               <div className="flex items-center justify-between p-5 border-b border-border/50">
-                <h2 className="font-display font-semibold text-lg">Production Batches</h2>
+                <h2 className="font-display font-semibold text-lg">Production Projects</h2>
                 <div className="flex gap-2">
                   <div className="relative">
                     <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                    <Input placeholder="Search batches..." className="pl-8 h-8 text-xs w-48" value={batchSearch} onChange={(e) => setBatchSearch(e.target.value)} />
+                    <Input placeholder="Search projects..." className="pl-8 h-8 text-xs w-48" value={batchSearch} onChange={(e) => setBatchSearch(e.target.value)} />
                   </div>
-                  <Link to="/create-batch"><Button size="sm">+ New Batch</Button></Link>
+                  <Link to="/create-batch"><Button size="sm">+ New Project</Button></Link>
                 </div>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border/50">
-                      {["Product", "Batch", "Status", "Qty", "Funded", "Progress", "Partners", "Deadline", ""].map((h) => (
+                      {["Product", "Project", "Status", "Qty", "Funded", "Progress", "Partners", "Deadline", ""].map((h) => (
                         <th key={h} className="text-left text-xs font-medium text-muted-foreground px-5 py-3">{h}</th>
                       ))}
                     </tr>
@@ -492,7 +492,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                   </tbody>
                 </table>
               </div>
-              {filteredBatches.length === 0 && <div className="p-8 text-center text-muted-foreground">No batches found.</div>}
+              {filteredBatches.length === 0 && <div className="p-8 text-center text-muted-foreground">No projects found.</div>}
             </div>
           </TabsContent>
 

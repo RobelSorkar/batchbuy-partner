@@ -139,7 +139,7 @@ const PartnerDashboard = () => {
                   <Package className="w-4.5 h-4.5 text-foreground/70" />
                 </div>
                 <Badge variant="secondary" className="text-[10px] font-normal">
-                  {inventory.length} batches
+                  {inventory.length} projects
                 </Badge>
               </div>
               <div className="text-2xl font-display font-bold tracking-tight">{totalOwned}</div>
@@ -196,7 +196,7 @@ const PartnerDashboard = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold">Join Production</div>
-                  <div className="text-[11px] text-muted-foreground">Browse & finance batches</div>
+                  <div className="text-[11px] text-muted-foreground">Browse & finance projects</div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </CardContent>
@@ -289,8 +289,8 @@ const PartnerDashboard = () => {
         <Card className="border-border">
           <div className="p-5 border-b border-border flex items-center justify-between">
             <div>
-              <h2 className="font-display font-semibold text-base">Your Batches</h2>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Track inventory per batch</p>
+              <h2 className="font-display font-semibold text-base">Your Projects</h2>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Track inventory per project</p>
             </div>
             {inventory.length > 0 && (
               <Link to="/partner/inventory">
@@ -307,13 +307,13 @@ const PartnerDashboard = () => {
               </div>
               <div>
                 <p className="text-sm font-medium mb-1">No inventory yet</p>
-                <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                  Deposit funds, browse production batches, and finance manufacturing to own product units.
-                </p>
+                 <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                   Deposit funds, browse production projects, and finance manufacturing to own product units.
+                 </p>
               </div>
               <div className="flex gap-2 justify-center">
                 <Link to="/wallet"><Button variant="outline" size="sm">Deposit Funds</Button></Link>
-                <Link to="/marketplace"><Button size="sm">Browse Batches</Button></Link>
+                <Link to="/marketplace"><Button size="sm">Browse Projects</Button></Link>
               </div>
             </div>
           ) : (

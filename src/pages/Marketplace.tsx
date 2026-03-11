@@ -51,9 +51,9 @@ const Marketplace = () => {
       <div className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="container max-w-6xl mx-auto">
           <div className="mb-6 sm:mb-10">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold mb-1.5 sm:mb-2">Production Batch Marketplace</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold mb-1.5 sm:mb-2">Production Project Marketplace</h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground">
-              Browse batches, finance from ৳10,000 BDT, and own product units
+              Browse projects, finance from ৳10,000 BDT, and own product units
             </p>
           </div>
 
@@ -77,7 +77,7 @@ const Marketplace = () => {
             </div>
           ) : (
             <>
-              <p className="text-xs sm:text-sm text-muted-foreground mb-4">{filtered.length} batches found</p>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4">{filtered.length} projects found</p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filtered.map((batch) => {
@@ -179,7 +179,7 @@ const Marketplace = () => {
 
               {filtered.length === 0 && (
                 <div className="text-center py-16">
-                  <p className="text-muted-foreground">No batches found matching your criteria.</p>
+                  <p className="text-muted-foreground">No projects found matching your criteria.</p>
                 </div>
               )}
             </>

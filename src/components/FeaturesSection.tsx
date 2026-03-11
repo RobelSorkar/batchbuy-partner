@@ -3,8 +3,8 @@ import { Package, Users, Truck, Wallet, ArrowRight, ShieldCheck, BarChart3, Glob
 const features = [
   {
     icon: Package,
-    title: "Production Batches",
-    description: "Join limited production runs with a minimum of ৳10,000 BDT. Own real product units from verified manufacturers.",
+    title: "Production Projects",
+    description: "Join limited production projects with a minimum of ৳10,000 BDT. Own real product units from verified manufacturers.",
   },
   {
     icon: Users,
@@ -29,7 +29,7 @@ const features = [
   {
     icon: BarChart3,
     title: "Sales Analytics",
-    description: "Monitor your sales performance, batch profitability, and distribution metrics with detailed analytics.",
+    description: "Monitor your sales performance, project profitability, and distribution metrics with detailed analytics.",
   },
 ];
 
@@ -45,7 +45,7 @@ const FeaturesSection = () => {
             Everything you need to <span className="text-gradient-primary">scale production</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            From batch participation to product fulfillment — manage your entire production partnership in one place.
+            From project participation to product fulfillment — manage your entire production partnership in one place.
           </p>
         </div>
 

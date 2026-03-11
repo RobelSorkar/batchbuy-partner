@@ -20,12 +20,12 @@ const BatchesPreview = () => {
       <div className="container max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4">
           <div>
-            <p className="text-xs sm:text-sm font-medium text-primary mb-2 sm:mb-3">Live Batches</p>
+            <p className="text-xs sm:text-sm font-medium text-primary mb-2 sm:mb-3">Live Projects</p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight">
-              Open production batches
+              Open production projects
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground mt-1.5 sm:mt-2 max-w-md">
-              Browse real product batches currently accepting financing partners.
+              Browse real production projects currently accepting financing partners.
             </p>
           </div>
           <Link to="/marketplace">
@@ -41,7 +41,7 @@ const BatchesPreview = () => {
           </div>
         ) : fundingBatches.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground text-sm">
-            No active batches right now. Check back soon.
+            No active projects right now. Check back soon.
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">

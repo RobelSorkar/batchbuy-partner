@@ -135,19 +135,19 @@ const PartnerInventory = () => {
         {/* Batch Inventory Table */}
         <Card className="border-border/50 shadow-card">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-display">Batch Inventory Details</CardTitle>
+            <CardTitle className="text-lg font-display">Project Inventory Details</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {items.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground text-sm">
-                No inventory yet. Finance batches from the marketplace to start tracking.
+                No inventory yet. Finance projects from the marketplace to start tracking.
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Product / Batch</TableHead>
+                      <TableHead>Product / Project</TableHead>
                       <TableHead className="text-center">Total</TableHead>
                       <TableHead className="text-center">Sold</TableHead>
                       <TableHead className="text-center">Remaining</TableHead>
@@ -277,7 +277,7 @@ const PartnerInventory = () => {
               ৳{totalAssetValue.toLocaleString()}
             </div>
             <p className="text-sm text-muted-foreground">
-              Based on {totalRemaining} unsold units across {items.length} batch{items.length !== 1 ? "es" : ""}
+              Based on {totalRemaining} unsold units across {items.length} project{items.length !== 1 ? "s" : ""}
             </p>
 
             {items.length > 0 && (

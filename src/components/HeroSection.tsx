@@ -33,7 +33,7 @@ const HeroSection = () => {
             className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-xl mx-auto mb-7 sm:mb-10 leading-relaxed animate-fade-in px-2"
             style={{ animationDelay: "160ms" }}
           >
-            Co-finance production batches, own real product units, and sell
+            Co-finance production projects, own real product units, and sell
             through multiple channels. Starting from ৳10,000.
           </p>
 
@@ -49,7 +49,7 @@ const HeroSection = () => {
             </Link>
             <Link to="/marketplace" className="w-full sm:w-auto">
               <Button variant="outline" size="lg" className="w-full sm:w-auto text-sm sm:text-base h-12 sm:h-11 px-6 sm:px-8">
-                Browse Batches
+                Browse Projects
               </Button>
             </Link>
           </div>

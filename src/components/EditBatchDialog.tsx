@@ -92,7 +92,7 @@ const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) =>
       const { error } = await supabase.from("batches").update(updates).eq("id", batch.id);
       if (error) throw error;
 
-      toast({ title: "Batch updated", description: `${form.product_name} has been updated successfully.` });
+      toast({ title: "Project updated", description: `${form.product_name} has been updated successfully.` });
       queryClient.invalidateQueries({ queryKey: ["batches"] });
       queryClient.invalidateQueries({ queryKey: ["batch", batch.id] });
       onOpenChange(false);
@@ -111,7 +111,7 @@ const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) =>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-display">Edit Batch — {batch.product_name}</DialogTitle>
+          <DialogTitle className="font-display">Edit Project — {batch.product_name}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-5 py-2">
@@ -150,7 +150,7 @@ const EditBatchDialog = ({ batch, open, onOpenChange }: EditBatchDialogProps) =>
               <Input value={form.product_name} onChange={(e) => update("product_name", e.target.value)} className="mt-1" />
             </div>
             <div>
-              <Label>Batch Name</Label>
+              <Label>Project Name</Label>
               <Input value={form.batch_name} onChange={(e) => update("batch_name", e.target.value)} className="mt-1" />
             </div>
           </div>

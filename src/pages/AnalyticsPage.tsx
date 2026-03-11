@@ -100,7 +100,7 @@ const AnalyticsPage = () => {
   const stats = [
     { label: "Total Partners", value: totalPartners.toString(), change: `${participations.length} participations`, up: true, icon: Users, link: "/admin/users" },
     { label: "Total Sales", value: `৳${(totalSales / 100000).toFixed(1)}L`, change: `${totalOrders} orders`, up: totalSales > 0, icon: TrendingUp, link: "/admin/orders" },
-    { label: "Active Batches", value: activeBatches.toString(), change: `${batches.length} total`, up: activeBatches > 0, icon: Layers, link: "/admin" },
+    { label: "Active Projects", value: activeBatches.toString(), change: `${batches.length} total`, up: activeBatches > 0, icon: Layers, link: "/admin" },
     { label: "Warehouse Stock", value: totalStock.toLocaleString(), change: `${inventory.length} products`, up: false, icon: Package, link: "/warehouse" },
     { label: "Total Orders", value: totalOrders.toString(), change: "all channels", up: totalOrders > 0, icon: ShoppingCart, link: "/admin/orders" },
     { label: "Commissions", value: `৳${totalCommission.toLocaleString()}`, change: "total earned", up: totalCommission > 0, icon: Wallet, link: "/wallet" },
@@ -204,7 +204,7 @@ const AnalyticsPage = () => {
         {/* Batch Status + Warehouse Stock */}
         <div className="grid lg:grid-cols-2 gap-6">
           <div className="bg-card rounded-xl shadow-card border border-border/50 p-5">
-            <h2 className="font-display font-semibold text-lg mb-4">Batch Status Overview</h2>
+            <h2 className="font-display font-semibold text-lg mb-4">Project Status Overview</h2>
             {batchStatusData.length > 0 ? (
               <>
                 <ResponsiveContainer width="100%" height={200}>
@@ -228,7 +228,7 @@ const AnalyticsPage = () => {
                 </div>
               </>
             ) : (
-              <div className="text-center text-muted-foreground py-10 text-sm">No batches yet</div>
+              <div className="text-center text-muted-foreground py-10 text-sm">No projects yet</div>
             )}
           </div>
 

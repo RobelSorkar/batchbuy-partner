@@ -81,9 +81,9 @@ const CreateBatch = () => {
 
     setLoading(false);
     if (error) {
-      toast({ title: "Failed to create batch", description: error.message, variant: "destructive" });
+      toast({ title: "Failed to create project", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Batch created!", description: `${form.batchName} is now live on the marketplace.` });
+      toast({ title: "Project created!", description: `${form.batchName} is now live on the marketplace.` });
       navigate("/partner");
     }
   };
@@ -96,8 +96,8 @@ const CreateBatch = () => {
         </button>
 
         <div>
-          <h1 className="text-2xl font-display font-bold">Create New Batch</h1>
-          <p className="text-muted-foreground text-sm mt-1">Set up a new production batch for partners to join</p>
+          <h1 className="text-2xl font-display font-bold">Create New Project</h1>
+          <p className="text-muted-foreground text-sm mt-1">Set up a new production project for partners to join</p>
         </div>
 
         <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6">
@@ -110,8 +110,8 @@ const CreateBatch = () => {
                   <Input id="productName" placeholder="e.g. Premium Cotton T-Shirt" value={form.productName} onChange={(e) => update("productName", e.target.value)} required />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="batchName">Batch Name *</Label>
-                  <Input id="batchName" placeholder="e.g. Batch #47 — Summer Collection" value={form.batchName} onChange={(e) => update("batchName", e.target.value)} required />
+                   <Label htmlFor="batchName">Project Name *</Label>
+                  <Input id="batchName" placeholder="e.g. Project #47 — Summer Collection" value={form.batchName} onChange={(e) => update("batchName", e.target.value)} required />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -215,13 +215,13 @@ const CreateBatch = () => {
               <div className="space-y-2">
                 <Label htmlFor="deadline">Funding Deadline *</Label>
                 <Input id="deadline" type="date" min={new Date().toISOString().split("T")[0]} value={form.deadline} onChange={(e) => update("deadline", e.target.value)} required />
-                <p className="text-xs text-muted-foreground">Batch will auto-close after this date if not fully funded</p>
+                <p className="text-xs text-muted-foreground">Project will auto-close after this date if not fully funded</p>
               </div>
             </div>
 
             <div className="flex gap-3">
               <Button type="submit" size="lg" className="gap-2" disabled={loading}>
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Create Batch
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Create Project
               </Button>
               <Button type="button" variant="outline" size="lg" onClick={() => navigate(-1)}>Cancel</Button>
             </div>
@@ -231,7 +231,7 @@ const CreateBatch = () => {
             <div className="sticky top-24 bg-card rounded-xl shadow-card border border-border/50 p-6 space-y-5">
               <div className="flex items-center gap-2">
                 <Calculator className="w-5 h-5 text-primary" />
-                <h3 className="font-display font-semibold">Batch Summary</h3>
+                <h3 className="font-display font-semibold">Project Summary</h3>
               </div>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">Total Production Cost</span><span className="font-semibold">৳{totalProductionCost.toLocaleString()}</span></div>

@@ -66,8 +66,8 @@ const BatchDetail = () => {
       <div className="min-h-screen bg-background">
         <Navbar />
         <div className="pt-24 pb-16 px-6 text-center">
-          <h1 className="text-2xl font-display font-bold mb-2">Batch Not Found</h1>
-          <p className="text-muted-foreground mb-4">The batch you're looking for doesn't exist.</p>
+          <h1 className="text-2xl font-display font-bold mb-2">Project Not Found</h1>
+          <p className="text-muted-foreground mb-4">The project you're looking for doesn't exist.</p>
           <Link to="/marketplace"><Button>Back to Marketplace</Button></Link>
         </div>
         <Footer />
@@ -342,16 +342,16 @@ const BatchDetail = () => {
                     <div className="space-y-3 pt-2">
                       {canJoin ? (
                         <Button className="w-full" size="lg" onClick={handleJoinClick}>
-                          Join This Batch
+                          Join This Project
                         </Button>
                       ) : (
                         <Button className="w-full" size="lg" disabled>
-                          {batch.status === "completed" ? "Batch Completed" : batch.remaining_units === 0 ? "Fully Funded" : "Not Available"}
+                          {batch.status === "completed" ? "Project Completed" : batch.remaining_units === 0 ? "Fully Funded" : "Not Available"}
                         </Button>
                       )}
                       <Link to="/marketplace">
                         <Button variant="outline" className="w-full" size="lg">
-                          Browse More Batches
+                          Browse More Projects
                         </Button>
                       </Link>
                     </div>

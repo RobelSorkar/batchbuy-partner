@@ -85,14 +85,14 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
   const handleSubmit = async () => {
     if (!isValid) return;
     if (!user) {
-      toast({ title: "Please sign in", description: "You need to be logged in to join a batch.", variant: "destructive" });
+      toast({ title: "Please sign in", description: "You need to be logged in to join a project.", variant: "destructive" });
       return;
     }
     try {
       await joinBatch.mutateAsync({ batchId: batch.id, units, totalInvested: inventoryCost, sellingPreference });
       setSubmitted(true);
     } catch (error: any) {
-      toast({ title: "Failed to join batch", description: error.message, variant: "destructive" });
+      toast({ title: "Failed to join project", description: error.message, variant: "destructive" });
     }
   };
 
@@ -139,7 +139,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
               <CheckCircle className="w-8 h-8 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-display font-bold">Batch Joined Successfully!</h2>
+              <h2 className="text-xl font-display font-bold">Project Joined Successfully!</h2>
               <p className="text-muted-foreground text-sm mt-1">
                 You financed <span className="font-semibold text-foreground">{units} units</span> of{" "}
                 <span className="font-semibold text-foreground">{batch.productName}</span>
@@ -186,7 +186,7 @@ const JoinBatchDialog = ({ batch, open, onOpenChange }: JoinBatchDialogProps) =>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg max-h-[92vh] overflow-y-auto">
         <DialogHeader className="pb-2">
-          <DialogTitle className="font-display text-xl">Join Production Batch</DialogTitle>
+          <DialogTitle className="font-display text-xl">Join Production Project</DialogTitle>
           <DialogDescription>{batch.batchName}</DialogDescription>
         </DialogHeader>
 

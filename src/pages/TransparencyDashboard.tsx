@@ -115,7 +115,7 @@ const TransparencyDashboard = () => {
     .slice(0, 8);
 
   const statCards = [
-    { label: "Total Batches", value: totalBatches, icon: Layers, color: "from-primary/20 to-primary/5", iconColor: "text-primary" },
+    { label: "Total Projects", value: totalBatches, icon: Layers, color: "from-primary/20 to-primary/5", iconColor: "text-primary" },
     { label: "Units Produced", value: totalUnitsProduced.toLocaleString(), icon: Package, color: "from-blue-500/20 to-blue-500/5", iconColor: "text-blue-500" },
     { label: "Units Sold", value: totalUnitsSold.toLocaleString(), icon: TrendingUp, color: "from-emerald-500/20 to-emerald-500/5", iconColor: "text-emerald-500" },
     { label: "Partners Joined", value: totalPartnersJoined, icon: Users, color: "from-violet-500/20 to-violet-500/5", iconColor: "text-violet-500" },
@@ -140,7 +140,7 @@ const TransparencyDashboard = () => {
                 Transparency <span className="text-primary">Dashboard</span>
               </h1>
               <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
-                Real-time platform statistics. Every batch, every unit, every partner — tracked and visible.
+                Real-time platform statistics. Every project, every unit, every partner — tracked and visible.
               </p>
             </div>
           </div>
@@ -172,7 +172,7 @@ const TransparencyDashboard = () => {
               <div className="bg-card rounded-xl shadow-card border border-border/50 p-6">
                 <div className="flex items-center gap-2 mb-5">
                   <BarChart3 className="w-5 h-5 text-primary" />
-                  <h2 className="font-display font-semibold text-lg">Batch Growth Trend</h2>
+                  <h2 className="font-display font-semibold text-lg">Project Growth Trend</h2>
                 </div>
                 {monthlyBatches.some((m) => m.batches > 0) ? (
                   <ResponsiveContainer width="100%" height={280}>
@@ -191,7 +191,7 @@ const TransparencyDashboard = () => {
                     </AreaChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="text-center text-muted-foreground py-16 text-sm">No batch data yet</div>
+                  <div className="text-center text-muted-foreground py-16 text-sm">No project data yet</div>
                 )}
               </div>
 
@@ -199,7 +199,7 @@ const TransparencyDashboard = () => {
               <div className="bg-card rounded-xl shadow-card border border-border/50 p-6">
                 <div className="flex items-center gap-2 mb-5">
                   <Layers className="w-5 h-5 text-primary" />
-                  <h2 className="font-display font-semibold text-lg">Batch Status Distribution</h2>
+                  <h2 className="font-display font-semibold text-lg">Project Status Distribution</h2>
                 </div>
                 {batchStatusData.length > 0 ? (
                   <>
@@ -233,7 +233,7 @@ const TransparencyDashboard = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="text-center text-muted-foreground py-16 text-sm">No batches yet</div>
+                  <div className="text-center text-muted-foreground py-16 text-sm">No projects yet</div>
                 )}
               </div>
             </div>
@@ -271,17 +271,17 @@ const TransparencyDashboard = () => {
                 </div>
                 <div>
                   <div className="text-3xl font-display font-bold">{totalBatches > 0 ? Math.round(totalPartnersJoined / totalBatches) : 0}</div>
-                  <div className="text-sm opacity-80 mt-1">Avg Partners Per Batch</div>
+                  <div className="text-sm opacity-80 mt-1">Avg Partners Per Project</div>
                 </div>
               </div>
             </div>
 
             {/* CTA */}
             <div className="text-center py-6">
-              <p className="text-muted-foreground mb-4">Ready to invest in the next production batch?</p>
+              <p className="text-muted-foreground mb-4">Ready to join the next production project?</p>
               <Link to="/marketplace">
                 <Button size="lg" className="gap-2">
-                  Browse Active Batches <ArrowRight className="w-4 h-4" />
+                  Browse Active Projects <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
             </div>
