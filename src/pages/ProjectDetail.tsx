@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import JoinProjectDialog from "@/components/JoinProjectDialog";
 import LogisticsBreakdown from "@/components/calculator/LogisticsBreakdown";
 import ProductImageZoom from "@/components/ProductImageZoom";
-import BatchCountdown from "@/components/BatchCountdown";
+import ProjectCountdown from "@/components/ProjectCountdown";
 import CustomerOrderForm from "@/components/CustomerOrderForm";
 import { useBatchDetail, useBatchParticipations } from "@/hooks/useBatches";
 import {
