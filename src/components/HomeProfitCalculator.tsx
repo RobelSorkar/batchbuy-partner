@@ -64,8 +64,8 @@ const HomeProfitCalculator = () => {
                   <ShoppingBag className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm">{EXAMPLE_PRODUCT.name}</p>
-                  <p className="text-xs text-muted-foreground">{EXAMPLE_PRODUCT.category} • উদাহরণ প্রোডাক্ট</p>
+                  <p className="font-semibold text-sm">{EXAMPLE_PRODUCT.nameEn}</p>
+                  <p className="text-xs text-muted-foreground">{EXAMPLE_PRODUCT.category} • {EXAMPLE_PRODUCT.name}</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 text-xs">
