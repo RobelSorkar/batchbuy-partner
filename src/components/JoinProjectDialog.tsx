@@ -59,7 +59,7 @@ const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps
   const { user } = useAuth();
   const { toast } = useToast();
   const { data: wallet } = useWallet();
-  const joinBatch = useJoinBatch();
+  const joinProject = useJoinProject();
   const deposit = useDeposit();
   const walletBalance = wallet?.balance || 0;
 
