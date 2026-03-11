@@ -453,10 +453,10 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                             <div className="flex gap-1">
                               <Link to={`/batch/${b.id}`}><Button variant="ghost" size="sm"><Eye className="w-3.5 h-3.5" /></Button></Link>
                               <Button variant="ghost" size="sm" onClick={() => setEditingBatch(b)}><Pencil className="w-3.5 h-3.5" /></Button>
-                              {canAdvanceBatch(b.status) && (
+                              {canAdvanceProject(b.status) && (
                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2"
                                   onClick={async () => {
-                                    const next = nextBatchStatus[b.status];
+                                    const next = nextProjectStatus[b.status];
                                     try {
                                       const { error } = await supabase.from("batches").update({ status: next }).eq("id", b.id);
                                       if (error) throw error;
@@ -466,7 +466,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                                       toast({ title: "Error", description: e.message, variant: "destructive" });
                                     }
                                   }}>
-                                  {nextBatchLabel[b.status]}
+                                  {nextProjectLabel[b.status]}
                                 </Button>
                               )}
                               {b.status === "funding" && (
