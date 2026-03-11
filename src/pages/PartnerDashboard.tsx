@@ -289,8 +289,8 @@ const PartnerDashboard = () => {
         <Card className="border-border">
           <div className="p-5 border-b border-border flex items-center justify-between">
             <div>
-              <h2 className="font-display font-semibold text-base">Your Batches</h2>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Track inventory per batch</p>
+              <h2 className="font-display font-semibold text-base">Your Projects</h2>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Track inventory per project</p>
             </div>
             {inventory.length > 0 && (
               <Link to="/partner/inventory">
