@@ -403,22 +403,22 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                   <tbody>
                     {filteredBatches.map((b: any) => {
                       const progress = b.total_quantity > 0 ? Math.round((b.funded_units / b.total_quantity) * 100) : 0;
-                      const batchStatusColors: Record<string, string> = {
+                      const projectStatusColors: Record<string, string> = {
                         funding: "bg-accent text-accent-foreground",
                         production: "bg-secondary text-secondary-foreground",
                         completed: "bg-primary/10 text-primary",
                         cancelled: "bg-destructive/10 text-destructive",
                         shipping: "bg-accent text-accent-foreground",
                       };
-                      const canAdvanceBatch = (status: string) => {
+                      const canAdvanceProject = (status: string) => {
                         return ["funding", "production", "shipping"].includes(status);
                       };
-                      const nextBatchStatus: Record<string, string> = {
+                      const nextProjectStatus: Record<string, string> = {
                         funding: "production",
                         production: "shipping",
                         shipping: "completed",
                       };
-                      const nextBatchLabel: Record<string, string> = {
+                      const nextProjectLabel: Record<string, string> = {
                         funding: "→ Production",
                         production: "→ Shipping",
                         shipping: "→ Completed",
