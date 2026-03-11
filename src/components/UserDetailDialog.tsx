@@ -136,6 +136,7 @@ export default function UserDetailDialog({ user, open, onOpenChange, onUserUpdat
   const { data: transactions = [], isLoading: loadingTxns } = useUserTransactions(user?.id);
   const { data: orders = [], isLoading: loadingOrders } = useUserOrders(user?.id);
   const { data: participations = [], isLoading: loadingParts } = useUserParticipations(user?.id);
+  const { data: auditLogs = [], isLoading: loadingLogs } = useUserAuditLogs(user?.id);
 
   if (!user) return null;
 
