@@ -20,8 +20,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useWallet, useDeposit } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
 
-interface JoinBatchDialogProps {
-  batch: ProductionBatch;
+interface JoinProjectDialogProps {
+  batch: ProductionProject;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
