@@ -185,7 +185,7 @@ const DashboardLayout = ({ children, role = "partner" }: DashboardLayoutProps) =
           </div>
         </header>
 
-        <div className="p-6 max-w-7xl">{children}</div>
+        <div className="p-4 sm:p-6 max-w-7xl">{children}</div>
       </main>
     </div>
   );

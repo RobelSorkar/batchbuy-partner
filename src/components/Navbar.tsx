@@ -38,7 +38,7 @@ const Navbar = () => {
         ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-sm"
         : "bg-transparent"
     }`}>
-      <div className="container max-w-6xl mx-auto flex items-center justify-between h-14 px-6">
+      <div className="container max-w-6xl mx-auto flex items-center justify-between h-14 sm:h-16 px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
             <Package className="w-4 h-4 text-primary-foreground" />
@@ -71,41 +71,70 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-2">
           {user ? (
             <Link to={dashboardPath}>
-              <Button size="sm" className="h-8 text-xs gap-1.5">
+              <Button size="sm" className="h-9 text-xs gap-1.5">
                 <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
               </Button>
             </Link>
           ) : (
             <>
               <Link to="/login">
-                <Button variant="ghost" size="sm" className="h-8 text-xs">Log In</Button>
+                <Button variant="ghost" size="sm" className="h-9 text-xs">Log In</Button>
               </Link>
               <Link to="/signup">
-                <Button size="sm" className="h-8 text-xs">Get Started</Button>
+                <Button size="sm" className="h-9 text-xs">Get Started</Button>
               </Link>
             </>
           )}
         </div>
 
-        <button className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
+        <button
+          className="md:hidden p-2 -mr-2 rounded-lg hover:bg-muted/50 transition-colors"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
           {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-background px-6 py-4 space-y-1">
-          <a href="#how-it-works" className="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:bg-muted">How It Works</a>
-          <a href="#batches" className="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:bg-muted">Batches</a>
-          <a href="#roles" className="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:bg-muted">Roles</a>
-          <Link to="/transparency" className="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:bg-muted" onClick={() => setMobileOpen(false)}>Transparency</Link>
-          <div className="pt-2 border-t border-border mt-2">
+        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl px-4 py-3 space-y-1 animate-in slide-in-from-top-2 duration-200">
+          {[
+            { label: "How It Works", href: "#how-it-works" },
+            { label: "Batches", href: "#batches" },
+            { label: "Roles", href: "#roles" },
+          ].map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className="block px-4 py-3 text-sm text-muted-foreground rounded-lg hover:bg-muted active:bg-muted/80 transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              {item.label}
+            </a>
+          ))}
+          <Link
+            to="/transparency"
+            className="block px-4 py-3 text-sm text-muted-foreground rounded-lg hover:bg-muted active:bg-muted/80 transition-colors"
+            onClick={() => setMobileOpen(false)}
+          >
+            Transparency
+          </Link>
+          <div className="pt-3 border-t border-border mt-2 space-y-2">
             {user ? (
-              <Link to={dashboardPath}><Button className="w-full" size="sm"><LayoutDashboard className="w-3.5 h-3.5 mr-1.5" /> Dashboard</Button></Link>
+              <Link to={dashboardPath} onClick={() => setMobileOpen(false)}>
+                <Button className="w-full h-12 text-sm" size="lg">
+                  <LayoutDashboard className="w-4 h-4 mr-2" /> Dashboard
+                </Button>
+              </Link>
             ) : (
-              <div className="space-y-2">
-                <Link to="/signup"><Button className="w-full" size="sm">Get Started</Button></Link>
-                <Link to="/login"><Button variant="outline" className="w-full" size="sm">Log In</Button></Link>
-              </div>
+              <>
+                <Link to="/signup" onClick={() => setMobileOpen(false)}>
+                  <Button className="w-full h-12 text-sm" size="lg">Get Started</Button>
+                </Link>
+                <Link to="/login" onClick={() => setMobileOpen(false)}>
+                  <Button variant="outline" className="w-full h-12 text-sm" size="lg">Log In</Button>
+                </Link>
+              </>
             )}
           </div>
         </div>
