@@ -140,7 +140,7 @@ const TransparencyDashboard = () => {
                 Transparency <span className="text-primary">Dashboard</span>
               </h1>
               <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
-                Real-time platform statistics. Every batch, every unit, every partner — tracked and visible.
+                Real-time platform statistics. Every project, every unit, every partner — tracked and visible.
               </p>
             </div>
           </div>
