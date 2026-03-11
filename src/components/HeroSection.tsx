@@ -113,15 +113,15 @@ const HeroSection = () => {
             </div>
 
             {/* Bottom stats */}
-            <div className="mt-6 pt-5 border-t border-border grid grid-cols-3 gap-4 text-center">
+            <div className="mt-6 pt-5 border-t border-border grid grid-cols-3 gap-2 sm:gap-4 text-center">
               {[
                 { value: "500+", label: "Partners" },
                 { value: "৳2.5Cr+", label: "Production financed" },
                 { value: "18-35%", label: "Avg. margins" },
               ].map((s) => (
                 <div key={s.label}>
-                  <div className="text-lg font-bold text-foreground font-display">{s.value}</div>
-                  <div className="text-xs text-muted-foreground">{s.label}</div>
+                  <div className="text-base sm:text-lg font-bold text-foreground font-display">{s.value}</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">{s.label}</div>
                 </div>
               ))}
             </div>
