@@ -89,7 +89,7 @@ const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps
       return;
     }
     try {
-      await joinBatch.mutateAsync({ batchId: batch.id, units, totalInvested: inventoryCost, sellingPreference });
+      await joinProject.mutateAsync({ batchId: batch.id, units, totalInvested: inventoryCost, sellingPreference });
       setSubmitted(true);
     } catch (error: any) {
       toast({ title: "Failed to join project", description: error.message, variant: "destructive" });
