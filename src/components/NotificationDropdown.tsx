@@ -33,6 +33,7 @@ function timeAgo(dateStr: string) {
 
 const NotificationDropdown = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const { data: notifications = [], isLoading } = useNotifications();
   const unreadCount = useUnreadCount();
   const markAsRead = useMarkAsRead();
