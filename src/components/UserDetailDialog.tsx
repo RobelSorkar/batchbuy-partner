@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Phone, MapPin, Loader2, ArrowUpRight, ArrowDownRight, ShoppingCart, Wallet, Package } from "lucide-react";
+import { Phone, MapPin, Loader2, ArrowUpRight, ArrowDownRight, ShoppingCart, Wallet, Package, FileText } from "lucide-react";
 import { AdminUser, useToggleUserRole } from "@/hooks/useAdminData";
 import { useToast } from "@/hooks/use-toast";
 import type { Database } from "@/integrations/supabase/types";
