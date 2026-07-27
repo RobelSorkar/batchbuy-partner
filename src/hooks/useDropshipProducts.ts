@@ -25,13 +25,15 @@ export function useDropshipProducts() {
       // combined with inventory data
       const { data: batches, error } = await supabase
         .from("batches")
-        .select("*");
+        .select("*")
+        .limit(1000);
       if (error) throw error;
 
       // Also get inventory for stock info
       const { data: inventory } = await supabase
         .from("inventory")
-        .select("*");
+        .select("*")
+        .limit(1000);
 
       return (batches || []).map((batch) => {
         const inv = (inventory || []).find((i) => i.batch_id === batch.id);

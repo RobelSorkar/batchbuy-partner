@@ -8,7 +8,11 @@ export function useOrders(role?: string, channel?: string) {
     queryKey: ["orders", role, channel, user?.id],
     queryFn: async () => {
       if (!user) return [];
-      let query = supabase.from("orders").select("*, order_items(*)").order("created_at", { ascending: false });
+      // Safety cap: OrderManagement computes summary stats (revenue, status
+      // counts) client-side over this full result, so a hard page split would
+      // silently make those totals wrong. This limit is a guardrail against
+      // an unbounded fetch; real pagination needs the stats moved server-side.
+      let query = supabase.from("orders").select("*, order_items(*)").order("created_at", { ascending: false }).limit(2000);
       
       // Filter by channel if provided (e.g., for distributor orders)
       if (channel) {

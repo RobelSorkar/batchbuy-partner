@@ -55,7 +55,8 @@ export function useProjects() {
       const { data, error } = await supabase
         .from("batches")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(1000);
       if (error) throw error;
       return data as ProjectRow[];
     },
@@ -94,7 +95,8 @@ export function useProjectParticipations(batchId: string | undefined) {
         .from("batch_participations")
         .select("*")
         .eq("batch_id", batchId)
-        .order("joined_at", { ascending: false });
+        .order("joined_at", { ascending: false })
+        .limit(1000);
       if (error) throw error;
       if (!participations || participations.length === 0) return [];
 
@@ -129,7 +131,9 @@ export function useMyParticipations() {
       const { data, error } = await supabase
         .from("batch_participations")
         .select("*, batches(*)")
-        .eq("user_id", user.id);
+        .eq("user_id", user.id)
+        .order("joined_at", { ascending: false })
+        .limit(500);
       if (error) throw error;
       return data;
     },

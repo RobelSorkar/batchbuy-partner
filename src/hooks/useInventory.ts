@@ -8,7 +8,8 @@ export function useInventory() {
       const { data, error } = await supabase
         .from("inventory")
         .select("*, batches(product_name, batch_name, production_cost_per_unit, retail_price, wholesale_price)")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(1000);
       if (error) throw error;
       return data;
     },

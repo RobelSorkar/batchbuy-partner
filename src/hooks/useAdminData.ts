@@ -25,28 +25,37 @@ export function useAdminUsers() {
     queryKey: ["admin-users"],
     queryFn: async () => {
       // Get all profiles
+      // Safety cap: these fetch every row for client-side aggregation (roles,
+      // wallet balances, invested/earned totals). Full pagination would need
+      // the aggregation moved server-side (a view/RPC) since it can't just
+      // page one table in isolation. This limit is a guardrail against an
+      // unbounded fetch, not a substitute for that larger fix.
       const { data: profiles, error: pErr } = await supabase
         .from("profiles")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(5000);
       if (pErr) throw pErr;
 
       // Get all roles
       const { data: roles, error: rErr } = await supabase
         .from("user_roles")
-        .select("*");
+        .select("*")
+        .limit(5000);
       if (rErr) throw rErr;
 
       // Get all wallets
       const { data: wallets, error: wErr } = await supabase
         .from("wallets")
-        .select("*");
+        .select("*")
+        .limit(5000);
       if (wErr) throw wErr;
 
       // Get all transactions
       const { data: transactions, error: tErr } = await supabase
         .from("transactions")
-        .select("*");
+        .select("*")
+        .limit(5000);
       if (tErr) throw tErr;
 
       const roleMap = new Map<string, string[]>();
@@ -105,7 +114,8 @@ export function useAdminWithdrawals() {
         .from("transactions")
         .select("*")
         .eq("type", "withdrawal")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(2000);
       if (error) throw error;
       return txns || [];
     },
@@ -147,7 +157,8 @@ export function useAllTransactions() {
       const { data, error } = await supabase
         .from("transactions")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(2000);
       if (error) throw error;
       return data || [];
     },
