@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
+
 import { useToast } from "@/hooks/use-toast";
 
 const roles = [
@@ -124,8 +124,9 @@ const Signup = () => {
             size="lg"
             type="button"
             onClick={async () => {
-              const { error } = await lovable.auth.signInWithOAuth("google", {
-                redirect_uri: window.location.origin,
+                            const { error } = await supabase.auth.signInWithOAuth({
+                provider: "google",
+                options: { redirectTo: window.location.origin },
               });
               if (error) {
                 toast({ title: "Google signup failed", description: error.message, variant: "destructive" });
