@@ -100,7 +100,7 @@ export function useProjectParticipations(batchId: string | undefined) {
 
       const userIds = [...new Set(participations.map((p) => p.user_id))];
       const { data: profiles } = await supabase
-        .from("profiles")
+        .from("profiles_public")
         .select("user_id, full_name")
         .in("user_id", userIds);
 

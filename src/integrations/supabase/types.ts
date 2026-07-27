@@ -524,7 +524,14 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      profiles_public: {
+        Row: {
+          avatar_url: string | null
+          full_name: string | null
+          user_id: string
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_sync_batch_stats: { Args: never; Returns: undefined }
