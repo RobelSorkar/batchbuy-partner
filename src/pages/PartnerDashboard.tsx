@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Package, TrendingUp, Wallet, Layers, BarChart3, Settings2, Loader2, MapPin, Calendar, Warehouse, User, Shield, ArrowRight, ShoppingCart, ArrowUpRight, Clock, Eye } from "lucide-react";
+import { Package, TrendingUp, Wallet, Layers, Settings2, Loader2, MapPin, Calendar, Warehouse, User, Shield, ArrowRight, ArrowUpRight, Clock, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

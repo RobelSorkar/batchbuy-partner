@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { ShoppingCart, TrendingUp, Wallet, DollarSign, ArrowUpRight, ExternalLink, Copy, Check, BarChart3, Loader2 } from "lucide-react";
+import { ShoppingCart, TrendingUp, Wallet, DollarSign, ExternalLink, Copy, Check, BarChart3, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useDropshipProducts } from "@/hooks/useDropshipProducts";

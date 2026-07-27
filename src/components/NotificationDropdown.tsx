@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, Check, CheckCheck, Package, ShoppingCart, Wallet, Info } from "lucide-react";
+import { Bell, CheckCheck, Package, ShoppingCart, Wallet, Info } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";

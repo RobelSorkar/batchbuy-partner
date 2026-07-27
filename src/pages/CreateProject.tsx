@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Plus, Calculator, Loader2, Upload, X, ImageIcon } from "lucide-react";
+import { ArrowLeft, Plus, Calculator, Loader2, Upload, X } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { MINIMUM_PARTICIPATION_BDT, allocateUnits, calcPerUnitProfit, calcInvestmentEstimate } from "@/lib/calculations";
 import { supabase } from "@/integrations/supabase/client";

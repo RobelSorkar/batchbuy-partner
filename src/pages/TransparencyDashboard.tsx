@@ -60,9 +60,6 @@ const TransparencyDashboard = () => {
     .reduce((s: number, b: any) => s + b.total_quantity, 0);
   const totalUnitsFunded = batches.reduce((s: number, b: any) => s + b.funded_units, 0);
   const totalUnitsSold = inventory.reduce((s: number, i: any) => s + i.sold_units, 0);
-  const activePartners = new Set(
-    batches.filter((b: any) => b.partners_joined > 0).flatMap(() => [])
-  ).size;
   const totalPartnersJoined = batches.reduce((s: number, b: any) => s + b.partners_joined, 0);
   const warehouseStock = inventory.reduce((s: number, i: any) => s + (i.total_stock - i.sold_units), 0);
   const totalInvestment = batches.reduce((s: number, b: any) => s + (b.funded_units * Number(b.production_cost_per_unit)), 0);

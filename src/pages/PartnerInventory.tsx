@@ -160,7 +160,6 @@ const PartnerInventory = () => {
                   </TableHeader>
                   <TableBody>
                     {items.map((item) => {
-                      const soldPct = item.totalUnits > 0 ? Math.round((item.soldUnits / item.totalUnits) * 100) : 0;
                       return (
                         <TableRow key={item.participationId}>
                           <TableCell>

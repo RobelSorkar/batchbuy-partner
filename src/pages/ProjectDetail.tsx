@@ -78,14 +78,11 @@ const ProjectDetail = () => {
   const progress = Math.round((batch.funded_units / batch.total_quantity) * 100);
   const logisticsCost = Number((batch as any).logistics_cost_per_unit) || 0;
   const retailMarketingPerUnit = Math.round(batch.retail_price * MARKETING_COST_RATE);
-  const wholesaleMarketingPerUnit = Math.round(batch.wholesale_price * MARKETING_COST_RATE);
 
   // Use global calculation engine
   const perUnit = calcPerUnitProfit(batch.production_cost_per_unit, batch.wholesale_price, batch.retail_price, logisticsCost);
   const profitPerUnit = perUnit.retailNetPerUnit;
-  const wholesaleProfitPerUnit = perUnit.wholesaleNetPerUnit;
   const returnPct = perUnit.retailReturnPct.toFixed(1);
-  const wholesaleReturnPct = perUnit.wholesaleReturnPct.toFixed(1);
   const canJoin = batch.status === "funding" && batch.remaining_units > 0;
 
   // Map DB row to the shape JoinProjectDialog expects

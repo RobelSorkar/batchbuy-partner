@@ -53,8 +53,8 @@ export function useCreateOrder() {
         p_channel: order.channel,
         p_total_amount: order.totalAmount,
         p_commission: order.commission,
-        p_batch_id: order.batchId || null,
-        p_items: order.items as any,
+        p_batch_id: order.batchId,
+        p_items: order.items,
       });
       if (error) throw error;
       return data;

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -9,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Phone, MapPin, Loader2, ArrowUpRight, ArrowDownRight, ShoppingCart, Wallet, Package, FileText } from "lucide-react";
 import { AdminUser, useToggleUserRole } from "@/hooks/useAdminData";
 import { useToast } from "@/hooks/use-toast";
-import type { Database } from "@/integrations/supabase/types";
+import { getErrorMessage } from "@/lib/utils";
 
 const roleColors: Record<string, string> = {
   partner: "bg-primary/10 text-primary",
@@ -259,8 +258,8 @@ export default function UserDetailDialog({ user, open, onOpenChange, onUserUpdat
                                 title: hasRole ? "Role Removed" : "Role Added",
                                 description: `${displayName} ${hasRole ? "removed from" : "added to"} ${user.name}`,
                               });
-                            } catch (e: any) {
-                              toast({ title: "Failed", description: e.message, variant: "destructive" });
+                            } catch (e) {
+                              toast({ title: "Failed", description: getErrorMessage(e), variant: "destructive" });
                             }
                           }}
                         >

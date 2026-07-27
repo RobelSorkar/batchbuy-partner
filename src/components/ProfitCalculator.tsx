@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Calculator,
-  TrendingUp,
   Package,
   Banknote,
   Truck,
@@ -198,9 +197,7 @@ const ProfitCalculator = () => {
                   const unitsSold = Math.round(sc.unitsFinanced * (s.rate / 100));
                   const remainingUnits = sc.unitsFinanced - unitsSold;
                   const inventoryAssetValue = remainingUnits * costPerUnit;
-                  const cashEarned = sc.retailNetProfit + sc.inventoryCost; // net cash position
                   const totalInvestorValue = sc.retailNetProfit + inventoryAssetValue;
-                  const netPosition = totalInvestorValue;
                   const showAsset = s.rate < 100 && remainingUnits > 0;
 
                   return (
@@ -237,7 +234,7 @@ const ProfitCalculator = () => {
                             <div className="border-t border-border/30 pt-1 flex justify-between">
                               <span className="font-medium text-foreground">Total value</span>
                               <span className={`font-bold ${s.color}`}>
-                                ৳{(sc.retailNetProfit + inventoryAssetValue).toLocaleString()}
+                                ৳{totalInvestorValue.toLocaleString()}
                               </span>
                             </div>
                             <div className="flex justify-between">

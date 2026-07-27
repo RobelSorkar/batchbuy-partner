@@ -13,10 +13,10 @@ import UserDetailDialog from "@/components/UserDetailDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, useUpdateUserRole, useToggleUserRole, AdminUser } from "@/hooks/useAdminData";
+import { getErrorMessage } from "@/lib/utils";
+import { useAdminUsers, useAdminWithdrawals, useUpdateTransactionStatus, AdminUser } from "@/hooks/useAdminData";
 import { useProjects } from "@/hooks/useProjects";
 import { useOrders } from "@/hooks/useOrders";
 import { useInventory } from "@/hooks/useInventory";
@@ -68,8 +68,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
       const { error } = await supabase.rpc("admin_sync_batch_stats");
       if (error) throw error;
       toast({ title: "Project stats synced", description: "funded_units and partners_joined recalculated from source records." });
-    } catch (e: any) {
-      toast({ title: "Sync failed", description: e.message, variant: "destructive" });
+    } catch (e) {
+      toast({ title: "Sync failed", description: getErrorMessage(e), variant: "destructive" });
     } finally {
       setSyncing(false);
     }
@@ -84,8 +84,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
       queryClient.invalidateQueries({ queryKey: ["wallet"] });
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       toast({ title: "Wallet reconciliation complete", description: `${result.wallets_checked} wallets checked, ${result.mismatches_fixed} mismatches fixed.` });
-    } catch (e: any) {
-      toast({ title: "Reconciliation failed", description: e.message, variant: "destructive" });
+    } catch (e) {
+      toast({ title: "Reconciliation failed", description: getErrorMessage(e), variant: "destructive" });
     } finally {
       setReconciling(false);
     }
@@ -95,7 +95,6 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const [userDetail, setUserDetail] = useState<AdminUser | null>(null);
   const [projectSearch, setProjectSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
-  const [editingRole, setEditingRole] = useState<string | null>(null);
   const [editingProject, setEditingProject] = useState<any>(null);
 
   // Real data hooks
@@ -105,8 +104,6 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const { data: inventory = [], isLoading: loadingInventory } = useInventory();
   const { data: withdrawals = [], isLoading: loadingWithdrawals } = useAdminWithdrawals();
   const updateTxnStatus = useUpdateTransactionStatus();
-  const updateUserRole = useUpdateUserRole();
-  const toggleUserRole = useToggleUserRole();
   const isLoading = loadingUsers || loadingBatches || loadingOrders || loadingInventory || loadingWithdrawals;
 
   // Filtered data
@@ -116,11 +113,11 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
     return matchSearch && matchRole;
   });
 
-  const filteredProjects = (batches as any[]).filter((b) =>
+  const filteredProjects = batches.filter((b) =>
     projectSearch === "" || b.product_name?.toLowerCase().includes(projectSearch.toLowerCase()) || b.batch_name?.toLowerCase().includes(projectSearch.toLowerCase())
   );
 
-  const filteredOrders = (orders as any[]).filter((o) =>
+  const filteredOrders = orders.filter((o) =>
     orderSearch === "" || o.order_number?.toLowerCase().includes(orderSearch.toLowerCase()) || o.customer_name?.toLowerCase().includes(orderSearch.toLowerCase())
   );
 
@@ -132,8 +129,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
         title: action === "completed" ? "Withdrawal Approved" : "Withdrawal Rejected",
         variant: action === "failed" ? "destructive" : undefined,
       });
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message, variant: "destructive" });
+    } catch (e) {
+      toast({ title: "Error", description: getErrorMessage(e), variant: "destructive" });
     }
   };
 
@@ -141,22 +138,22 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
   const totalWalletBalance = users.reduce((s, u) => s + u.walletBalance, 0);
   const totalInvested = users.reduce((s, u) => s + u.totalInvested, 0);
   const totalEarned = users.reduce((s, u) => s + u.totalEarned, 0);
-  const totalWarehouseStock = (inventory as any[]).reduce((s, i) => s + (i.total_stock - i.sold_units), 0);
-  const totalSoldUnits = (inventory as any[]).reduce((s, i) => s + i.sold_units, 0);
-  const pendingWithdrawals = (withdrawals as any[]).filter((w) => w.status === "pending");
+  const totalWarehouseStock = inventory.reduce((s, i) => s + (i.total_stock - i.sold_units), 0);
+  const totalSoldUnits = inventory.reduce((s, i) => s + i.sold_units, 0);
+  const pendingWithdrawals = withdrawals.filter((w) => w.status === "pending");
   const pendingWithdrawalTotal = pendingWithdrawals.reduce((s: number, w: any) => s + Number(w.amount), 0);
 
   const projectStatusCounts = {
-    funding: (batches as any[]).filter((b) => b.status === "funding").length,
-    production: (batches as any[]).filter((b) => b.status === "production").length,
-    completed: (batches as any[]).filter((b) => b.status === "completed").length,
+    funding: batches.filter((b) => b.status === "funding").length,
+    production: batches.filter((b) => b.status === "production").length,
+    completed: batches.filter((b) => b.status === "completed").length,
   };
 
   const platformStats = [
     { label: "Total Users", value: users.length.toString(), change: `${users.filter(u => u.role === "partner").length} partners`, up: true, icon: Users, tab: "users" },
-    { label: "Active Projects", value: (batches as any[]).length.toString(), change: `${projectStatusCounts.funding} in funding`, up: true, icon: Layers, tab: "batches" },
-    { label: "Total Orders", value: (orders as any[]).length.toString(), change: `${(orders as any[]).filter((o: any) => o.status === "delivered").length} delivered`, up: true, icon: ShoppingCart, tab: "orders" },
-    { label: "Platform Revenue", value: `৳${(orders as any[]).reduce((s: number, o: any) => s + Number(o.total_amount), 0).toLocaleString()}`, change: "From all orders", up: true, icon: TrendingUp, tab: "orders" },
+    { label: "Active Projects", value: batches.length.toString(), change: `${projectStatusCounts.funding} in funding`, up: true, icon: Layers, tab: "batches" },
+    { label: "Total Orders", value: orders.length.toString(), change: `${orders.filter((o) => o.status === "delivered").length} delivered`, up: true, icon: ShoppingCart, tab: "orders" },
+    { label: "Platform Revenue", value: `৳${orders.reduce((s: number, o: any) => s + Number(o.total_amount), 0).toLocaleString()}`, change: "From all orders", up: true, icon: TrendingUp, tab: "orders" },
     { label: "Total Wallets", value: `৳${totalWalletBalance.toLocaleString()}`, change: "Across all users", up: true, icon: Wallet, tab: "wallets" },
     { label: "Pending Withdrawals", value: pendingWithdrawals.length.toString(), change: `৳${pendingWithdrawalTotal.toLocaleString()} total`, up: false, icon: DollarSign, tab: "withdrawals" },
   ];
@@ -248,11 +245,11 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                       </div>
                     </div>
                   )}
-                  {(orders as any[]).filter((o: any) => o.status === "pending").length > 0 && (
+                  {orders.filter((o) => o.status === "pending").length > 0 && (
                     <div className="flex items-start gap-3">
                       <CheckCircle className="w-4 h-4 text-primary mt-0.5" />
                       <div className="flex-1">
-                        <p className="text-sm">{(orders as any[]).filter((o: any) => o.status === "pending").length} orders awaiting confirmation</p>
+                        <p className="text-sm">{orders.filter((o) => o.status === "pending").length} orders awaiting confirmation</p>
                         <Button variant="link" size="sm" className="px-0 h-auto text-xs" onClick={() => setActiveTab("orders")}>View →</Button>
                       </div>
                     </div>
@@ -296,9 +293,9 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
               {[
-                { label: "Manage Orders", icon: ShoppingCart, href: "/admin/orders", desc: `${(orders as any[]).length} total orders` },
+                { label: "Manage Orders", icon: ShoppingCart, href: "/admin/orders", desc: `${orders.length} total orders` },
                 { label: "Warehouse", icon: Package, href: "/warehouse", desc: `${Math.max(0, totalWarehouseStock)} units in stock` },
-                { label: "Marketplace", icon: Layers, href: "/marketplace", desc: `${(batches as any[]).length} projects` },
+                { label: "Marketplace", icon: Layers, href: "/marketplace", desc: `${batches.length} projects` },
                 { label: "Create Project", icon: Layers, href: "/create-batch", desc: "Launch new production" },
               ].map((link) => (
                 <Link key={link.label} to={link.href} className="bg-card rounded-xl p-5 shadow-card border border-border/50 hover:shadow-card-hover transition-all group">
@@ -401,7 +398,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredProjects.map((b: any) => {
+                    {filteredProjects.map((b) => {
                       const progress = b.total_quantity > 0 ? Math.round((b.funded_units / b.total_quantity) * 100) : 0;
                       const projectStatusColors: Record<string, string> = {
                         funding: "bg-accent text-accent-foreground",
@@ -462,8 +459,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                                       if (error) throw error;
                                       toast({ title: `${b.batch_name} → ${next}` });
                                       queryClient.invalidateQueries({ queryKey: ["batches"] });
-                                    } catch (e: any) {
-                                      toast({ title: "Error", description: e.message, variant: "destructive" });
+                                    } catch (e) {
+                                      toast({ title: "Error", description: getErrorMessage(e), variant: "destructive" });
                                     }
                                   }}>
                                   {nextProjectLabel[b.status]}
@@ -477,8 +474,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                                       if (error) throw error;
                                       toast({ title: `${b.batch_name} cancelled`, variant: "destructive" });
                                       queryClient.invalidateQueries({ queryKey: ["batches"] });
-                                    } catch (e: any) {
-                                      toast({ title: "Error", description: e.message, variant: "destructive" });
+                                    } catch (e) {
+                                      toast({ title: "Error", description: getErrorMessage(e), variant: "destructive" });
                                     }
                                   }}>
                                   <Ban className="w-3 h-3" />
@@ -513,7 +510,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                     </tr>
                   </thead>
                   <tbody>
-                    {(inventory as any[]).map((item: any) => {
+                    {inventory.map((item) => {
                       const available = item.total_stock - item.allocated_stock - item.sold_units;
                       const pct = item.total_stock > 0 ? (available / item.total_stock) * 100 : 0;
                       const isLow = pct < 25;
@@ -539,11 +536,11 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                   </tbody>
                 </table>
               </div>
-              {(inventory as any[]).length === 0 && <div className="p-8 text-center text-muted-foreground">No inventory records yet.</div>}
-              {(inventory as any[]).length > 0 && (
+              {inventory.length === 0 && <div className="p-8 text-center text-muted-foreground">No inventory records yet.</div>}
+              {inventory.length > 0 && (
                 <div className="p-5 border-t border-border/50 grid grid-cols-3 gap-4">
                   <div className="bg-muted/30 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-display font-bold">{(inventory as any[]).reduce((s: number, i: any) => s + i.total_stock, 0).toLocaleString()}</div>
+                    <div className="text-2xl font-display font-bold">{inventory.reduce((s: number, i: any) => s + i.total_stock, 0).toLocaleString()}</div>
                     <div className="text-xs text-muted-foreground">Total Stock</div>
                   </div>
                   <div className="bg-muted/30 rounded-lg p-3 text-center">
@@ -582,7 +579,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredOrders.slice(0, 10).map((o: any) => {
+                    {filteredOrders.slice(0, 10).map((o) => {
                       const canAdvance = !["delivered", "cancelled"].includes(o.status);
                       const nextStatusMap: Record<string, string> = {
                         pending: "confirmed",
@@ -597,7 +594,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                         <tr key={o.id} className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors">
                           <td className="px-5 py-4 text-sm font-mono font-medium">{o.order_number}</td>
                           <td className="px-5 py-4 text-sm text-muted-foreground">{o.customer_name}</td>
-                          <td className="px-5 py-4 text-xs text-muted-foreground">{(o.order_items || []).map((i: any) => i.product_name).join(", ") || "—"}</td>
+                          <td className="px-5 py-4 text-xs text-muted-foreground">{(o.order_items || []).map((i) => i.product_name).join(", ") || "—"}</td>
                           <td className="px-5 py-4 text-sm font-semibold">৳{Number(o.total_amount).toLocaleString()}</td>
                           <td className="px-5 py-4"><span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-muted text-muted-foreground capitalize">{{ dropshipper: "Sales Partner", dropship: "Sales Partner", platform: "Platform", retail: "Retail", distributor: "Distributor" }[o.channel] || o.channel}</span></td>
                           <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${orderStatusColors[o.status] || ""}`}>{o.status}</span></td>
@@ -611,8 +608,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                                       await supabase.from("orders").update({ status: nextStatus }).eq("id", o.id);
                                       toast({ title: `Order ${o.order_number} → ${nextStatus}` });
                                       queryClient.invalidateQueries({ queryKey: ["orders"] });
-                                    } catch (e: any) {
-                                      toast({ title: "Error", description: e.message, variant: "destructive" });
+                                    } catch (e) {
+                                      toast({ title: "Error", description: getErrorMessage(e), variant: "destructive" });
                                     }
                                   }}>
                                   {nextStatus === "confirmed" ? "Approve" : nextStatus.charAt(0).toUpperCase() + nextStatus.slice(1)}
@@ -625,8 +622,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                                       await supabase.from("orders").update({ status: "cancelled" }).eq("id", o.id);
                                       toast({ title: `Order ${o.order_number} cancelled`, variant: "destructive" });
                                       queryClient.invalidateQueries({ queryKey: ["orders"] });
-                                    } catch (e: any) {
-                                      toast({ title: "Error", description: e.message, variant: "destructive" });
+                                    } catch (e) {
+                                      toast({ title: "Error", description: getErrorMessage(e), variant: "destructive" });
                                     }
                                   }}>
                                   <XCircle className="w-3 h-3" />
@@ -710,7 +707,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                     </tr>
                   </thead>
                   <tbody>
-                    {(withdrawals as any[]).map((w: any) => (
+                    {withdrawals.map((w) => (
                       <tr key={w.id} className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors">
                         <td className="px-5 py-4 text-sm font-mono">{w.id.slice(0, 8)}</td>
                         <td className="px-5 py-4 text-sm font-bold">৳{Number(w.amount).toLocaleString()}</td>
@@ -736,7 +733,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                   </tbody>
                 </table>
               </div>
-              {(withdrawals as any[]).length === 0 && <div className="p-8 text-center text-muted-foreground">No withdrawal requests.</div>}
+              {withdrawals.length === 0 && <div className="p-8 text-center text-muted-foreground">No withdrawal requests.</div>}
             </div>
           </TabsContent>
 
@@ -749,8 +746,8 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                 </h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
-                    { label: "Total Order Revenue", value: `৳${(orders as any[]).reduce((s: number, o: any) => s + Number(o.total_amount), 0).toLocaleString()}`, sub: `${(orders as any[]).length} orders` },
-                    { label: "Total Commissions", value: `৳${(orders as any[]).reduce((s: number, o: any) => s + Number(o.commission || 0), 0).toLocaleString()}`, sub: "Paid to sellers" },
+                    { label: "Total Order Revenue", value: `৳${orders.reduce((s: number, o: any) => s + Number(o.total_amount), 0).toLocaleString()}`, sub: `${orders.length} orders` },
+                    { label: "Total Commissions", value: `৳${orders.reduce((s: number, o: any) => s + Number(o.commission || 0), 0).toLocaleString()}`, sub: "Paid to sellers" },
                     { label: "Total Wallet Balance", value: `৳${totalWalletBalance.toLocaleString()}`, sub: `${users.length} users` },
                     { label: "Total Invested", value: `৳${totalInvested.toLocaleString()}`, sub: "In production batches" },
                   ].map((item) => (
@@ -816,11 +813,11 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
                 </h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
                   {[
-                    { label: "Total Orders", value: (orders as any[]).length },
-                    { label: "Delivered", value: (orders as any[]).filter((o: any) => o.status === "delivered").length },
-                    { label: "In Transit", value: (orders as any[]).filter((o: any) => ["shipped", "out_for_delivery"].includes(o.status)).length },
-                    { label: "Processing", value: (orders as any[]).filter((o: any) => ["pending", "confirmed", "processing", "packed"].includes(o.status)).length },
-                    { label: "Cancelled", value: (orders as any[]).filter((o: any) => o.status === "cancelled").length },
+                    { label: "Total Orders", value: orders.length },
+                    { label: "Delivered", value: orders.filter((o) => o.status === "delivered").length },
+                    { label: "In Transit", value: orders.filter((o) => ["shipped", "out_for_delivery"].includes(o.status)).length },
+                    { label: "Processing", value: orders.filter((o) => ["pending", "confirmed", "processing", "packed"].includes(o.status)).length },
+                    { label: "Cancelled", value: orders.filter((o) => o.status === "cancelled").length },
                   ].map((item) => (
                     <div key={item.label} className="bg-muted/30 rounded-lg p-3 text-center">
                       <div className="text-2xl font-display font-bold">{item.value}</div>
@@ -837,7 +834,7 @@ const AdminDashboard = ({ defaultTab = "overview", defaultRoleFilter }: { defaul
         <UserDetailDialog
           user={userDetail}
           open={!!userDetail}
-          onOpenChange={(open) => { if (!open) { setUserDetail(null); setEditingRole(null); } }}
+          onOpenChange={(open) => { if (!open) { setUserDetail(null); } }}
           onUserUpdate={(updatedUser) => setUserDetail(updatedUser)}
         />
         <EditProjectDialog batch={editingProject} open={!!editingProject} onOpenChange={(o) => !o && setEditingProject(null)} />

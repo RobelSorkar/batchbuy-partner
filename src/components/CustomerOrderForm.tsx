@@ -4,6 +4,7 @@ import { ShoppingBag, Loader2, CheckCircle, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 
 const orderSchema = z.object({
@@ -87,10 +88,10 @@ const CustomerOrderForm = ({
         orderNumber: data.orderNumber,
         totalAmount: data.totalAmount,
       });
-    } catch (err: any) {
+    } catch (err) {
       toast({
         title: "সমস্যা হয়েছে",
-        description: err.message || "অর্ডার তৈরি করা যায়নি",
+        description: getErrorMessage(err) || "অর্ডার তৈরি করা যায়নি",
         variant: "destructive",
       });
     } finally {

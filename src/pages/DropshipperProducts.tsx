@@ -10,6 +10,7 @@ import { useDropshipProducts, DropshipProduct } from "@/hooks/useDropshipProduct
 import { useCreateOrder } from "@/hooks/useOrders";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
 
 const orderFormSchema = z.object({
   customerName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
@@ -90,8 +91,8 @@ const DropshipperProducts = () => {
       setCustomerAddress("");
       setOrderQty(1);
       setSelectedProduct(null);
-    } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Error", description: getErrorMessage(err), variant: "destructive" });
     }
   };
 

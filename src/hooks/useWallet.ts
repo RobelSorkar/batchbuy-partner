@@ -91,7 +91,7 @@ export function useReinvest() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ batchId, batchName, amount, units }: { batchId: string; batchName: string; amount: number; units: number }) => {
+    mutationFn: async ({ batchId, batchName: _batchName, amount, units }: { batchId: string; batchName: string; amount: number; units: number }) => {
       if (!user) throw new Error("Not authenticated");
 
       const { data, error } = await supabase.rpc("join_batch" as any, {

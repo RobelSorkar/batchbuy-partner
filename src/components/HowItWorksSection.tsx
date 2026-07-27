@@ -1,4 +1,4 @@
-import { Factory, Package, TrendingUp, ArrowRight } from "lucide-react";
+import { Factory, Package, TrendingUp } from "lucide-react";
 
 const steps = [
   {

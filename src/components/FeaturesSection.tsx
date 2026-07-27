@@ -1,4 +1,4 @@
-import { Package, Users, Truck, Wallet, ArrowRight, ShieldCheck, BarChart3, Globe } from "lucide-react";
+import { Package, Users, Truck, Wallet, ShieldCheck, BarChart3 } from "lucide-react";
 
 const features = [
   {

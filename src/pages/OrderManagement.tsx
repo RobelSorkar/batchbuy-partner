@@ -2,7 +2,7 @@ import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import {
   Package, Truck, ShoppingCart, CheckCircle, Clock,
-  Search, Eye, ArrowRight, MapPin, User, Hash, ChevronRight,
+  Search, ArrowRight, MapPin, User, ChevronRight,
   XCircle, Box, PackageCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

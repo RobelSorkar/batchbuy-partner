@@ -4,10 +4,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, ShieldAlert, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { Database } from "@/integrations/supabase/types";
+
+type AppRole = Database["public"]["Enums"]["app_role"];
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  requiredRole?: string;
+  requiredRole?: AppRole;
 }
 
 const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
@@ -28,7 +31,7 @@ const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
         .from("user_roles")
         .select("role")
         .eq("user_id", user.id)
-        .eq("role", requiredRole as any)
+        .eq("role", requiredRole)
         .maybeSingle();
 
       const { data: allRoles } = await supabase

@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import {
   CheckCircle, AlertCircle, TrendingUp, Loader2, Wallet,
-  Store, PackageCheck, ChevronRight, Coins, ArrowRight, CreditCard, X,
+  Store, PackageCheck, Coins, CreditCard, X,
 } from "lucide-react";
 import { ProductionProject } from "@/types/batch";
 import {
@@ -19,6 +18,7 @@ import { useJoinProject, SellingPreference } from "@/hooks/useJoinProject";
 import { useAuth } from "@/hooks/useAuth";
 import { useWallet, useDeposit } from "@/hooks/useWallet";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
 
 interface JoinProjectDialogProps {
   batch: ProductionProject;
@@ -79,9 +79,6 @@ const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps
   const insufficientBalance = walletBalance < inventoryCost && inventoryCost > 0;
   const isValid = investmentAmount >= MINIMUM_PARTICIPATION_BDT && units > 0 && !overUnits && !insufficientBalance;
 
-  // derive current visible step for the indicator
-  const currentStep = belowMin || investmentAmount === 0 ? 1 : 2;
-
   const handleSubmit = async () => {
     if (!isValid) return;
     if (!user) {
@@ -91,8 +88,8 @@ const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps
     try {
       await joinProject.mutateAsync({ batchId: batch.id, units, totalInvested: inventoryCost, sellingPreference });
       setSubmitted(true);
-    } catch (error: any) {
-      toast({ title: "Failed to join project", description: error.message, variant: "destructive" });
+    } catch (error) {
+      toast({ title: "Failed to join project", description: getErrorMessage(error), variant: "destructive" });
     }
   };
 
@@ -124,8 +121,8 @@ const JoinProjectDialog = ({ batch, open, onOpenChange }: JoinProjectDialogProps
       setShowDeposit(false);
       setDepositAmount("");
       setAccountNumber("");
-    } catch (error: any) {
-      toast({ title: "Deposit failed", description: error.message, variant: "destructive" });
+    } catch (error) {
+      toast({ title: "Deposit failed", description: getErrorMessage(error), variant: "destructive" });
     }
   };
 

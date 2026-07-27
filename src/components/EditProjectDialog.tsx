@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Upload, X } from "lucide-react";
@@ -96,8 +97,8 @@ const EditProjectDialog = ({ batch, open, onOpenChange }: EditProjectDialogProps
       queryClient.invalidateQueries({ queryKey: ["batches"] });
       queryClient.invalidateQueries({ queryKey: ["batch", batch.id] });
       onOpenChange(false);
-    } catch (e: any) {
-      toast({ title: "Update failed", description: e.message, variant: "destructive" });
+    } catch (e) {
+      toast({ title: "Update failed", description: getErrorMessage(e), variant: "destructive" });
     } finally {
       setSaving(false);
     }

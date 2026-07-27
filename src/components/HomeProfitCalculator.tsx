@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Package, TrendingUp, ShoppingBag, Truck, BarChart3, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowRight, Package, TrendingUp, ShoppingBag, BarChart3, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { calcInvestmentEstimate } from "@/lib/calculations";
 

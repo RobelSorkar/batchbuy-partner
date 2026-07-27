@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -8,11 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Wallet as WalletIcon, ArrowUpRight, ArrowUp,
-  Clock, CheckCircle, RefreshCw, TrendingUp, Layers, Banknote, Repeat, Loader2
+  Clock, CheckCircle, RefreshCw, TrendingUp, Layers, Banknote, Loader2
 } from "lucide-react";
 import { useWallet, useTransactions, useWithdraw, useReinvest, useDeposit } from "@/hooks/useWallet";
 import { useProjects } from "@/hooks/useProjects";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { allocateUnits } from "@/lib/calculations";
@@ -92,8 +92,8 @@ const WalletPage = () => {
     try {
       await withdraw.mutateAsync({ amount: amt, method: withdrawMethod, account: withdrawAccount });
       setWithdrawSuccess(true);
-    } catch (e: any) {
-      toast({ title: "Withdrawal failed", description: e.message, variant: "destructive" });
+    } catch (e) {
+      toast({ title: "Withdrawal failed", description: getErrorMessage(e), variant: "destructive" });
     }
   };
 
@@ -107,8 +107,8 @@ const WalletPage = () => {
     try {
       await reinvest.mutateAsync({ batchId: selectedProject.id, batchName: selectedProject.batch_name, amount: reinvestCost, units: reinvestUnits });
       setReinvestSuccess(true);
-    } catch (e: any) {
-      toast({ title: "Reinvestment failed", description: e.message, variant: "destructive" });
+    } catch (e) {
+      toast({ title: "Reinvestment failed", description: getErrorMessage(e), variant: "destructive" });
     }
   };
 
@@ -123,8 +123,8 @@ const WalletPage = () => {
     try {
       await deposit.mutateAsync({ amount: amt, method: "direct", account: "wallet" });
       setDepositSuccess(true);
-    } catch (e: any) {
-      toast({ title: "Deposit failed", description: e.message, variant: "destructive" });
+    } catch (e) {
+      toast({ title: "Deposit failed", description: getErrorMessage(e), variant: "destructive" });
     }
   };
 

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import DashboardLayout from "@/components/DashboardLayout";
 import {
-  Search, AlertTriangle, CheckCircle, ShieldAlert, Eye, Settings2,
-  TrendingUp, Package, ArrowUpRight, ArrowDownRight, Info, Loader2
+  Search, AlertTriangle, ShieldAlert, Settings2,
+  Package, Info, Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,29 +15,6 @@ import {
   DistributionChannel, CHANNEL_CONFIG, PRICING_RULES,
 } from "@/data/distribution";
 import { useToast } from "@/hooks/use-toast";
-
-type ChannelRow = {
-  id: string;
-  inventory_id: string;
-  channel: string;
-  enabled: boolean;
-  price: number;
-  min_price: number;
-  max_price: number;
-  allocated_stock: number;
-  sold_units: number;
-};
-
-type InventoryWithChannels = {
-  id: string;
-  product_name: string;
-  batch_id: string | null;
-  total_stock: number;
-  sold_units: number;
-  status: string;
-  batch: { production_cost_per_unit: number; retail_price: number } | null;
-  distribution_channels: ChannelRow[];
-};
 
 interface ProductDistribution {
   productId: string;
@@ -156,7 +133,6 @@ const DistributionPage = () => {
 
   // Aggregate stats
   const totalChannelSales = channelOrder.map((ch) => ({
-    channel: ch,
     ...CHANNEL_CONFIG[ch],
     totalSold: products.reduce((s, p) => s + (p.channels.find((c) => c.channel === ch)?.soldUnits || 0), 0),
     totalStock: products.reduce((s, p) => s + (p.channels.find((c) => c.channel === ch)?.allocatedStock || 0), 0),

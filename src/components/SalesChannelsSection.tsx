@@ -1,4 +1,4 @@
-import { Globe, Store, ShoppingBag, Truck, ArrowRight } from "lucide-react";
+import { Globe, Store, ShoppingBag, Truck } from "lucide-react";
 
 const channels = [
   {

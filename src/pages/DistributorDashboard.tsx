@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Package, TrendingUp, ShoppingCart, Wallet, Loader2, Eye, Plus } from "lucide-react";
+import { Package, TrendingUp, ShoppingCart, Wallet, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useWallet } from "@/hooks/useWallet";
 import { useOrders, useCreateOrder } from "@/hooks/useOrders";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
 
 const DistributorDashboard = () => {
   const { user } = useAuth();
@@ -53,7 +54,6 @@ const DistributorDashboard = () => {
   const isLoading = productsLoading || ordersLoading;
 
   const totalOrders = orders.length;
-  const totalSpent = orders.reduce((s: number, o: any) => s + Number(o.total_amount), 0);
   const pendingOrders = orders.filter((o: any) => !["delivered", "cancelled"].includes(o.status)).length;
 
   const stats = [
@@ -104,8 +104,8 @@ const DistributorDashboard = () => {
       });
       toast({ title: "Order placed!", description: `${qty} × ${selectedProduct.name}` });
       setOrderOpen(false);
-    } catch (err: any) {
-      toast({ title: "Order failed", description: err.message, variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Order failed", description: getErrorMessage(err), variant: "destructive" });
     }
   };
 
