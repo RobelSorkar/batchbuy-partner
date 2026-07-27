@@ -1,3 +1,4 @@
+import Seo from "@/components/Seo";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import LiveActivityTicker from "@/components/LiveActivityTicker";
@@ -15,6 +16,11 @@ import CookieConsent from "@/components/CookieConsent";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Inventory Financing Platform"
+        description="Finance production batches, own product units, and sell through a powerful distribution network. Starting from ৳10,000."
+        path="/"
+      />
       <Navbar />
       <HeroSection />
       <LiveActivityTicker />

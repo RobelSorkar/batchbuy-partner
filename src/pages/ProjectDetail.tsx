@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, TrendingUp, Users, MapPin, Calendar, Shield, Calculat
 import { useAuth } from "@/hooks/useAuth";
 import { MARKETING_COST_RATE } from "@/lib/calculations";
 import { Button } from "@/components/ui/button";
+import Seo from "@/components/Seo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JoinProjectDialog from "@/components/JoinProjectDialog";
@@ -12,6 +13,7 @@ import ProductImageZoom from "@/components/ProductImageZoom";
 import ProjectCountdown from "@/components/ProjectCountdown";
 import CustomerOrderForm from "@/components/CustomerOrderForm";
 import { useProjectDetail, useProjectParticipations } from "@/hooks/useProjects";
+import { getProductImage } from "@/utils/productImages";
 import {
   MINIMUM_PARTICIPATION_BDT,
   calcPerUnitProfit,
@@ -110,8 +112,18 @@ const ProjectDetail = () => {
     logisticsCostPerUnit: logisticsCost,
   };
 
+  const ogImage = batch.image?.startsWith("http")
+    ? batch.image
+    : getProductImage(batch.product_name) || undefined;
+
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title={batch.product_name}
+        description={batch.description || `Finance ${batch.product_name} from ৳${MINIMUM_PARTICIPATION_BDT.toLocaleString()}, own real product units, and earn through ${statusLabels[batch.status]?.toLowerCase() || batch.status}.`}
+        image={ogImage}
+        path={`/batch/${batch.id}`}
+      />
       <Navbar />
 
       <div className="pt-24 pb-16 px-6">

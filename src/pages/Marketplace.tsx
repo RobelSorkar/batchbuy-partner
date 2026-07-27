@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Search, TrendingUp, Clock, CheckCircle, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Seo from "@/components/Seo";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useProjects } from "@/hooks/useProjects";
@@ -46,6 +47,11 @@ const Marketplace = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Marketplace"
+        description="Browse production batches, finance from ৳10,000 BDT, and own product units."
+        path="/marketplace"
+      />
       <Navbar />
 
       <div className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
