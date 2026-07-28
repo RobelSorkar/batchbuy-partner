@@ -12,8 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useImageUpload } from "@/hooks/useImageUpload";
-
-const categories = ["Apparel", "Beauty", "Accessories", "Home & Kitchen", "Electronics", "Food & Beverage", "Health", "Sports"];
+import { useCategories, useAddCategory } from "@/hooks/useCategories";
+import { getErrorMessage } from "@/lib/utils";
 
 const CreateProject = () => {
   const navigate = useNavigate();
@@ -24,6 +24,10 @@ const CreateProject = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { upload: uploadImage, uploading: imageUploading } = useImageUpload();
+  const { data: categories = [] } = useCategories();
+  const addCategory = useAddCategory();
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
   const [form, setForm] = useState({
     productName: "", batchName: "", productionCostPerUnit: "", wholesalePrice: "", retailPrice: "",
     totalQuantity: "", category: "", description: "", manufacturer: "", warehouse: "", productionTimeDays: "", deadline: "",
@@ -31,6 +35,20 @@ const CreateProject = () => {
   });
 
   const update = (key: string, value: string) => setForm((prev) => ({ ...prev, [key]: value }));
+
+  const handleAddCategory = async () => {
+    const name = newCategoryName.trim();
+    if (!name) return;
+    try {
+      await addCategory.mutateAsync(name);
+      update("category", name);
+      setNewCategoryName("");
+      setAddingCategory(false);
+      toast({ title: `Category "${name}" added` });
+    } catch (e) {
+      toast({ title: "Couldn't add category", description: getErrorMessage(e), variant: "destructive" });
+    }
+  };
 
   const costPerUnit = Number(form.productionCostPerUnit) || 0;
   const wholesale = Number(form.wholesalePrice) || 0;
@@ -117,10 +135,33 @@ const CreateProject = () => {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Category *</Label>
-                  <Select value={form.category} onValueChange={(v) => update("category", v)}>
-                    <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
-                    <SelectContent>{categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
-                  </Select>
+                  {addingCategory ? (
+                    <div className="flex gap-2">
+                      <Input
+                        autoFocus
+                        placeholder="New category name"
+                        value={newCategoryName}
+                        onChange={(e) => setNewCategoryName(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddCategory(); } }}
+                      />
+                      <Button type="button" size="sm" onClick={handleAddCategory} disabled={addCategory.isPending || !newCategoryName.trim()}>
+                        {addCategory.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Add"}
+                      </Button>
+                      <Button type="button" size="sm" variant="ghost" onClick={() => { setAddingCategory(false); setNewCategoryName(""); }}>
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Select value={form.category} onValueChange={(v) => update("category", v)}>
+                        <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                        <SelectContent>{categories.map((c) => <SelectItem key={c.id} value={c.name}>{c.name}</SelectItem>)}</SelectContent>
+                      </Select>
+                      <Button type="button" size="sm" variant="outline" className="shrink-0 gap-1" onClick={() => setAddingCategory(true)}>
+                        <Plus className="w-3.5 h-3.5" /> New
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="totalQuantity">Total Production Quantity *</Label>

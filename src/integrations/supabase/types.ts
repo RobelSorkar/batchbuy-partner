@@ -172,6 +172,27 @@ export type Database = {
         }
         Relationships: []
       }
+      categories: {
+        Row: {
+          id: string
+          name: string
+          created_at: string
+          created_by: string | null
+        }
+        Insert: {
+          id?: string
+          name: string
+          created_at?: string
+          created_by?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string
+          created_at?: string
+          created_by?: string | null
+        }
+        Relationships: []
+      }
       distribution_channels: {
         Row: {
           allocated_stock: number
